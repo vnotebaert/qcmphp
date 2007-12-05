@@ -1,0 +1,41 @@
+// Themes avec nombre de fils arborecents et directs :
+SELECT T1.*, IF(T1.taille<>1,COUNT(*),0) AS nombrefils_arbo, SUM(T1.idtheme=T2.idtheme_rel) AS nombrefils_direct 
+FROM qcm_theme AS T1 LEFT JOIN qcm_theme AS T2 ON (T2.bornegauche>T1.bornegauche AND T2.bornegauche + T2.taille<T1.bornegauche + T1.taille) 
+WHERE T1.visible=1 AND (T2.visible=1 OR T2.visible IS NULL) 
+GROUP BY T1.idtheme 
+ORDER BY `T1`.`bornegauche` ASC
+
+// Themes avec nombre de questionnaires (rapide) :
+SELECT T1.*, SUM(IF(T2.visible=1,1,0)) AS nbrquestionnaire_direct
+FROM qcm_theme AS T1 
+LEFT JOIN qcm_questionnaire AS T2 ON T1.idtheme=T2.idtheme_rel
+WHERE T1.visible=1 AND (T2.visible=1 OR T2.visible IS NULL) 
+GROUP BY T1.idtheme
+ORDER BY `T1`.`bornegauche` ASC
+
+// Themes avec nombre de questionnaires directs et arborescents :
+SELECT T1.*,
+SUM(T3.titre IS NOT NULL) AS nombrefils_arbo, SUM(T1.idtheme=T3.idtheme_rel) AS nombrefils_direct
+FROM qcm_theme AS T1 
+LEFT JOIN qcm_theme AS T2 ON (T2.bornegauche>=T1.bornegauche AND T2.bornegauche + T2.taille<=T1.bornegauche + T1.taille AND T1.visible=1 AND T2.visible=1) 
+LEFT JOIN qcm_questionnaire AS T3 ON (T3.idtheme_rel=T2.idtheme AND T3.visible=1)
+GROUP BY T1.idtheme 
+ORDER BY `T1`.`bornegauche` ASC 
+
+// Prochaine question non encore répondu d'un questionnaire :
+SELECT T2.idutilisateur_rel, T2.idreponse, T1.intitule AS questionintitule, T3.intitule AS choixintitule 
+FROM qcm_question AS T1 , qcm_choix AS T3 
+LEFT JOIN qcm_reponse AS T2 ON T3.idchoix=T2.idchoix_rel 
+WHERE T1.idquestion=T3.idquestion_rel AND T2.idreponse IS NULL 
+GROUP BY T1.idquestion
+ORDER BY T1.ordre ASC
+
+SELECT T2.idutilisateur_rel, T2.idreponse, T1.intitule AS questionintitule, T3.intitule AS choixintitule 
+FROM qcm_reponse AS T2, qcm_choix AS T3 
+LEFT JOIN qcm_question AS T1 ON T1.idquestion=T3.idquestion_rel
+WHERE T3.idchoix=T2.idchoix_rel AND T2.idreponse IS NULL 
+GROUP BY T1.idquestion
+ORDER BY T1.ordre ASC
+
+//Valeur de l'utilisateur pour un questionnaire
+

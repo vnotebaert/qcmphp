@@ -1,0 +1,577 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//FR"
+            "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+	<meta name="author" content="David MASSE">
+	<meta name="keywords" content="QCM,questionnaire,choix,multiples">
+	<meta name="description" content="Questionnaire &agrave; choix multiple ou examen en ligne, tout est possible avec QCM_PHP">
+	<meta name="robots" content="all">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<title>QCM</title>
+
+	<!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
+	<script type="text/javascript"></script>
+	<style type="text/css" media="all">
+		@import "default.css";
+	</style>
+	<script type="text/javascript">
+		_editor_url  = "./scripts/javascript/xinha/"  // (preferably absolute) URL (including trailing slash) where Xinha is installed
+		_editor_lang = "fr";      // And the language we need to use in the editor.
+	</script>
+	<script type="text/javascript" src="./scripts/javascript/xinha/XinhaCore.js"></script>
+	<script type="text/javascript">
+		var xinha_plugins =
+		[
+		 'CharacterMap',
+		 'ContextMenu', 
+		 'ListType',
+		 'Stylist',
+		 'TableOperations'
+		];
+		/************************************************************************
+		 * Names of the textareas you will be turning into editors
+		 ************************************************************************/
+		var xinha_editors =
+		[
+		  'intitule',
+		  'solution'
+		];
+		/************************************************************************
+		 * Initialisation function
+		 ************************************************************************/
+		function xinha_init()
+		{
+		  // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  :)
+		  if(!Xinha.loadPlugins(xinha_plugins, xinha_init)) return;
+		  /*************************************************************************
+		   * We create a default configuration to be used by all the editors.
+		   * If you wish to configure some of the editors differently this will be
+		   * done later after editors are initiated.
+		   ************************************************************************
+		   * Please refer to http://xinha.python-hosting.com/wiki/Documentation/Customise
+		   * for the configuration parameters
+		   ************************************************************************/
+		  var xinha_config = new Xinha.Config();
+		  xinha_editors = Xinha.makeEditors(xinha_editors, xinha_config, xinha_plugins);
+		  /************************************************************************
+		   * Finally we "start" the editors, this turns the textareas into
+		   * Xinha editors.
+		   ************************************************************************/
+		  Xinha.startEditors(xinha_editors);
+		}
+		window.onload = xinha_init;
+		</script>	<script type="text/javascript" language="javascript" src="./scripts/javascript/cookie.js"></script>
+
+</head>
+<body>
+<div id="container">
+<div id="intro">
+	<div id="entete">
+	<h1><span><acronym title="Question &agrave; Choix Multiples">QCM</acronym></span></h1>
+	</div>
+</div>
+
+<div id="espaceprincipal">
+	<div id="module">
+			<!-- Debut module -->
+
+			<script type="text/javascript" language="javascript">
+			<!--
+			function controle_question(){
+				var test=true;
+				var message_erreur="Erreur(s) :\n";
+										
+							if(document.formulaire_question.titre.value == "")
+							{
+								message_erreur+="Le champ titre ne peut &ecirc;tre vide.";
+						   		document.formulaire_question.titre.focus();
+							   	test=false;
+					  		}
+				  							
+				if (test==true) document.formulaire_question.submit();
+				else alert(message_erreur);
+			}
+			function suivant_question()
+			{
+					document.formulaire_question.suivant.value = "1";
+					controle_question();
+			}
+			 
+			function suppression_question()
+			{
+			document.formulaire_question.suppression.value = "1";
+			document.formulaire_question.submit();
+			} 			//-->
+			</script>
+			<h3><span>Modification d'un objet de la classe : Question</span></h3>
+				<DIV id="creation_question_cadre">
+					<FORM action="http://rozdad.hd.free.fr/qcm/gestion_questions.php" method="POST" name="formulaire_question">
+					<INPUT type="HIDDEN" name="ok" value="1" />
+													<DIV class="champ_cadre">
+									<DIV class="intitule_champ"><SPAN>Titre&nbsp;:</SPAN></DIV>
+
+									<DIV class="champ"><INPUT type="TEXT" name="titre" maxlength="100" value="MMORPG" />									</DIV>
+								</DIV>
+					  											<DIV class="champ_cadre">
+									<DIV class="intitule_champ"><SPAN>Intitul&eacute;&nbsp;:</SPAN></DIV>
+									<DIV class="champ">
+<TEXTAREA rows ="12" cols="100" id="intitule_texte" name="intitule">Qu'est qu'un <STRONG>BUFF</STRONG>? </TEXTAREA>									</DIV>
+								</DIV>
+
+					  											<DIV class="champ_cadre">
+									<DIV class="intitule_champ"><SPAN>Type&nbsp;:</SPAN></DIV>
+									<DIV class="champ"><UL>
+<LI><INPUT TYPE="RADIO" name="type" value="unique" id="type1" CHECKED \> <label for="type1">unique</label></LI>
+<LI><INPUT TYPE="RADIO" name="type" value="unique_liste" id="type2"  \> <label for="type2">unique_liste</label></LI>
+<LI><INPUT TYPE="RADIO" name="type" value="multiple" id="type3"  \> <label for="type3">multiple</label></LI>
+
+<LI><INPUT TYPE="RADIO" name="type" value="multiple_liste" id="type4"  \> <label for="type4">multiple_liste</label></LI>
+<LI><INPUT TYPE="RADIO" name="type" value="mot" id="type5"  \> <label for="type5">mot</label></LI>
+<LI><INPUT TYPE="RADIO" name="type" value="texte" id="type6"  \> <label for="type6">texte</label></LI></UL>									</DIV>
+								</DIV>
+					  											<DIV class="champ_cadre">
+									<DIV class="intitule_champ"><SPAN>Ordre&nbsp;:</SPAN></DIV>
+
+									<DIV class="champ"><SELECT name="ordre">
+<OPTION value="-128">-128&nbsp;</OPTION>
+<OPTION value="-127">-127&nbsp;</OPTION>
+<OPTION value="-126">-126&nbsp;</OPTION>
+<OPTION value="-125">-125&nbsp;</OPTION>
+<OPTION value="-124">-124&nbsp;</OPTION>
+<OPTION value="-123">-123&nbsp;</OPTION>
+<OPTION value="-122">-122&nbsp;</OPTION>
+<OPTION value="-121">-121&nbsp;</OPTION>
+
+<OPTION value="-120">-120&nbsp;</OPTION>
+<OPTION value="-119">-119&nbsp;</OPTION>
+<OPTION value="-118">-118&nbsp;</OPTION>
+<OPTION value="-117">-117&nbsp;</OPTION>
+<OPTION value="-116">-116&nbsp;</OPTION>
+<OPTION value="-115">-115&nbsp;</OPTION>
+<OPTION value="-114">-114&nbsp;</OPTION>
+<OPTION value="-113">-113&nbsp;</OPTION>
+<OPTION value="-112">-112&nbsp;</OPTION>
+
+<OPTION value="-111">-111&nbsp;</OPTION>
+<OPTION value="-110">-110&nbsp;</OPTION>
+<OPTION value="-109">-109&nbsp;</OPTION>
+<OPTION value="-108">-108&nbsp;</OPTION>
+<OPTION value="-107">-107&nbsp;</OPTION>
+<OPTION value="-106">-106&nbsp;</OPTION>
+<OPTION value="-105">-105&nbsp;</OPTION>
+<OPTION value="-104">-104&nbsp;</OPTION>
+<OPTION value="-103">-103&nbsp;</OPTION>
+
+<OPTION value="-102">-102&nbsp;</OPTION>
+<OPTION value="-101">-101&nbsp;</OPTION>
+<OPTION value="-100">-100&nbsp;</OPTION>
+<OPTION value="-99">-99&nbsp;</OPTION>
+<OPTION value="-98">-98&nbsp;</OPTION>
+<OPTION value="-97">-97&nbsp;</OPTION>
+<OPTION value="-96">-96&nbsp;</OPTION>
+<OPTION value="-95">-95&nbsp;</OPTION>
+<OPTION value="-94">-94&nbsp;</OPTION>
+
+<OPTION value="-93">-93&nbsp;</OPTION>
+<OPTION value="-92">-92&nbsp;</OPTION>
+<OPTION value="-91">-91&nbsp;</OPTION>
+<OPTION value="-90">-90&nbsp;</OPTION>
+<OPTION value="-89">-89&nbsp;</OPTION>
+<OPTION value="-88">-88&nbsp;</OPTION>
+<OPTION value="-87">-87&nbsp;</OPTION>
+<OPTION value="-86">-86&nbsp;</OPTION>
+<OPTION value="-85">-85&nbsp;</OPTION>
+
+<OPTION value="-84">-84&nbsp;</OPTION>
+<OPTION value="-83">-83&nbsp;</OPTION>
+<OPTION value="-82">-82&nbsp;</OPTION>
+<OPTION value="-81">-81&nbsp;</OPTION>
+<OPTION value="-80">-80&nbsp;</OPTION>
+<OPTION value="-79">-79&nbsp;</OPTION>
+<OPTION value="-78">-78&nbsp;</OPTION>
+<OPTION value="-77">-77&nbsp;</OPTION>
+<OPTION value="-76">-76&nbsp;</OPTION>
+
+<OPTION value="-75">-75&nbsp;</OPTION>
+<OPTION value="-74">-74&nbsp;</OPTION>
+<OPTION value="-73">-73&nbsp;</OPTION>
+<OPTION value="-72">-72&nbsp;</OPTION>
+<OPTION value="-71">-71&nbsp;</OPTION>
+<OPTION value="-70">-70&nbsp;</OPTION>
+<OPTION value="-69">-69&nbsp;</OPTION>
+<OPTION value="-68">-68&nbsp;</OPTION>
+<OPTION value="-67">-67&nbsp;</OPTION>
+
+<OPTION value="-66">-66&nbsp;</OPTION>
+<OPTION value="-65">-65&nbsp;</OPTION>
+<OPTION value="-64">-64&nbsp;</OPTION>
+<OPTION value="-63">-63&nbsp;</OPTION>
+<OPTION value="-62">-62&nbsp;</OPTION>
+<OPTION value="-61">-61&nbsp;</OPTION>
+<OPTION value="-60">-60&nbsp;</OPTION>
+<OPTION value="-59">-59&nbsp;</OPTION>
+<OPTION value="-58">-58&nbsp;</OPTION>
+
+<OPTION value="-57">-57&nbsp;</OPTION>
+<OPTION value="-56">-56&nbsp;</OPTION>
+<OPTION value="-55">-55&nbsp;</OPTION>
+<OPTION value="-54">-54&nbsp;</OPTION>
+<OPTION value="-53">-53&nbsp;</OPTION>
+<OPTION value="-52">-52&nbsp;</OPTION>
+<OPTION value="-51">-51&nbsp;</OPTION>
+<OPTION value="-50">-50&nbsp;</OPTION>
+<OPTION value="-49">-49&nbsp;</OPTION>
+
+<OPTION value="-48">-48&nbsp;</OPTION>
+<OPTION value="-47">-47&nbsp;</OPTION>
+<OPTION value="-46">-46&nbsp;</OPTION>
+<OPTION value="-45">-45&nbsp;</OPTION>
+<OPTION value="-44">-44&nbsp;</OPTION>
+<OPTION value="-43">-43&nbsp;</OPTION>
+<OPTION value="-42">-42&nbsp;</OPTION>
+<OPTION value="-41">-41&nbsp;</OPTION>
+<OPTION value="-40">-40&nbsp;</OPTION>
+
+<OPTION value="-39">-39&nbsp;</OPTION>
+<OPTION value="-38">-38&nbsp;</OPTION>
+<OPTION value="-37">-37&nbsp;</OPTION>
+<OPTION value="-36">-36&nbsp;</OPTION>
+<OPTION value="-35">-35&nbsp;</OPTION>
+<OPTION value="-34">-34&nbsp;</OPTION>
+<OPTION value="-33">-33&nbsp;</OPTION>
+<OPTION value="-32">-32&nbsp;</OPTION>
+<OPTION value="-31">-31&nbsp;</OPTION>
+
+<OPTION value="-30">-30&nbsp;</OPTION>
+<OPTION value="-29">-29&nbsp;</OPTION>
+<OPTION value="-28">-28&nbsp;</OPTION>
+<OPTION value="-27">-27&nbsp;</OPTION>
+<OPTION value="-26">-26&nbsp;</OPTION>
+<OPTION value="-25">-25&nbsp;</OPTION>
+<OPTION value="-24">-24&nbsp;</OPTION>
+<OPTION value="-23">-23&nbsp;</OPTION>
+<OPTION value="-22">-22&nbsp;</OPTION>
+
+<OPTION value="-21">-21&nbsp;</OPTION>
+<OPTION value="-20">-20&nbsp;</OPTION>
+<OPTION value="-19">-19&nbsp;</OPTION>
+<OPTION value="-18">-18&nbsp;</OPTION>
+<OPTION value="-17">-17&nbsp;</OPTION>
+<OPTION value="-16">-16&nbsp;</OPTION>
+<OPTION value="-15">-15&nbsp;</OPTION>
+<OPTION value="-14">-14&nbsp;</OPTION>
+<OPTION value="-13">-13&nbsp;</OPTION>
+
+<OPTION value="-12">-12&nbsp;</OPTION>
+<OPTION value="-11">-11&nbsp;</OPTION>
+<OPTION value="-10">-10&nbsp;</OPTION>
+<OPTION value="-9">-9&nbsp;</OPTION>
+<OPTION value="-8">-8&nbsp;</OPTION>
+<OPTION value="-7">-7&nbsp;</OPTION>
+<OPTION value="-6">-6&nbsp;</OPTION>
+<OPTION value="-5">-5&nbsp;</OPTION>
+<OPTION value="-4">-4&nbsp;</OPTION>
+
+<OPTION value="-3">-3&nbsp;</OPTION>
+<OPTION value="-2">-2&nbsp;</OPTION>
+<OPTION value="-1">-1&nbsp;</OPTION>
+<OPTION value="0">0&nbsp;</OPTION>
+<OPTION value="1">1&nbsp;</OPTION>
+<OPTION value="2">2&nbsp;</OPTION>
+<OPTION value="3">3&nbsp;</OPTION>
+<OPTION value="4">4&nbsp;</OPTION>
+<OPTION value="5">5&nbsp;</OPTION>
+
+<OPTION SELECTED value="6">6&nbsp;</OPTION>
+<OPTION value="7">7&nbsp;</OPTION>
+<OPTION value="8">8&nbsp;</OPTION>
+<OPTION value="9">9&nbsp;</OPTION>
+<OPTION value="10">10&nbsp;</OPTION>
+<OPTION value="11">11&nbsp;</OPTION>
+<OPTION value="12">12&nbsp;</OPTION>
+<OPTION value="13">13&nbsp;</OPTION>
+<OPTION value="14">14&nbsp;</OPTION>
+
+<OPTION value="15">15&nbsp;</OPTION>
+<OPTION value="16">16&nbsp;</OPTION>
+<OPTION value="17">17&nbsp;</OPTION>
+<OPTION value="18">18&nbsp;</OPTION>
+<OPTION value="19">19&nbsp;</OPTION>
+<OPTION value="20">20&nbsp;</OPTION>
+<OPTION value="21">21&nbsp;</OPTION>
+<OPTION value="22">22&nbsp;</OPTION>
+<OPTION value="23">23&nbsp;</OPTION>
+
+<OPTION value="24">24&nbsp;</OPTION>
+<OPTION value="25">25&nbsp;</OPTION>
+<OPTION value="26">26&nbsp;</OPTION>
+<OPTION value="27">27&nbsp;</OPTION>
+<OPTION value="28">28&nbsp;</OPTION>
+<OPTION value="29">29&nbsp;</OPTION>
+<OPTION value="30">30&nbsp;</OPTION>
+<OPTION value="31">31&nbsp;</OPTION>
+<OPTION value="32">32&nbsp;</OPTION>
+
+<OPTION value="33">33&nbsp;</OPTION>
+<OPTION value="34">34&nbsp;</OPTION>
+<OPTION value="35">35&nbsp;</OPTION>
+<OPTION value="36">36&nbsp;</OPTION>
+<OPTION value="37">37&nbsp;</OPTION>
+<OPTION value="38">38&nbsp;</OPTION>
+<OPTION value="39">39&nbsp;</OPTION>
+<OPTION value="40">40&nbsp;</OPTION>
+<OPTION value="41">41&nbsp;</OPTION>
+
+<OPTION value="42">42&nbsp;</OPTION>
+<OPTION value="43">43&nbsp;</OPTION>
+<OPTION value="44">44&nbsp;</OPTION>
+<OPTION value="45">45&nbsp;</OPTION>
+<OPTION value="46">46&nbsp;</OPTION>
+<OPTION value="47">47&nbsp;</OPTION>
+<OPTION value="48">48&nbsp;</OPTION>
+<OPTION value="49">49&nbsp;</OPTION>
+<OPTION value="50">50&nbsp;</OPTION>
+
+<OPTION value="51">51&nbsp;</OPTION>
+<OPTION value="52">52&nbsp;</OPTION>
+<OPTION value="53">53&nbsp;</OPTION>
+<OPTION value="54">54&nbsp;</OPTION>
+<OPTION value="55">55&nbsp;</OPTION>
+<OPTION value="56">56&nbsp;</OPTION>
+<OPTION value="57">57&nbsp;</OPTION>
+<OPTION value="58">58&nbsp;</OPTION>
+<OPTION value="59">59&nbsp;</OPTION>
+
+<OPTION value="60">60&nbsp;</OPTION>
+<OPTION value="61">61&nbsp;</OPTION>
+<OPTION value="62">62&nbsp;</OPTION>
+<OPTION value="63">63&nbsp;</OPTION>
+<OPTION value="64">64&nbsp;</OPTION>
+<OPTION value="65">65&nbsp;</OPTION>
+<OPTION value="66">66&nbsp;</OPTION>
+<OPTION value="67">67&nbsp;</OPTION>
+<OPTION value="68">68&nbsp;</OPTION>
+
+<OPTION value="69">69&nbsp;</OPTION>
+<OPTION value="70">70&nbsp;</OPTION>
+<OPTION value="71">71&nbsp;</OPTION>
+<OPTION value="72">72&nbsp;</OPTION>
+<OPTION value="73">73&nbsp;</OPTION>
+<OPTION value="74">74&nbsp;</OPTION>
+<OPTION value="75">75&nbsp;</OPTION>
+<OPTION value="76">76&nbsp;</OPTION>
+<OPTION value="77">77&nbsp;</OPTION>
+
+<OPTION value="78">78&nbsp;</OPTION>
+<OPTION value="79">79&nbsp;</OPTION>
+<OPTION value="80">80&nbsp;</OPTION>
+<OPTION value="81">81&nbsp;</OPTION>
+<OPTION value="82">82&nbsp;</OPTION>
+<OPTION value="83">83&nbsp;</OPTION>
+<OPTION value="84">84&nbsp;</OPTION>
+<OPTION value="85">85&nbsp;</OPTION>
+<OPTION value="86">86&nbsp;</OPTION>
+
+<OPTION value="87">87&nbsp;</OPTION>
+<OPTION value="88">88&nbsp;</OPTION>
+<OPTION value="89">89&nbsp;</OPTION>
+<OPTION value="90">90&nbsp;</OPTION>
+<OPTION value="91">91&nbsp;</OPTION>
+<OPTION value="92">92&nbsp;</OPTION>
+<OPTION value="93">93&nbsp;</OPTION>
+<OPTION value="94">94&nbsp;</OPTION>
+<OPTION value="95">95&nbsp;</OPTION>
+
+<OPTION value="96">96&nbsp;</OPTION>
+<OPTION value="97">97&nbsp;</OPTION>
+<OPTION value="98">98&nbsp;</OPTION>
+<OPTION value="99">99&nbsp;</OPTION>
+<OPTION value="100">100&nbsp;</OPTION>
+<OPTION value="101">101&nbsp;</OPTION>
+<OPTION value="102">102&nbsp;</OPTION>
+<OPTION value="103">103&nbsp;</OPTION>
+<OPTION value="104">104&nbsp;</OPTION>
+
+<OPTION value="105">105&nbsp;</OPTION>
+<OPTION value="106">106&nbsp;</OPTION>
+<OPTION value="107">107&nbsp;</OPTION>
+<OPTION value="108">108&nbsp;</OPTION>
+<OPTION value="109">109&nbsp;</OPTION>
+<OPTION value="110">110&nbsp;</OPTION>
+<OPTION value="111">111&nbsp;</OPTION>
+<OPTION value="112">112&nbsp;</OPTION>
+<OPTION value="113">113&nbsp;</OPTION>
+
+<OPTION value="114">114&nbsp;</OPTION>
+<OPTION value="115">115&nbsp;</OPTION>
+<OPTION value="116">116&nbsp;</OPTION>
+<OPTION value="117">117&nbsp;</OPTION>
+<OPTION value="118">118&nbsp;</OPTION>
+<OPTION value="119">119&nbsp;</OPTION>
+<OPTION value="120">120&nbsp;</OPTION>
+<OPTION value="121">121&nbsp;</OPTION>
+<OPTION value="122">122&nbsp;</OPTION>
+
+<OPTION value="123">123&nbsp;</OPTION>
+<OPTION value="124">124&nbsp;</OPTION>
+<OPTION value="125">125&nbsp;</OPTION>
+<OPTION value="126">126&nbsp;</OPTION>
+<OPTION value="127">127&nbsp;</OPTION>
+</SELECT>									</DIV>
+								</DIV>
+					  											<DIV class="champ_cadre">
+									<DIV class="intitule_champ"><SPAN>Texte de la solution&nbsp;:</SPAN></DIV>
+
+									<DIV class="champ">
+<TEXTAREA rows ="12" cols="100" id="solution_texte" name="solution">Un sort augmentant les capacités du ou des personnages pendant un certain temps.</TEXTAREA>									</DIV>
+								</DIV>
+					  			<INPUT type="HIDDEN" name="idquestionnaire_rel" READONLY value="6" />					<INPUT type="HIDDEN" name="identifiant" value="20" />
+										<DIV class="bouton_cadre">
+						<INPUT type="button" value="OK" OnClick="controle_question()" />
+						<INPUT type="button" value="Enregistrer et nouveau" OnClick="suivant_question()" />
+						<INPUT type="HIDDEN" name="suivant" value="0" />
+
+						<INPUT type="reset" value="Annuler" />
+												</DIV>
+					<INPUT type="HIDDEN" name="langue" value="fr" />
+				</FORM>
+			</DIV>
+			Liste des choix de la question :
+<DIV id="tableau"><TABLE><TR><TH>Modification</TH><TH>Suppression</TH><TH>Titre</TH><TH>Intitul&eacute;</TH><TH>Valeur</TH></TR>
+
+<TR><TD><a href="gestion_choix.php?ic=27" >Modifier</a>&nbsp;</TD><TD><a href="gestion_choix.php?ic=27&suppression=1" >Supprimer</a>&nbsp;</TD><TD>&nbsp;</TD><TD>Un Gros Bill</TD><TD>0</TD></TR>
+<TR><TD><a href="gestion_choix.php?ic=28" >Modifier</a>&nbsp;</TD><TD><a href="gestion_choix.php?ic=28&suppression=1" >Supprimer</a>&nbsp;</TD><TD>&nbsp;</TD><TD>Un personnage très puissant</TD><TD>-1</TD></TR>
+<TR><TD><a href="gestion_choix.php?ic=29" >Modifier</a>&nbsp;</TD><TD><a href="gestion_choix.php?ic=29&suppression=1" >Supprimer</a>&nbsp;</TD><TD>&nbsp;</TD><TD>Un sort augmentant les capacités des personnages</TD><TD>5</TD></TR>
+<TR><TD><a href="gestion_choix.php?ic=30" >Modifier</a>&nbsp;</TD><TD><a href="gestion_choix.php?ic=30&suppression=1" >Supprimer</a>&nbsp;</TD><TD>&nbsp;</TD><TD>Background United Favorite Filters</TD><TD>-20</TD></TR>
+
+<TR><TD><a href="gestion_choix.php?ic=31" >Modifier</a>&nbsp;</TD><TD><a href="gestion_choix.php?ic=31&suppression=1" >Supprimer</a>&nbsp;</TD><TD>&nbsp;</TD><TD>Un animal à cornes qui aime brouter de l'herbe</TD><TD>-128</TD></TR>
+</TABLE></DIV>
+<script type="text/javascript" language="javascript">
+			<!--
+							function fvalidation(){
+					document.formulaire_validation.validation.value = "1";
+					document.formulaire_validation.submit();
+				}
+				function devalidation(){
+					document.formulaire_validation.validation.value = "0";
+					document.formulaire_validation.submit();
+				}
+							//-->
+			</script>
+			<FORM action="http://rozdad.hd.free.fr/qcm/gestion_questions.php" method="POST" name="formulaire_validation">
+				<INPUT type="HIDDEN" name="identifiant" value="20" />
+				<DIV class="intitule_champ"><SPAN>Texte de validation ou non-validation :</SPAN></DIV>
+				<DIV class="champ">
+
+					<script type="text/javascript" language="Javascript1.2"><!-- // load htmlarea
+					_editor_url = "scripts/javascript/";                     // URL to htmlarea files
+					var win_ie_ver = parseFloat(navigator.appVersion.split("MSIE")[1]);
+					if (navigator.userAgent.indexOf('Mac')        >= 0) { win_ie_ver = 0; }
+					if (navigator.userAgent.indexOf('Windows CE') >= 0) { win_ie_ver = 0; }
+					if (navigator.userAgent.indexOf('Opera')      >= 0) { win_ie_ver = 0; }
+					if (win_ie_ver >= 5.5) {
+					  document.write('<script src="' +_editor_url+ 'editor.js"');
+					  document.write(' language="Javascript1.2"><\/script>');  
+					} else { document.write('<script>function editor_generate() { return false; }<\/script>'); }
+					// --></script>
+					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation" value="">Ok</textarea>
+					<script type="text/javascript" language="javascript1.2">
+					var config = new Object();    // create new config object
+					
+					config.debug = 0;
+					
+					// NOTE:  You can remove any of these blocks and use the default config!
+					
+					config.toolbar = [
+					    ['fontname'],
+					    ['fontsize'],
+					    ['fontstyle'],
+					    ['linebreak'],
+					    ['bold','italic','underline','separator'],
+					    ['strikethrough','subscript','superscript','separator'],
+					    ['justifyleft','justifycenter','justifyright','separator'],
+					    ['OrderedList','UnOrderedList','Outdent','Indent','separator'],
+					    ['forecolor','backcolor','separator'],
+					    ['HorizontalRule','Createlink','InsertImage','htmlmode','separator'],
+					    ['about','popupeditor'],
+					//  ['help'],
+					];
+					
+					config.fontnames = {
+					    "Arial":           "arial, helvetica, sans-serif",
+					    "Courier New":     "courier new, courier, mono",
+					    "Georgia":         "Georgia, Times New Roman, Times, Serif",
+					    "Tahoma":          "Tahoma, Arial, Helvetica, sans-serif",
+					    "Times New Roman": "times new roman, times, serif",
+					    "Verdana":         "Verdana, Arial, Helvetica, sans-serif",
+					    "impact":          "impact",
+					    "WingDings":       "WingDings"
+					};
+					config.fontsizes = {
+					    "1 (8 pt)":  "1",
+					    "2 (10 pt)": "2",
+					    "3 (12 pt)": "3",
+					    "4 (14 pt)": "4",
+					    "5 (18 pt)": "5",
+					    "6 (24 pt)": "6",
+					    "7 (36 pt)": "7"
+					};
+								
+					config.fontstyles = [   // make sure classNames are defined in the page the content is being display as well in or they won't work!
+					  { name: "headline",     className: "headline",  classStyle: "font-family: arial black, arial; font-size: 28px; letter-spacing: -2px;" },
+					  { name: "arial red",    className: "headline2", classStyle: "font-family: arial black, arial; font-size: 12px; letter-spacing: -2px; color:red" },
+					  { name: "verdana blue", className: "headline4", classStyle: "font-family: verdana; font-size: 18px; letter-spacing: -2px; color:blue" }
+					];
+					
+					editor_generate('validation_texte',config);
+					</script>
+				</DIV>
+				<DIV class="intitule_champ"><SPAN>Validation :</SPAN></DIV>
+				<DIV class="champ"><INPUT TYPE="text" READONLY DISABLED SIZE="1" VALUE="1" />
+				</DIV>
+
+				<DIV class="bouton_cadre">
+									<INPUT type="button" value="Valider" OnClick="fvalidation()" />
+					<INPUT type="HIDDEN" name="validation" value="0" />
+					<INPUT type="button" value="Devalider" OnClick="devalidation()" />
+									</DIV>
+			</FORM>
+						<!-- Fin module -->
+	</div>
+	<div id="pieddepage">
+
+			<ul>
+<li><a href="http://validator.w3.org/check/referer" title="Check the validity of this site&#8217;s XHTML">xhtml</a> &nbsp; </li>
+<li><a href="http://jigsaw.w3.org/css-validator/check/referer" title="Check the validity of this site&#8217;s CSS">css</a> &nbsp; </li>
+<li><a href="http://bobby.watchfire.com/bobby/bobbyServlet?URL=http%3A%2F%2Frozdad.hd.free.fr%2Fqcm%2Fgestion_questions.php&amp;output=Submit&amp;gl=sec508&amp;test=" title="Check the accessibility of this site according to U.S. Section 508">508</a> &nbsp;</li>
+<li><a href="http://bobby.watchfire.com/bobby/bobbyServlet?URL=http%3A%2F%2Frozdad.hd.free.fr%2Fqcm%2Fgestion_questions.php&amp;output=Submit&amp;gl=wcag1-aaa&amp;test=" title="Check the accessibility of this site according to WAI Content Accessibility Guidelines 1">aaa</a> &nbsp;</li>
+
+</ul>
+	</div>
+</div>
+
+	
+	<div id="listefonction">
+		<!--extra div for flexibility - this list will probably be the trickiest spot you'll deal with -->
+		<div id="listefonction2">
+
+		<!-- If you're wondering about the extra &nbsp; at the end of the link, it's a hack to meet WCAG 1 Accessibility. -->
+		<!-- I don't like having to do it, but this is a visual exercise. It's a compromise. -->
+			<div id="lselect">
+
+								<h3 class="select"><span>Fonctionnalit&eacute;s</span></h3>
+				<!-- list of links begins here. There will be no more than 8 links per page -->
+				<ul>
+					<li><a href="index.php" title="Retour &agrave; la page d'accueil AccessKey: a" accesskey="a">Retour &agrave; la page d'<span class="accesskey">a</span>ccueil</a>&nbsp;</li>
+											<li><a href="gestion_choix.php?i=20" title="Cr&eacute;ation d'un nouveau choix AccesKey: c" accesskey="c"><span class="accesskey">C</span>r&eacute;ation d'un choix</a>&nbsp;</li>						<li><a href="gestion_questionnaires.php?i=6" title="Retour au questionnaire correspondant &agrave; la question affich&eacute;e AccesKey: r" accesskey="s"><span class="accesskey">R</span>etour au questionnaire</a>&nbsp;</li>						<li><a href="gestion_questions.php" title="Gestion des questions AccesKey: g" accesskey="s"><span class="accesskey">G</span>estion des questions</a>&nbsp;</li>										</ul>
+
+							</div>
+		</DIV>
+	</DIV>
+</DIV>
+<!-- These extra divs/spans may be used as catch-alls to add extra imagery. -->
+<!-- Add a background image to each and use width and height to control sizing, place with absolute positioning -->
+<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div><div id="extraDiv3"><span></span></div>
+<div id="extraDiv4"><span></span></div><div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div></body>
+</html>
