@@ -1,0 +1,150 @@
+/* css Zen Garden default style v1.01 */
+/* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
+
+
+/* This file based on 'Tranquille' by Dave Shea */
+/* You may use this file as a foundation for any new work, but you may find it easier to start from scratch. */
+/* Not all elements are defined in this file, so you'll most likely want to refer to the xhtml as well. */
+
+/* Images should be linked as if the CSS file sits in the same folder as the images. ie. no paths. */
+
+
+/* basic elements */
+html {
+	margin: 0px;
+	padding: 0px;
+	}
+body { 
+	font: 8pt/16pt georgia; 
+	color: #555753; 
+	background: #fff url(blossoms.jpg) no-repeat bottom right; 
+	margin: 0px;
+	text-align:left; 
+	}
+p { 
+	font: 8pt/16pt georgia; 
+	margin-top: 0px; 
+	text-align: justify;
+	}
+h3 { 
+	font: italic normal 12pt georgia; 
+	letter-spacing: 1px; 
+	margin-bottom: 0px; 
+	color: #7D775C;
+	}
+a:link { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #7D773C;
+	}
+a:visited { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #7D777C;
+	}
+a:hover, a:active { 
+	text-decoration: underline; 
+	color: #9685BA;
+	}
+
+
+/* specific divs */
+#container { 
+	background: url(zen-bg.jpg) no-repeat top left; 
+	padding: 0px 175px 0px 110px;  
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px; 
+	}
+
+#intro {  
+	min-width: 150px;
+	}
+
+#entete { 
+	margin-bottom: 20px;
+	}
+	#entete h1 {
+		background: transparent no-repeat top left; 
+		margin-top: 10px; 
+		width: 150px; 
+		height: 80px; 
+		float: left;
+		}
+	#entete h2 { 
+		margin-top: 60px; 
+		margin-bottom: 50px; 
+		width: 150px; 
+		height: 18px; 
+		float: right;
+		}
+
+#resume {
+	clear:both; 
+	margin: 20px 20px 20px 10px; 
+	width: 160px; 
+	float: left;
+	}
+	#resume p {
+		font: italic 10pt/22pt georgia; 
+		text-align:center;
+		}
+
+#preambule {
+	clear: right; 
+	padding: 0px 10px 0px 10px;
+	}
+
+#espaceprincipal {
+	clear: right;
+	padding-left: 10px; 
+	margin-bottom: 40px;
+	}
+
+#pieddepage { 
+	text-align: center; 
+	}
+	#pieddepage a:link, #pieddepage a:visited { 
+		margin-right: 20px; 
+		}
+
+#listefonction {
+	margin-left: 5px; 
+	position: absolute; 
+	top: 0px; 
+	right: 0px;
+	}
+	#listefonction h3 { 
+		margin: 5px 0px 5px 0px; 
+		}
+	#listefonction ul {
+		margin: 0px;
+		padding: 0px;
+		}
+	#listefonction li {
+		line-height: 2.5ex; 
+		list-style-type: none;
+		display: block; 
+		padding-top: 5px; 
+		margin-bottom: 5px;
+		}
+
+#listefonction2 { 
+	font: 10px verdana, sans-serif; 
+	padding: 10px; 
+	margin-top: 150px; 
+	width: 150px; 
+	}
+
+#extraDiv1 {
+	background: transparent url(cr2.gif) top left no-repeat; 
+	position: absolute; 
+	top: 40px; 
+	right: 0px; 
+	width: 148px; 
+	height: 110px;
+	}
+.accesskey {
+	text-decoration: underline;
+	}
