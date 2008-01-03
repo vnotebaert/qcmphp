@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe choix
  * 
  */
@@ -63,7 +63,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		// Recherche de la question si l'on donne son identifiant :
 		if (isset($idquestionnaire)) 
 		{	
-	     	$questionnaire_choisie=requete_sql("SELECT * FROM $this->table WHERE idquestionnaire=$idquestionnaire");
+	     	$questionnaire_choisie=requete_sql("select * FROM $this->table WHERE idquestionnaire=$idquestionnaire");
 			$questionnaire_choisie=tableau_sql($questionnaire_choisie);
 	    	$this->idquestionnaire = $idquestionnaire;
 	    	$this->identifiant = $idquestionnaire;
@@ -80,7 +80,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    	$this->datecreation = $questionnaire_choisie["datecreation"];
 	   		$this->datevalidation = $questionnaire_choisie["datevalidation"];  
 	    	$this->textevalidation = $questionnaire_choisie["textevalidation"];
-    		$liste_question_sql=requete_sql("SELECT * FROM $this->table_question WHERE idquestionnaire_rel='$idquestionnaire' AND visible='1' ORDER BY ordre");
+    		$liste_question_sql=requete_sql("select * FROM $this->table_question WHERE idquestionnaire_rel='$idquestionnaire' AND visible='1' ORDER BY ordre");
     		while($question=tableau_sql($liste_question_sql)) 
     		{
     			array_push($this->liste_questions,$question);
@@ -137,7 +137,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
   		$sql_resultat=requete_sql($sql_requete_suppression);
     }
     
-    // Formulaire de validation ou devalidation d'une question
+    // formulaire de validation ou devalidation d'une question
     function formulaire_validation()
     {
     	// Declaration des variables :
@@ -146,42 +146,42 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	
 		if (isset($this->identifiant) && $utilisateur_connecte->admin=="1")
 		{
-			?><script type="text/javascript" language="javascript">
+			?><script type="text/javascript">
 			<!--
 			<?
 			if (isset($this->validation))
 			{
 				?>
 				function fvalidation(){
-					document.formulaire_validation.validation.value = "1";
-					document.formulaire_validation.submit();
+					document.getElementById('formulaire_validation').validation.value = "1";
+					document.getElementById('formulaire_validation').submit();
 				}
 				function devalidation(){
-					document.formulaire_validation.validation.value = "0";
-					document.formulaire_validation.submit();
+					document.getElementById('formulaire_validation').validation.value = "0";
+					document.getElementById('formulaire_validation').submit();
 				}
 				<?
 			}
 			?>
 			//-->
 			</script>
-			<FORM action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="POST" name="formulaire_validation">
-				<INPUT type="HIDDEN" name="identifiant" value="<? echo $this->identifiant; ?>" />
-				<DIV class="intitule_champ"><SPAN><? echo _TEXTE_VALIDATION; ?> :</SPAN></DIV>
-				<DIV class="champ">
+			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
+				<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
+				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
+				<div class="champ">
 					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation" value=""><?
 					echo $this->textevalidation;
 					?></textarea>
-				</DIV>
-				<DIV class="intitule_champ"><SPAN><? echo _VALIDATION; ?> :</SPAN></DIV>
-				<DIV class="champ"><INPUT TYPE="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
-				</DIV>
-				<DIV class="bouton_cadre">
-					<INPUT type="button" value="<? echo _BOUTON_VALIDER; ?>" OnClick="fvalidation()" />
-					<INPUT type="HIDDEN" name="validation" value="0" />
-					<INPUT type="button" value="<? echo _BOUTON_DEVALIDER; ?>" OnClick="devalidation()" />
-				</DIV>
-			</FORM>
+				</div>
+				<div class="intitule_champ"><span><? echo _VALIDATION; ?> :</span></div>
+				<div class="champ"><input type="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
+				</div>
+				<div class="bouton_cadre">
+					<input type="button" value="<? echo _BOUTON_VALIDER; ?>" onclick="fvalidation()" />
+					<input type="hidden" name="validation" value="0" />
+					<input type="button" value="<? echo _BOUTON_DEVALIDER; ?>" onclick="devalidation()" />
+				</div>
+			</form>
 			<?
 		}
     }
@@ -203,31 +203,31 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			if (is_array($temp->liste_questions) && count($temp->liste_questions)>0)
 			{
 				echo _LISTE_QUESTIONS;
-				echo "\n<DIV id=\"tableau\"><TABLE>";
-				echo "<TR>" .
-						"<TH>"._MODIFICATION."</TH>" .
-						"<TH>"._SUPPRESSION."</TH>" .
-						"<TH>"._VALIDATION."</TH>" .
-						"<TH>"._ORDRE."</TH>" .
-						"<TH>"._TITRE."</TH>" .
-						"<TH>"._INTITULE."</TH>" .
-					"</TR>\n";
+				echo "\n<div id=\"tableau\"><table>";
+				echo "<tr>" .
+						"<th>"._MODIFICATION."</th>" .
+						"<th>"._SUPPRESSION."</th>" .
+						"<th>"._VALIDATION."</th>" .
+						"<th>"._ORDRE."</th>" .
+						"<th>"._TITRE."</th>" .
+						"<th>"._INTITULE."</th>" .
+					"</tr>\n";
 				foreach($temp->liste_questions as $valeur)
 				{
-					echo "<TR>" .
-							"<TD><a href=\"".$page_question."?i=".$valeur['idquestion']."\" >"._MODIFIER."</a>&nbsp;</TD>" .
-							"<TD><a href=\"".$page_question."?i=".$valeur['idquestion']."&amp;suppression=1\" >"._SUPPRIMER."</a>&nbsp;</TD>";
+					echo "<tr>" .
+							"<td><a href=\"".$page_question."?i=".$valeur['idquestion']."\" >"._MODIFIER."</a>&nbsp;</td>" .
+							"<td><a href=\"".$page_question."?i=".$valeur['idquestion']."&amp;suppression=1\" >"._SUPPRIMER."</a>&nbsp;</td>";
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
 					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
 					
-					$format_date=new regle("0","Format_date");
+					$format_date=new regle("0","format_date");
 					
-					if ($valeur['datevalidation']=="0") echo "<TD>"._NON_TRAITEE.$valeur['validation']."</TD>";
-					else echo "<TD>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation']).". <a href=\"#\" TITLE=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></TD>";
+					if ($valeur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$valeur['validation']."</td>";
+					else echo "<td>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation']).". <a href=\"#\" title=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></td>";
 					
 					//debut cellule
-					echo"<TD>";
+					echo"<td>";
 					if (strlen($valeur['ordre'])>0)
 					{
 						echo $valeur['ordre'];
@@ -235,11 +235,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
+					echo "</td>";
 					//fin cellule
 					
 					//debut cellule
-					echo "<TD>";
+					echo "<td>";
 					if (strlen($valeur['titre'])>0)
 					{
 						echo $valeur['titre'];
@@ -248,10 +248,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					echo "&nbsp;";
 					}
 					//fin cellule
-					echo "</TD>";
+					echo "</td>";
 					
 					//debut cellule
-					echo"<TD>";
+					echo"<td>";
 					if (strlen($valeur['intitule'])>0)
 					{
 						echo $valeur['intitule'];
@@ -259,13 +259,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
+					echo "</td>";
 					//fin cellule
 					//fin ligne
-					echo "</TR>\n";
+					echo "</tr>\n";
 				}
 				//fin tableau
-				echo "</TABLE></DIV>\n";
+				echo "</table></div>\n";
 			}
 		}
     }
@@ -285,7 +285,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$vquestionnaire= $this;
 		$vreponse= new reponse();
 
-    	$select_sql="SELECT COUNT(*)
+    	$select_sql="select COUNT(*)
 		FROM $vtemp->table AS T1 
 		LEFT JOIN $vreponse->table AS T2 ON (T1.idquestion=T2.idquestion_rel AND T2.idutilisateur_rel='$idutilisateur' AND T2.visible='1')
 		WHERE T2.idreponse IS NULL AND T1.visible='1' AND T1.idquestionnaire_rel='$this->identifiant' AND T1.validation='1';";
@@ -309,7 +309,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$vquestionnaire= $this;
 		$vreponse= new reponse();
 
-    	$select_sql="SELECT T1.$vtemp->champ_identifiant 
+    	$select_sql="select T1.$vtemp->champ_identifiant 
 		FROM $vtemp->table AS T1 
 		LEFT JOIN $vreponse->table AS T2 ON (T1.idquestion=T2.idquestion_rel AND T2.idutilisateur_rel='$idutilisateur' AND T2.visible='1')
 		WHERE T2.idreponse IS NULL AND T1.visible='1' AND T1.idquestionnaire_rel='$this->identifiant' AND T1.validation='1'
@@ -319,7 +319,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	return $nieme_question[$vtemp->champ_identifiant];
 	}
 	
-	// Formulaire du questionnaire  a partir de la nieme question
+	// formulaire du questionnaire  a partir de la nieme question
     function qcm($val = 0)
     {
     	// Declaration des variables:
@@ -328,7 +328,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		//En tete du QCM :
 		?>
 		<div id="form_questionnaire">
-			<script type="text/javascript" language="javascript">
+			<script type="text/javascript">
 				<!--
 				<?
 				//Calcul des identifiants des questions precedante et suivante
@@ -345,8 +345,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					?>
 					function fprec(){
-						document.formulaire_qcm.val.value = "<? echo $prec;?>";
-						document.formulaire_qcm.submit();
+						if (document.getElementById("formulaire_qcm").reponse!=undefined && document.getElementById("formulaire_qcm").reponse.value==undefined)
+						{
+							document.getElementById('formulaire_qcm').val.value = "<? echo $prec;?>";
+						}
+						document.getElementById('formulaire_qcm').submit();
 					}
 					<?
 				}
@@ -354,24 +357,23 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					?>
 					function fsuiv(){
-						document.formulaire_qcm.val.value = "<? echo $suiv;?>";
-						document.formulaire_qcm.submit();
+						if (document.getElementById("formulaire_qcm").reponse!=undefined && document.getElementById("formulaire_qcm").reponse.value==undefined)
+						{
+							document.getElementById('formulaire_qcm').val.value = "<? echo $suiv;?>";
+						}
+						document.getElementById('formulaire_qcm').submit();
 					}
 					<?
 				}
 				?>
 				//-->
 			</script>
-			<FORM action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="POST" name="formulaire_qcm">
+			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_qcm">
 	    		<div id="fielset">
 					<fieldset><legend><? echo($this->titre); ?></legend>
 						<div id="intitule_questionnaire">
-							<H3><span><? echo $this->intitule ;?></span></H3>
+							<? echo $this->intitule ;?>
 						</div><?
-						//Chargement de la norme de presentation du site (n question(s) par questionnaire):
-						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
-						$nb_question_formulaire_qcm=new regle("0","Nombre_question_formulaire_qcm");
-						
 						//Creation de variables temporaires:
 						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
 						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
@@ -380,53 +382,101 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 						$vreponse= new reponse();
 						
 						// Recherche de la nieme question pour laquelle l'utilisateur n'a pas encore repondu:
-						$select_sql="SELECT T1.* 
+						$select_sql="select T1.* 
 						FROM $vtemp->table AS T1 
 						LEFT JOIN $vreponse->table AS T2 ON (T1.idquestion=T2.idquestion_rel AND T2.idutilisateur_rel='$idutilisateur' AND T2.visible='1')
 						WHERE T2.idreponse IS NULL AND T1.visible='1' AND T1.idquestionnaire_rel='$this->identifiant' AND T1.validation='1'
-						ORDER BY T1.ordre LIMIT $val, $nb_question_formulaire_qcm->valeur;";
+						ORDER BY T1.ordre LIMIT $val, 1;";
 						$select_sql=requete_sql($select_sql);
 						if (compte_sql($select_sql)>0)
 						{
-							if ($nb_question_formulaire_qcm->valeur==1)
+							//affichage de la question voulue non encore repondue
+							if (!isset($_GET['num'])) 
 							{
-								if (!isset($_GET['num'])) 
-								{
-									$question_sql=tableau_sql($select_sql);
-									$num=$question_sql[$vtemp->champ_identifiant];
-								}
-								$question=new question($num);
-								$question->formulaire_question();
+								$question_sql=tableau_sql($select_sql);
+								$num=$question_sql[$vtemp->champ_identifiant];
 							}
+							$question=new question($num);
+							$question->formulaire_question();
 						}
 						else
 						{
+							//affichage du score de l'utilisateur pour ce questionnaire
 							$score=$this->score_qcm();
-							echo "Score : ".$score[4]."<br/>" ;
+							
+							//calcul de l'angle de l'arc de reponse(s) fausse(s)
+							if($score[0]>0)
+							{
+								$rapport_total_sur_faux=$score[3]/$score[0];
+							}
+							else
+							{
+								$rapport_total_sur_faux=0;
+							}
+							$vanglefaux=360*$rapport_total_sur_faux;
+							$vpctvrai=(1-$rapport_total_sur_faux);
+							$vpctvrai=$vpctvrai*100;
+							
+							// French notation
+							$nombre_format_francais = number_format($vpctvrai, 2, ',', ' ');
+							$vtextepctvrai=$nombre_format_francais."%";
+							$vtextevrai=_REPONSES_VRAI.$score[2]."/".$score[0];
+							
+							//calcul de l'angle de l'arc du score
+							if (($score[7]-$score[6])!=0)
+							{
+								$rapport_score_ecart=($score[4]-$score[6])/($score[7]-$score[6]);
+							}
+							else
+							{
+								$rapport_score_ecart=0;
+							}
+							$vanglescore=360*(1-$rapport_score_ecart);
+							$vpctscore=$rapport_score_ecart;
+							$vpctscore=$vpctscore*100;
+							
+							// French notation
+							$nombre_format_francais_score = number_format($vpctscore, 2, ',', ' ');
+							$vtextepctscore=$nombre_format_francais_score."%";
+							$vtextescore=_SCORE.$score[4]."/".$score[7];
+							$vtextescoremin=_MIN.$score[6];
+							
+							//texte alternatif pour l'image :
+							$vtexte_alt=$vtextevrai." ==> ".$vtextepctvrai."  / ".$vtextescore." ==> ".$vtextepctscore." (".$vtextescoremin.")";
 							?>
-							<img src="scorequestionnnaire.php?i=<? echo $this->identifiant; ?>u=<? echo $idutilisateur; ?>" />
+							
+							<img src="image.scorequestionnaire.php?i=<? echo $this->identifiant; ?>&amp;u=<? echo $idutilisateur; ?>" alt="<? echo $vtexte_alt; ?>" />
+							
 							<?
 						}
 						?><div class="bouton_cadre"><?
-						if($prec!=$val && !isset($_POST["reponse"]))
+						//Calcul du nombre de question(s) restante(s)
+						$nombre_question=$this->nbquestion_nonrep();
+						//Affichage des boutons de suivi du questionnaire
+						if($prec!=$val && !isset($_POST["reponse"]) && $nombre_question>0)
 						{
-							?><input type="button" value="<? echo _QUESTION_PRECEDANTE ?>" OnClick="fprec()" /> <?
+							?><input type="button" value="<? echo _QUESTION_PRECEDANTE ?>" onclick="fprec()" /> <?
 						}
-						if ($suiv!=$val && !isset($_POST["reponse"]))
+						if ($suiv!=$val && !isset($_POST["reponse"]) && $nombre_question>0)
 						{
-							?><input type="button" value="<? echo _QUESTION_SUIVANTE ?>" OnClick="fsuiv()"/>
+							?><input type="button" value="<? echo _QUESTION_SUIVANTE ?>" onclick="fsuiv()"/>
 							<?
 						}
-						if (isset($_POST["reponse"]))
+						if (isset($_POST["reponse"]) && $nombre_question>0)
 						{
-							?><input type="button" value="<? echo _QUESTION_SUIVANTE ?>" OnClick="fsuiv()"/>
+							?><input type="button" value="<? echo _QUESTION_SUIVANTE ?>" onclick="fsuiv()"/>
 							<?
 						}
-						?></div>
-						<INPUT TYPE="hidden" name="val" value="0">
+						if (isset($_POST["reponse"]) && $nombre_question==0)
+						{
+							?><input type="button" value="<? echo _RESULTAT_QUESTIONNAIRE ?>" onclick="fsuiv()"/>
+							<?
+						}
+						?><input type="hidden" name="val" value="0" /><input type="hidden" name="v" value="<? echo $this->identifiant ;?>" />
+						</div>
 					</fieldset>
 				</div>
-			</FORM>
+			</form>
 		</div>
 		<?
 	}
@@ -449,10 +499,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		
 
     	// Recherche du nombre total de question auquelles l'utilisateur a repondu
-    	$select_sql_texte1="SELECT COUNT(*)
+    	$select_sql_texte1="select COUNT(*)
 		FROM $vquestion->table AS T1, $vreponse->table AS T2 
 		WHERE T1.idquestion=T2.idquestion_rel AND T2.idutilisateur_rel='$idutilisateur'
-		AND T1.idquestionnaire_rel='$this->identifiant';";
+		AND T1.idquestionnaire_rel='$this->identifiant' AND T2.visible='1';";
     	$select_sql1=requete_sql($select_sql_texte1);
     	$nb_question_rep=tableau_sql($select_sql1);
     	$nb_question_rep=$nb_question_rep[0];
@@ -460,10 +510,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$score[1]=$select_sql_texte1;
 		
 		//Recherche du nombre de question vrai et fausse et somme des scores
-    	$select_sql_texte2="SELECT SUM(IF(T3.vraifaux='1',1,0)), SUM(IF(T3.vraifaux='0',1,0)), SUM(T3.valeur)
+    	$select_sql_texte2="select SUM(IF(T3.vraifaux='1',1,0)), SUM(IF(T3.vraifaux='0',1,0)), SUM(T3.valeur)
 		FROM $vquestion->table AS T1, $vreponse->table AS T2, $vchoix->table AS T3 
 		WHERE T1.idquestion=T2.idquestion_rel AND T2.idutilisateur_rel='$idutilisateur'
-		AND T1.idquestionnaire_rel='$this->identifiant' AND T3.idchoix=T2.idchoix_rel GROUP BY T1.idquestionnaire_rel;";
+		AND T1.idquestionnaire_rel='$this->identifiant' AND T3.idchoix=T2.idchoix_rel AND T2.visible='1' GROUP BY T1.idquestionnaire_rel;";
     	$select_sql2=requete_sql($select_sql_texte2);
     	$nb_question_rep_vrai_fausse_score=tableau_sql($select_sql2);
     	$nb_question_rep_vrai=$nb_question_rep_vrai_fausse_score[0];
@@ -473,6 +523,22 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$score[3]=$nb_question_rep_fausse;
 		$score[4]=$nb_score;
 		$score[5]=$select_sql_texte2;
+
+		//Recherche du score min et score max du questionnaire
+    	$select_sql_texte3="select MIN(T3.valeur), MAX(T3.valeur)
+		FROM $vquestion->table AS T1, $vchoix->table AS T3 
+		WHERE T1.idquestionnaire_rel='$this->identifiant' AND T1.idquestion=T3.idquestion_rel AND T3.visible='1' AND T1.visible='1' GROUP BY T1.idquestion;";
+		$select_sql3=requete_sql($select_sql_texte3);
+		$score_min=0;
+		$score_max=0;
+		while($valeur_score_min_max=tableau_sql($select_sql3)) 
+		{
+			$score_min+=$valeur_score_min_max[0];
+			$score_max+=$valeur_score_min_max[1];
+		}
+    	$score[6]=$score_min;
+		$score[7]=$score_max;
+		$score[8]=$select_sql_texte3;
 		
 		return $score;
 	}

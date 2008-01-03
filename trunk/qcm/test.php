@@ -1,14 +1,13 @@
-<?php
-/*
- * Cree le 19 nov. 2005
- *
- * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
- * Description : fichier de test incluant la generation de la sauvegarde zip de
- * l'environnement.
- * 
- */
-//mode debug on=1 / off=0
-$debug=0;
-
+<?
+$adresse=$_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']);
+if (strpos(dirname($_SERVER['PHP_SELF']),"/",1)!=false)
+{
+	$dir=substr(dirname($_SERVER['PHP_SELF']),0,strpos(dirname($_SERVER['PHP_SELF']),"/",1));
+}
+else
+{
+	$dir=dirname($_SERVER['PHP_SELF']);
+}
+echo "adresse : ".$adresse."<br />";
+echo "dir : ".$dir."<br />";
 ?>

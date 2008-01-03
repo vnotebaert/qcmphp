@@ -3,7 +3,7 @@
  * Cree le 23 decembre 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description :  Gestion d'un compte utilisateur pour QCM
  * 
  */
@@ -63,100 +63,94 @@ if (!$test && isset($utilisateur_connecte->identifiant) && isset($_POST['ancienm
 {
 	$utilisateur_connecte->message=_MAUVAIS_ANCIEN_MOT_DE_PASSE;
 }
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//FR"
-            "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+include("include.HTML.html_definition.php");
+?>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" >
-	<meta name="author" content="David MASSE" >
-	<meta name="keywords" content="<? echo _META_KEYWORDS; ?>" >
-	<meta name="description" content="<? echo _META_DESCRIPTION; ?>" >
-	<meta name="robots" content="all" >
-	<meta http-equiv="Content-Script-Type" content="text/javascript" >
-	<title>QCM</title>
-	<!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
-	<script type="text/javascript"></script>
+	<? 
+	include("include.HTML.head_content1.php");
+	include("include.HTML.head_content_xinha_editor.php");
+	?>
 	<?
 	if ($_GET['crea']!="2" && !isset($_GET['act']))
 	{
 	?>
-	<script type="text/javascript" language="javascript">
+	<script type="text/javascript">
 	<!--
 	function controle_compte(){
 		var test=true;
 		var message_erreur="<? echo _MESSAGE_D_ERREUR; ?>";
-		if(document.compte_utilisateur.compte.value == "")
+		if(document.getElementById('compte_utilisateur_form').compte.value == "")
 		{
 			message_erreur+="<? echo _COMPTE_VIDE; ?>";
-	   		document.compte_utilisateur.compte.focus();
+	   		document.getElementById('compte_utilisateur_form').compte.focus();
 		   	test=false;
   		}
 		<?
 		if (isset($utilisateur_connecte->identifiant))
 		{
-			?>if(document.compte_utilisateur.ancienmotpasse.value == "")
+			?>if(document.getElementById('compte_utilisateur_form').ancienmotpasse.value == "")
 		{
 			message_erreur+="<? echo _ANCIEN_MOT_DE_PASSE_VIDE; ?>";
-	   		document.compte_utilisateur.ancienmotpasse.focus();
+	   		document.getElementById('compte_utilisateur_form').ancienmotpasse.focus();
 		   	test=false;
   		}<?
 		}
 		?>
 		
-  		if(document.compte_utilisateur.motpasse.value == "")
+  		if(document.getElementById('compte_utilisateur_form').motpasse.value == "")
 		{
 			message_erreur+="<? echo _MOT_DE_PASSE_VIDE; ?>";
-	   		document.compte_utilisateur.motpasse.focus();
+	   		document.getElementById('compte_utilisateur_form').motpasse.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.email.value == "")
+  		if(document.getElementById('compte_utilisateur_form').email.value == "")
 		{
 			message_erreur+="<? echo _EMAIL_VIDE; ?>";
-	   		document.compte_utilisateur.email.focus();
+	   		document.getElementById('compte_utilisateur_form').email.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.compte.value.length>100)
+  		if(document.getElementById('compte_utilisateur_form').compte.value.length>100)
   		{
   			message_erreur+="<? echo _COMPTE_LIMITE_A_CENT_CARACTERE; ?>";
-	   		document.compte_utilisateur.compte.focus();
+	   		document.getElementById('compte_utilisateur_form').compte.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.email.value.length>100)
+  		if(document.getElementById('compte_utilisateur_form').email.value.length>100)
   		{
   			message_erreur+="<? echo _EMAIL_LIMITE_A_CENT_CARACTERE; ?>";
-	   		document.compte_utilisateur.email.focus();
+	   		document.getElementById('compte_utilisateur_form').email.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.nom.value.length>100)
+  		if(document.getElementById('compte_utilisateur_form').nom.value.length>100)
   		{
   			message_erreur+="<? echo _NOM_LIMITE_A_CENT_CARACTERE; ?>";
-	   		document.compte_utilisateur.nom.focus();
+	   		document.getElementById('compte_utilisateur_form').nom.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.prenom.value.length>100)
+  		if(document.getElementById('compte_utilisateur_form').prenom.value.length>100)
   		{
   			message_erreur+="<? echo _PRENOM_LIMITE_A_CENT_CARACTERE; ?>";
-	   		document.compte_utilisateur.prenom.focus();
+	   		document.getElementById('compte_utilisateur_form').prenom.focus();
 		   	test=false;
   		}
-  		if(document.compte_utilisateur.pseudonyme.value.length>100)
+  		if(document.getElementById('compte_utilisateur_form').pseudonyme.value.length>100)
   		{
   			message_erreur+="<? echo _PSEUDONYME_LIMITE_A_CENT_CARACTERE; ?>";
-	   		document.compte_utilisateur.pseudonyme.focus();
+	   		document.getElementById('compte_utilisateur_form').pseudonyme.focus();
 		   	test=false;
   		}
   		
   		var emailreg=/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9]+)*$/;
-  		if(!emailreg.test(document.compte_utilisateur.email.value))
+  		if(!emailreg.test(document.getElementById('compte_utilisateur_form').email.value))
 		{
 			message_erreur+="<? echo _EMAIL_INVALIDE; ?>";
-	   		document.compte_utilisateur.email.focus();
+	   		document.getElementById('compte_utilisateur_form').email.focus();
 		   	test=false;
   		}
 		<?
 		if ($confirmation_mot_de_passe->valeur==1 || isset($utilisateur_connecte->identifiant))
 		{
-			?>if (document.compte_utilisateur.motpasse.value!=document.compte_utilisateur.motdepasseconfirmation.value) 
+			?>if (document.getElementById('compte_utilisateur_form').motpasse.value!=document.getElementById('compte_utilisateur_form').motdepasseconfirmation.value) 
 			{
 				test=false;
 				message_erreur+="<? echo _CONFIRMATION_DE_MOT_DE_PASSE_INCORRECTE ; ?>";
@@ -165,23 +159,21 @@ if (!$test && isset($utilisateur_connecte->identifiant) && isset($_POST['ancienm
 		}
 		if ($confirmation_email->valeur==1)
 		{
-			?>if (document.compte_utilisateur.email.value!=document.compte_utilisateur.emailconfirmation.value)
+			?>if (document.getElementById('compte_utilisateur_form').email.value!=document.getElementById('compte_utilisateur_form').emailconfirmation.value)
 			{
 				test=false;
 				message_erreur+="<? echo _CONFIRMATION_D_EMAIL_INCORRECTE ; ?>";
 			}
 		<?
 		}
-		?>if (test==true) document.compte_utilisateur.submit();
+		?>if (test==true) document.getElementById('compte_utilisateur_form').submit();
 		else alert(message_erreur);
 	}
 	//-->
 	</script>
 	<?
 	}
-	?><style type="text/css" media="all">
-		@import "default.css";
-	</style>
+	?>
 </head>
 <body>
 <div id="container">
@@ -196,245 +188,200 @@ if (!$test && isset($utilisateur_connecte->identifiant) && isset($_POST['ancienm
 		if (!isset($utilisateur_connecte->identifiant)) echo _CREATION_COMPTE;
 		if (isset($utilisateur_connecte->identifiant)) echo _MODIFICATION_COMPTE;
 		?></span></h3>
-		<DIV id="compte_utilisateur"><?
-			if (isset($utilisateur_connecte->identifiant) && $_GET['crea']!=2 && !isset($_GET['act'])) echo "<p class=\"p1\"><SPAN>".$utilisateur_connecte->authentification()."</SPAN></p>";
-			if ((isset($utilisateur_connecte->identifiant) || $_GET['crea']==2) && $utilisateur_connecte->message!="") echo "<p class=\"p1\"><SPAN>".$utilisateur_connecte->message."</SPAN></p>";
+		<div id="compte_utilisateur"><?
+			if (isset($utilisateur_connecte->identifiant) && $_GET['crea']!=2 && !isset($_GET['act'])) 
+			{
+				echo "<p class=\"p1\"><span>".$utilisateur_connecte->authentification()."</span></p>";
+			}
+			if ((isset($utilisateur_connecte->identifiant) || $_GET['crea']==2) && $utilisateur_connecte->message!="") 
+			{
+				echo "\n<p class=\"p2\"><span>".$utilisateur_connecte->message."</span></p>";
+			}
 			if ($_GET['crea']!="2" && !isset($_GET['act']))
 			{ ?> 
-			<FORM action="compte.php<?
+			<form action="compte.php<?
 			if (!isset($utilisateur_connecte->identifiant)) echo "?crea=2";
-			?>" method="POST" name="compte_utilisateur">
-				<DIV id="compte_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _COMPTE_LOGIN; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="TEXT" name="compte" size="10" tabindex="1" <?
+			?>" method="post" id="compte_utilisateur_form">
+				<div id="compte_cadre">
+					<div class="intitule_champ"><span><? echo _COMPTE_LOGIN; ?></span></div>
+					<?
+					//gestion du numero d'index :
+					$vtabindex=1;
+					?>
+					<div class="champ"><input type="text" name="compte" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
-						echo "value=\"$utilisateur_connecte->compte\" READONLY ";
+						echo "value=\"$utilisateur_connecte->compte\" readonly=\"readonly\" ";
 					}
-					?>/></DIV>
-				</DIV>
+					?>/></div>
+				</div>
 				<?
 				if (isset($utilisateur_connecte->identifiant))
 				{?> 
-					<DIV id="ancien_motpasse_cadre">
-						<DIV class="intitule_champ"><SPAN><? echo _ANCIEN_MOT_PASSE; ?></SPAN></DIV>
-						<DIV class="champ"><INPUT type="PASSWORD" name="ancienmotpasse" size="10" tabindex="2" /></DIV>
-					</DIV><?
+					<div id="ancien_motpasse_cadre">
+						<div class="intitule_champ"><span><? echo _ANCIEN_MOT_PASSE; ?></span></div>
+						<div class="champ"><input type="password" name="ancienmotpasse" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" /></div>
+					</div><?
 				}
 				?> 
-				<DIV id="motpasse_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _MOT_DE_PASSE_COMPTE; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="PASSWORD" name="motpasse" size="10" tabindex="3"/></DIV>
+				<div id="motpasse_cadre">
+					<div class="intitule_champ"><span><? echo _MOT_DE_PASSE_COMPTE; ?></span></div>
+					<div class="champ"><input type="password" name="motpasse" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>"/></div>
 					<?
 					if ($confirmation_mot_de_passe->valeur==1 || isset($utilisateur_connecte->identifiant))
 					{
 						?>
-						<DIV class="intitule_champ"><SPAN><? echo _MOT_DE_PASSE_CONFIRMATION; ?></SPAN></DIV>
-						<DIV class="champ"><INPUT type="PASSWORD" name="motdepasseconfirmation" size="10"/></DIV><?
+						<div class="intitule_champ"><span><? echo _MOT_DE_PASSE_CONFIRMATION; ?></span></div>
+						<div class="champ"><input type="password" name="motdepasseconfirmation" size="10" tabindex="<? echo $vtabindex; $vtabindexi++;?>"/></div><?
 					}
 					?> 
-				</DIV>
-				<DIV id="email_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _EMAIL; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="TEXT" name="email" size="10" tabindex="4" <?
+				</div>
+				<div id="email_cadre">
+					<div class="intitule_champ"><span><? echo _EMAIL; ?></span></div>
+					<div class="champ"><input type="text" name="email" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->email\" ";
 					}
-					?>/></DIV><?
+					?>/></div><?
 					if ($confirmation_email->valeur==1)
 					{
 						?> 
-						<DIV class="intitule_champ"><SPAN><? echo _EMAIL_CONFIRMATION; ?></SPAN></DIV>
-						<DIV class="champ"><INPUT type="TEXT" name="emailconfirmation" size="10" <?
+						<div class="intitule_champ"><span><? echo _EMAIL_CONFIRMATION; ?></span></div>
+						<div class="champ"><input type="text" name="emailconfirmation" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 						if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 						{
 							echo "value=\"$utilisateur_connecte->email\" ";
 						}
-						?>/></DIV><?
+						?>/></div><?
 					}
 					?> 
-				</DIV>
-				<DIV id="nom_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _NOM; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="TEXT" name="nom" size="10" tabindex="5" <?
+				</div>
+				<div id="nom_cadre">
+					<div class="intitule_champ"><span><? echo _NOM; ?></span></div>
+					<div class="champ"><input type="text" name="nom" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->nom\" ";
 					}
-					?>/></DIV>
-				</DIV>
-				<DIV id="prenom_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _PRENOM; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="TEXT" name="prenom" size="10" tabindex="6" <?
+					?>/></div>
+				</div>
+				<div id="prenom_cadre">
+					<div class="intitule_champ"><span><? echo _PRENOM; ?></span></div>
+					<div class="champ"><input type="text" name="prenom" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->prenom\" ";
 					}
-					?>/></DIV>
-				</DIV>
-				<DIV id="pseudonyme_cadre">
-					<DIV class="intitule_champ"><SPAN><? echo _PSEUDONYME; ?></SPAN></DIV>
-					<DIV class="champ"><INPUT type="TEXT" name="pseudonyme" size="10" tabindex="7" <?
+					?>/></div>
+				</div>
+				<div id="pseudonyme_cadre">
+					<div class="intitule_champ"><span><? echo _PSEUDONYME; ?></span></div>
+					<div class="champ"><input type="text" name="pseudonyme" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->pseudonyme\" ";
 					}
-					?>/></DIV>
-				</DIV>
-				<DIV id="message_champs_obligatoires">
-					<SPAN><? echo _CHAMPS_OBLIGATOIRES; ?></SPAN>
-				</DIV>
-				<DIV id="description_cadre">
-				<script type="text/javascript" language="Javascript1.2"><!-- // load htmlarea
-				_editor_url = "scripts/javascript/";                     // URL to htmlarea files
-				var win_ie_ver = parseFloat(navigator.appVersion.split("MSIE")[1]);
-				if (navigator.userAgent.indexOf('Mac')        >= 0) { win_ie_ver = 0; }
-				if (navigator.userAgent.indexOf('Windows CE') >= 0) { win_ie_ver = 0; }
-				if (navigator.userAgent.indexOf('Opera')      >= 0) { win_ie_ver = 0; }
-				if (win_ie_ver >= 5.5) {
-				  document.write('<script src="' +_editor_url+ 'editor.js"');
-				  document.write(' language="Javascript1.2"><\/script>');  
-				} else { document.write('<script>function editor_generate() { return false; }<\/script>'); }
-				// --></script>
-				<DIV class="intitule_champ"><SPAN><? echo _DESCRIPTION; ?></SPAN></DIV>
-				<DIV class="champ">
-				<textarea rows ="5" cols="100" id="description_texte" name="description" tabindex="8"><?
-					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
-					{
-						echo $utilisateur_connecte->description;
-					}
-					?></textarea>
-				</DIV>
-				<script type="text/javascript" language="javascript1.2">
-				var config = new Object();    // create new config object
-
-				config.debug = 0;
-				
-				// NOTE:  You can remove any of these blocks and use the default config!
-				
-				config.toolbar = [
-				    ['fontname'],
-				    ['fontsize'],
-				    ['fontstyle'],
-				    ['linebreak'],
-				    ['bold','italic','underline','separator'],
-				    ['strikethrough','subscript','superscript','separator'],
-				    ['justifyleft','justifycenter','justifyright','separator'],
-				    ['OrderedList','UnOrderedList','Outdent','Indent','separator'],
-				    ['forecolor','backcolor','separator'],
-				    ['HorizontalRule','Createlink','InsertImage','htmlmode','separator'],
-				    ['about','popupeditor'],
-				//  ['help'],
-				];
-				
-				config.fontnames = {
-				    "Arial":           "arial, helvetica, sans-serif",
-				    "Courier New":     "courier new, courier, mono",
-				    "Georgia":         "Georgia, Times New Roman, Times, Serif",
-				    "Tahoma":          "Tahoma, Arial, Helvetica, sans-serif",
-				    "Times New Roman": "times new roman, times, serif",
-				    "Verdana":         "Verdana, Arial, Helvetica, sans-serif",
-				    "impact":          "impact",
-				    "WingDings":       "WingDings"
-				};
-				config.fontsizes = {
-				    "1 (8 pt)":  "1",
-				    "2 (10 pt)": "2",
-				    "3 (12 pt)": "3",
-				    "4 (14 pt)": "4",
-				    "5 (18 pt)": "5",
-				    "6 (24 pt)": "6",
-				    "7 (36 pt)": "7"
-				};
-				
-				config.fontstyles = [   // make sure classNames are defined in the page the content is being display as well in or they won't work!
-				  { name: "headline",     className: "headline",  classStyle: "font-family: arial black, arial; font-size: 28px; letter-spacing: -2px;" },
-				  { name: "arial red",    className: "headline2", classStyle: "font-family: arial black, arial; font-size: 12px; letter-spacing: -2px; color:red" },
-				  { name: "verdana blue", className: "headline4", classStyle: "font-family: verdana; font-size: 18px; letter-spacing: -2px; color:blue" }
-				];
-				
-				editor_generate('description_texte',config);
-				</script>
-				</DIV>
-				<DIV id="autrescontacts_cadre">
-				<DIV class="intitule_champ"><SPAN><? echo _AUTRES_CONTACTS; ?></SPAN></DIV>
-				<DIV class="champ">
-				<textarea rows ="5" cols="100" id="autrescontacts_texte" name="autrescontacts" tabindex="9"><?
-					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
-					{
-						echo $utilisateur_connecte->autrescontacts;
-					}
-					?></textarea>
-				</DIV>
-				<script type="text/javascript" language="javascript1.2">
-				editor_generate('autrescontacts_texte',config);
-				</script>
-				</DIV>
-				<DIV class="bouton_cadre">
-					<INPUT type="button" value="<? echo _BOUTON_OK; ?>" OnClick="controle_compte()" />
-					<INPUT type="reset" value="<? echo _BOUTON_RESET; ?>" />
-				</DIV>
-			</FORM>
-		</DIV>
-	</DIV>
-	<?
-	}
-	?> 
-	<div id="pieddepage">
+					?>/></div>
+				</div>
+				<div id="message_champs_obligatoires">
+					<span><? echo _CHAMPS_OBLIGATOIRES; ?></span>
+				</div>
+				<div id="description_cadre">
+				<div class="intitule_champ"><span><? echo _DESCRIPTION; ?></span></div>
+					<div class="champ">
+					<textarea rows ="5" cols="100" id="description_texte" name="description" tabindex="<? echo $vtabindex; $vtabindex++;?>"><?
+						if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
+						{
+							echo $utilisateur_connecte->description;
+						}
+						?></textarea>
+					</div>
+				</div>
+				<div id="autrescontacts_cadre">
+				<div class="intitule_champ"><span><? echo _AUTRES_CONTACTS; ?></span></div>
+					<div class="champ">
+					<textarea rows ="5" cols="100" id="autrescontacts_texte" name="autrescontacts" tabindex="<? echo $vtabindex; $vtabindex++;?>"><?
+						if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
+						{
+							echo $utilisateur_connecte->autrescontacts;
+						}
+						?></textarea>
+					</div>
+				</div>
+				<div class="bouton_cadre">
+					<input type="button" value="<? echo _BOUTON_OK; ?>" onclick="controle_compte()" />
+					<input type="reset" value="<? echo _BOUTON_RESET; ?>" />
+				</div>
+			</form>
+		</div>
 		<?
-		include("pied_de_page.php");
+		}
 		?> 
+		<? include("pied_de_page.php"); ?>
 	</div>
-	<div id="listefonction">
-		<!--extra div for flexibility - this list will probably be the trickiest spot you'll deal with -->
-		<div id="listefonction2">
-
-		<!-- If you're wondering about the extra &nbsp; at the end of the link, it's a hack to meet WCAG 1 Accessibility. -->
-		<!-- I don't like having to do it, but this is a visual exercise. It's a compromise. -->
-			<div id="lselect">
-				<h3 class="select"><span><? echo _FONCTION_SELECTION; ?></span></h3>
+	<? include("include.listefonction.debut.php"); ?>
+			<div class="dragableBox" id="lfonctions">
+				<h3 class="fonctions"><span><? echo _FONCTION_SELECTION_TITRE; ?></span></h3>
 				<!-- list of links begins here. There will be no more than 8 links per page -->
 				<ul>
 					<li><a href="index.php" title="<? echo _RETOUR_ACCUEIL_TITLE; ?>" accesskey="a"><? echo _RETOUR_ACCUEIL_LINK;?></a>&nbsp;</li>
 				</ul>
 			</div>
-			<div id="lresources">
-				<h3 class="resources"><span><? echo _LANGUE_SELECTION; ?></span></h3>
-				<FORM action="compte.php" method="GET" name="langue_choisie">
-				<DIV id="langue_cadre">
-					<SPAN><? echo _CHOISIR_LANGUE; ?></SPAN>
-					<SELECT name="langue">
-					<?
-					$langues_dispo=langue_possible();
-					foreach ($langues_dispo as $valeur) {
-						echo "<OPTION value=\"".$valeur."\"";
-						if ($langue==$valeur) echo " SELECTED";
-						echo ">".$valeur."</OPTION>\n";
-						}
-					?>
-					</SELECT>
-					<DIV class="bouton_cadre"><?
-					foreach ($_GET as $key=>$value)
-					{
-						if ($key!="langue") 
-						{ ?> 
-							<INPUT type="hidden" value="<? echo $value; ?>" name="<? echo $key; ?>" />
-							<?
-						}
-					}
-					?><INPUT type="submit" value="<? echo _BOUTON_OK; ?>" />
-					</DIV>
-				</DIV>
-				</FORM>
+			<script type="text/javascript">
+				<!--
+				function setlangueconfig(){
+					// create an instance of the Date object
+					var now = new Date();
+					// fix the bug in Navigator 2.0, Macintosh
+					fixDate(now);
+					// cookie expires in one year
+					now.setTime(now.getTime() + 365*24*60*60*1000);
+					var langue=document.GetElementById('langue_choisie_form').langue.value;
+					setCookie('langue', langue, now, "", "", false);
+				}
+				//-->
+			</script>
+			<div class="dragableBox" id="llangue_selection">
+				<h3 class="langue_selection"><span><? echo _LANGUE_SELECTION_TITRE; ?></span></h3>
+				<ul>
+					<li>
+						<div id="langue_selection">
+							<form action="compte.php" method="get" id="langue_choisie_form">
+								<div id="langue_cadre">
+									<span><? echo _CHOISIR_LANGUE; ?></span>
+									<select name="langue">
+										<?
+										$langues_dispo=langue_possible();
+										foreach ($langues_dispo as $valeur) {
+											echo "<option value=\"".$valeur."\"";
+											if ($langue==$valeur) echo " selected=\"selected\"";
+											echo ">".$valeur."</option>\n";
+											}
+										?>
+									</select>
+									<div class="bouton_cadre"><?
+										foreach ($_GET as $key=>$value)
+										{
+											if ($key!="langue") 
+											{ 
+												?> 
+												<input type="hidden" value="<? echo $value; ?>" name="<? echo $key; ?>" />
+												<?
+											}
+										}
+										?><input type="submit" value="<? echo _BOUTON_OK; ?>" />
+									</div>
+								</div>
+							</form>
+						</div>
+					</li>
+				</ul>
 			</div>	
-		</DIV>
-	</DIV>
-
-
+		<? include("include.listefonction.fin.php"); ?>
+</div>
 <?
 include("extra_div.php");
 ?>
-</DIV>
 </body>
 </html>

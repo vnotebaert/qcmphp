@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe reponse
  * 
  */

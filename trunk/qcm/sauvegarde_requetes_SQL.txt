@@ -22,7 +22,7 @@ LEFT JOIN qcm_questionnaire AS T3 ON (T3.idtheme_rel=T2.idtheme AND T3.visible=1
 GROUP BY T1.idtheme 
 ORDER BY `T1`.`bornegauche` ASC 
 
-// Prochaine question non encore répondu d'un questionnaire :
+// Prochaine question non encore rÃ©pondu d un questionnaire :
 SELECT T2.idutilisateur_rel, T2.idreponse, T1.intitule AS questionintitule, T3.intitule AS choixintitule 
 FROM qcm_question AS T1 , qcm_choix AS T3 
 LEFT JOIN qcm_reponse AS T2 ON T3.idchoix=T2.idchoix_rel 
@@ -37,5 +37,7 @@ WHERE T3.idchoix=T2.idchoix_rel AND T2.idreponse IS NULL
 GROUP BY T1.idquestion
 ORDER BY T1.ordre ASC
 
-//Valeur de l'utilisateur pour un questionnaire
+//Valeur de l utilisateur pour un questionnaire
+
+SELECT MIN(T3.valeur), MAX(T3.valeur) FROM qcm_question AS T1, qcm_choix AS T3 WHERE T1.idquestionnaire_rel='6' AND T1.idquestion=T3.idquestion_rel GROUP BY T1.idquestion LIMIT 0, 30
 

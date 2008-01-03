@@ -3,7 +3,7 @@
  * Cree le 22 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description :  Definition de la classe utilisateur
  * 
  */
@@ -34,6 +34,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     var $message_connexion;
 	var $idtheme_auteur = array();
 	var $idtheme_correcteur = array();
+	var $idtheme_favori_utilisateur = array();
 	var $idquestion_auteur = array();
 	var $idquestionnaire_auteur = array();
 	
@@ -103,15 +104,22 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		        	$sql1="UPDATE $this->table SET datederniereconnection=$this->datederniereconnection WHERE $this->champ_identifiant=".$this->identifiant().";";
 					$res1=requete_sql($sql1);
 					$this->_testauthentification = 2;
-
+					
 					//Recherche des themes dont l'utilisateur est auteur :
 					$sqlauteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1';";
 					$resauteur=requete_sql($sqlauteur);
 					while ($auteur=tableau_sql($resauteur))
 					{
+						//Creation d'une variable temporaire de classe theme :
+						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+						$vtemptheme=new theme($auteur['idtheme_rel']);
 						$this->idtheme_auteur[]=$auteur['idtheme_rel'];
+						foreach($vtemptheme->liste_fils_arbo as $idthemefils)
+						{
+							$this->idtheme_auteur[]=$idthemefils['idtheme'];
+						}
 					}
-
+					
 					//Recherche des themes dont l'utilisateur est correcteur :
 					$sqlcorrecteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1' AND correcteur='1';";
 					$rescorrecteur=requete_sql($sqlcorrecteur);
@@ -119,7 +127,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					{
 						$this->idtheme_correcteur[]=$correcteur['idtheme_rel'];
 					}
-	
+					
 					//Recherche des questions dont l'utilisateur est auteur :
 					$sqlquestauteur="SELECT idquestion FROM $this->table_question WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1 ORDER BY idquestionnaire_rel ASC, ordre ASC;";
 					$resquestauteur=requete_sql($sqlquestauteur);
@@ -127,13 +135,23 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					{
 						$this->idquestion_auteur[]=$questauteur['idquestion'];
 					}
-
+					
 					//Recherche des questionnaires dont l'utilisateur est auteur :
 					$sqlquestionnaireauteur="SELECT idquestionnaire FROM $this->table_questionnaire WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1;";
 					$resquestionnaireauteur=requete_sql($sqlquestionnaireauteur);
 					while($questionnaireauteur=tableau_sql($resquestionnaireauteur))
 					{
 						$this->idquestionnaire_auteur[]=$questionnaireauteur['idquestionnaire'];
+					}
+					
+					//Recherche des themes favoris de l'utilisateur :
+					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme_favori.php');
+					$vtemptheme_fav=new theme_favori();
+					$sqlidtheme_favori_utilisateur="SELECT idtheme_rel FROM $vtemptheme_fav->table WHERE idutilisateur_rel=".$this->identifiant()." AND visible='1';";
+					$residtheme_favori_utilisateur=requete_sql($sqlidtheme_favori_utilisateur);
+					while($idtheme_favori_utilisateur=tableau_sql($residtheme_favori_utilisateur))
+					{
+						$this->idtheme_favori_utilisateur[]=$idtheme_favori_utilisateur['idtheme_rel'];
 					}
 				}
 				
@@ -181,7 +199,6 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				}
 				//Recherche des themes dont l'utilisateur est auteur :
 				$sqlauteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1';";
-				echo $sqlauteur;
 				$resauteur=requete_sql($sqlauteur);
 				while ($auteur=tableau_sql($resauteur))
 				{
@@ -199,7 +216,6 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 
 				//Recherche des questions dont l'utilisateur est auteur :
 				$sqlquestauteur="SELECT idquestion FROM $this->table_question WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1 ORDER BY idquestionnaire_rel ASC, ordre ASC;";
-				echo $sqlquestauteur;
 				$resquestauteur=requete_sql($sqlquestauteur);
 				while($questauteur=tableau_sql($resquestauteur))
 				{
@@ -248,7 +264,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	        $this->message_connexion=_AUTHENTIFICATION_OK_SOUS_1
 	        .$this->prenom." ".$this->nom
 	        ._AUTHENTIFICATION_OK_SOUS_2
-	        ."<a href=\"http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."?deco=1\" title=\""._AUTHENTIFICATION_OK_TITLE_DECO."\" accesskey=\"i\" OnClick=\"deleteCookie('compte','','')\">"
+	        ."<a href=\"http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."?deco=1\" title=\""._AUTHENTIFICATION_OK_TITLE_DECO."\" accesskey=\"i\" onclick=\"deleteCookie('compte','','');\">"
 			._AUTHENTIFICATION_OK_SOUS_3."</a>"
 			._AUTHENTIFICATION_OK_SOUS_4
 			.$this->nom
@@ -265,8 +281,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		
 		$activation_par_mail=new regle(0,"Activation_par_mail");
     	
+		$testcreation=false;
+		if (!isset($this->identifiant))
+		{
+			$testcreation=true;
+		}
     	$id=objet::enregistrer();
-    	if ($this->message=="" && !isset($this->identifiant)) 
+    	if ($this->message=="" && $testcreation) 
     	{
     		$this->message=_LA_CREATION_DU_COMPTE_C_EST_BIEN_DEROULEE;
     		if ($activation_par_mail->valeur==1) 
@@ -274,12 +295,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     			$destinataire=$this->email;
     			$sujet=_SUJET_MAIL_CREATION_COMPTE;
     			$message=_MESSAGE_MAIL_CREATION_COMPTE;
-    			$message.="<a href=\"http://".$_SERVER['HTTP_HOST']
-				.dirname($_SERVER['PHP_SELF'])."/compte.php?I=".$id."&act=".MD5($this->datecreation)."\">"._LIEN_ACTIVATION_COMPTE_UTILISATEUR."</a>";
-    			 mail($destinataire,$sujet, $message,
-       			"From: QCM@$SERVER_NAME\nX-Mailer: PHP/" . phpversion());
+    			$message.=" <a href=\"http://".$_SERVER['HTTP_HOST']
+				.dirname($_SERVER['PHP_SELF'])."compte.php?I=".$id."&act=".MD5($this->datecreation)."\">"._LIEN_ACTIVATION_COMPTE_UTILISATEUR."</a>";
+    			 mail($destinataire,$sujet, $message,"From: QCM@$SERVER_NAME\nX-Mailer: PHP/" . phpversion());
        			$this->message.=_UN_MAIL_DE_CONFIRMATION_VOUS_A_ETE_ENVOYE;
-       			$this->message.=_L_ACTIVATION_S_EFFECTUE_GRACE_AU_MAIL_DE_CONFIRMATION.$message;
+       			$this->message.=_L_ACTIVATION_S_EFFECTUE_GRACE_AU_MAIL_DE_CONFIRMATION;
     		}
     		else 
     		{
@@ -287,7 +307,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				$sql_resultat=requete_sql($sql_activation);
     		}
     	}
-    	if ($this->message=="" && isset($this->identifiant))
+    	if ($this->message=="" && !$testcreation)
     	{
     		$this->message=_LA_MODIFICATION_DU_COMPTE_C_EST_BIEN_DEROULEE;
     	}
@@ -326,24 +346,24 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$resauteur=requete_sql($sqlauteur);
 		if (compte_sql($resauteur)>0)
 		{
-			echo "\n<DIV id=\"tableau\"><TABLE>";
-			echo "<TR><TH>"._MODIFICATION."</TH><TH>"._SUPPRESSION."</TH><TH>"._VALIDATION."</TH><TH>"._TITRE."</TH><TH>"._INTITULE."</TH></TR>\n";
+			echo "\n<div id=\"tableau\"><table>";
+			echo "<tr><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._VALIDATION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			while($auteur=tableau_sql($resauteur)) 
 			{
 				if(is_array($auteur) && count($auteur)>0)
 				{
-					echo "<TR><TD><a href=\"".$page_question."?i=".$auteur['idquestion']."\">"._MODIFIER."</a></TD><TD><a href=\"".$page_question."?i=".$auteur['idquestion']."&amp;suppression=1 \">"._SUPPRIMER."</a></TD>";
+					echo "<tr><td><a href=\"".$page_question."?i=".$auteur['idquestion']."\">"._MODIFIER."</a></td><td><a href=\"".$page_question."?i=".$auteur['idquestion']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
 					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
 					
-					$format_date=new regle("0","Format_date");
+					$format_date=new regle("0","format_date");
 					
-					if ($auteur['datevalidation']=="0") echo "<TD>"._NON_TRAITEE.$auteur['validation']."</TD>";
-					else echo "<TD>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation']).". <a href=\"#\" TITLE=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></TD>";
+					if ($auteur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$auteur['validation']."</td>";
+					else echo "<td>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation']).". <a href=\"#\" title=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></td>";
 					
 					//Affichage titre et intitule :
-					echo "<TD>";
+					echo "<td>";
 					if (strlen($auteur['titre'])>0)
 					{
 						echo $auteur['titre'];
@@ -351,8 +371,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
-					echo"<TD>";
+					echo "</td>";
+					echo"<td>";
 					if (strlen($auteur['intitule'])>0)
 					{
 						echo $auteur['intitule'];
@@ -360,10 +380,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD></TR>\n";
+					echo "</td></tr>\n";
 				}
 			}
-			echo "</TABLE></DIV>\n";
+			echo "</table></div>\n";
 		}
 	}
 	
@@ -385,25 +405,28 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			$sqlauteur="SELECT * FROM $table_questionnaire WHERE visible=1 ORDER BY idtheme_rel ASC, titre ASC;";
 		}
 		$resauteur=requete_sql($sqlauteur);
+		
+		echo "<h3 class=\"listing_questionnaire_utilisateur\"><span>"._LISTING_QUESTIONNAIRE_UTILISATEUR."</span></h3>";
+		
 		if (compte_sql($resauteur)>0)
 		{
-			echo "\n<DIV id=\"tableau\"><TABLE>";
-			echo "<TR><TH>"._MODIFICATION."</TH><TH>"._SUPPRESSION."</TH><TH>"._VALIDATION."</TH><TH>"._TITRE."</TH><TH>"._INTITULE."</TH></TR>\n";
+			echo "\n<div id=\"tableau\"><table>";
+			echo "<tr><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._VALIDATION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			while($auteur=tableau_sql($resauteur)) 
 			{
 				if(is_array($auteur))
 				{
-					echo "<TR><TD><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."\">"._MODIFIER."</a></TD><TD><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."&amp;suppression=1 \">"._SUPPRIMER."</a></TD>";
+					echo "<tr><td><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."\">"._MODIFIER."</a></td><td><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
 					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
-					$format_date=new regle("0","Format_date");
+					$format_date=new regle("0","format_date");
 					
-					if ($auteur['datevalidation']=="0") echo "<TD>"._NON_TRAITEE.$auteur['validation']."</TD>";
-					else echo "<TD>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation']).". <a href=\"#\" TITLE=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></TD>";
+					if ($auteur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$auteur['validation']."</td>";
+					else echo "<td>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation']).". <a href=\"#\" title=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></td>";
 					
 					//Affichage titre et intitule :
-					echo "<TD>";
+					echo "<td>";
 					if (strlen($auteur['titre'])>0)
 					{
 						echo $auteur['titre'];
@@ -411,8 +434,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
-					echo"<TD>";
+					echo "</td>";
+					echo"<td>";
 					if (strlen($auteur['intitule'])>0)
 					{
 						echo $auteur['intitule'];
@@ -420,10 +443,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD></TR>\n";
+					echo "</td></tr>\n";
 				}
 			}
-			echo "</TABLE></DIV>\n";
+			echo "</table></div>\n";
+		}
+		else
+		{
+			echo "<p>"._AUCUN_QUESTIONNAIRE_POUR_L_UTILISATEUR."</p>";
 		}
 	}
 

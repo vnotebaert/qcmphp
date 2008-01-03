@@ -3,13 +3,13 @@
  * Cree le 20 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe objet a la base de toutes les classes
  * 
  */
 
 require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
- 
+
   class objet 
 {
 	// Definition des proprietes :
@@ -54,13 +54,6 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			while($temp=tableau_sql($requete))
 	    	{
 	    		array_push($this->champs,$temp["Field"]);
-	    		/*
-				$tableau_temp = array();
-				foreach ($temp as $clef=>$valeurtemp)
-				{
-					if (!is_numeric($clef)) $tableau_temp[$clef]=$valeurtemp;
-				}
-				*/
 			}
 			//Definition de l'identifiant de la classe :
 			$this->champ_identifiant="id".$this->classe;
@@ -83,7 +76,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
      	if (isset($arguments[1]) && trim($arguments[1]) != '') $valeur=$arguments[1];
 
 		if (!isset($propriete) && !isset($valeur)) {
-			die(_LA_FONCTION_SET_ET_DE_LA_FORME_SET_PROP_VAL);
+			die(_LA_FONCTION_SET_ET_DE_LA_formE_SET_PROP_VAL);
 		}
 		elseif (!isset($propriete)) {
 			die(_PRECISER_LA_PROPRIETE);
@@ -174,14 +167,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 	 							$this->message.=_IL_MANQUE_UN_CHAMP_OBLIGATOIRE;
 			 					$this->message.=_CLASSE_CHAMPS_MANQUANT.$this->classe._CLASSE_CHAMPS_MANQUANT_FIN;
 			 					$this->message.=_LES_CHAMPS_OBLIGATOIRES_MANQUANT_SONT_LES_SUIVANTS;
-			 					$this->message.="<UL>";
+			 					$this->message.="<ul>";
 	 						}
 	 						$test_champs_obligatoires=false;
-			 				$this->message.="<LI>".$champoblig."</LI>";
+			 				$this->message.="<li>".$champoblig."</li>";
 	 					}
 	 					if ($test_champs_obligatoires==false)
 	 					{
-	 						$this->message.="</UL>";
+	 						$this->message.="</ul>";
 	 					}
 	 				}
 	 			}
@@ -195,13 +188,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 	 				{
 	 					if ((isset($this->$champuniq) || $this->$champuniq!="") && in_array($champuniq,$this->champs)) 
 	 					{
-	 						$sql="SELECT * FROM $this->table WHERE ".$champuniq."='".$this->$champuniq."'";
+	 						$sql="select * FROM $this->table WHERE ".$champuniq."='".$this->$champuniq."'";
 							$requete=requete_sql($sql);
 							$qte=compte_sql($requete);
 							if ($qte!=0)
 							{
 								$test_champs_uniques=false;
-	 							$this->message.="<p><SPAN>"._LA_VALEUR.$this->$champuniq._POUR_LE_CHAMP.$champuniq._EXISTE_DEJA."</SPAN></p><a href=\"javascript:history.go(-1)\">"._RETOUR."</a>";
+	 							$this->message.="<p><span>"._LA_VALEUR.$this->$champuniq._POUR_LE_CHAMP.$champuniq._EXISTE_DEJA."</span></p><a href=\"javascript:history.go(-1)\">"._RETOUR."</a>";
 	 						}
 	 					}
 	 				}
@@ -246,7 +239,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
   		$sql_resultat=requete_sql($sql_requete_suppression);
 		if ($verbeux==true)
 		{
-			echo "<H3><SPAN>"._OBJET_SUPPRIMER."</SPAN></H3><p><SPAN><a href=\"".$_SERVER['HTTP_REFERER']."\" >"._RETOUR."</a>&nbsp;</SPAN></p>";
+			echo "<h3><span>"._OBJET_SUPPRIMER."</span></h3><p><span><a href=\"".$_SERVER['HTTP_REFERER']."\" >"._RETOUR."</a>&nbsp;</span></p>";
 		}
 	}
 	
@@ -259,7 +252,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
  		return $this->identifiant;
 	}
 
-	// Formulaire de creation d'objet :
+	// formulaire de creation d'objet :
 	function formulaire()
 	{
 		//Initialisation des variables :
@@ -312,7 +305,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		//Non affichage du formulaire en cas de suppression :
 		if ($_POST["suppression"]!="1" && $_GET["suppression"]!="1")
 		{
-			?><script type="text/javascript" language="javascript">
+			?><script type="text/javascript">
 			<!--
 			function controle_<? echo $this->classe; ?>(){
 				var test=true;
@@ -326,10 +319,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 						if (in_array($champoblig,$this->champs_formulaire))
 						{
 							?>
-							if(document.formulaire_<? echo $this->classe.".".$champoblig; ?>.value == "")
+							if(document.getElementById('formulaire_<? echo $this->classe."').".$champoblig; ?>.value == "")
 							{
 								message_erreur+="<? echo _LE_CHAMP.$champoblig._NE_PEUT_ETRE_VIDE; ?>";
-						   		document.formulaire_<? echo $this->classe.".".$champoblig; ?>.focus();
+						   		document.getElementById('formulaire_<? echo $this->classe."').".$champoblig; ?>.focus();
 							   	test=false;
 					  		}
 				  			<?
@@ -337,12 +330,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 					}
 				}
 				?>
-				if (test==true) document.formulaire_<? echo $this->classe; ?>.submit();
+				if (test==true) document.getElementById('formulaire_<? echo $this->classe; ?>').submit();
 				else alert(message_erreur);
 			}
 			function suivant_<? echo $this->classe; ?>()
 			{
-				document.formulaire_<? echo $this->classe?>.suivant.value = "1";
+				document.getElementById('formulaire_<? echo $this->classe?>').suivant.value = "1";
 				controle_<? echo $this->classe; ?>();
 			}
 			<?
@@ -350,8 +343,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			{ ?> 
 			function suppression_<? echo $this->classe; ?>()
 			{
-				document.formulaire_<? echo $this->classe?>.suppression.value = "1";
-				document.formulaire_<? echo $this->classe; ?>.submit();
+				document.getElementById('formulaire_<? echo $this->classe?>').suppression.value = "1";
+				document.getElementById('formulaire_<? echo $this->classe; ?>').submit();
 			} <?
 			}
 			?>
@@ -383,9 +376,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 				}
 			}
 			?></span></h3>
-				<DIV id="creation_<? echo $this->classe; ?>_cadre">
-					<FORM action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="POST" name="formulaire_<? echo $this->classe; ?>">
-					<INPUT type="HIDDEN" name="ok" value="1" />
+				<div id="creation_<? echo $this->classe; ?>_cadre">
+					<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_<? echo $this->classe; ?>">
 					<?
 					foreach($this->champs_formulaire as $champ)
 					{
@@ -394,9 +386,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 							if (!isset($valeur[$champ]))
 							{
 								?>
-								<DIV class="champ_cadre">
-									<DIV class="intitule_champ"><SPAN><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</SPAN></DIV>
-									<DIV class="champ"><?
+								<div class="champ_cadre">
+									<div class="intitule_champ"><span><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</span></div>
+									<div class="champ"><?
 									if(!isset($this->$champ))
 									{
 										$temp = new champ($champ,$this->classe,"");
@@ -408,8 +400,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 										echo $temp->champ_saisie;
 									}						
 									?>
-									</DIV>
-								</DIV>
+									</div>
+								</div>
 					  			<?
 							}
 						}
@@ -418,9 +410,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 							if (!isset($valeur[$champ]))
 							{
 								?>
-								<DIV class="champ_cadre">
-									<DIV class="intitule_champ"><SPAN><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</SPAN></DIV>
-									<DIV class="champ"><?
+								<div class="champ_cadre">
+									<div class="intitule_champ"><span><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</span></div>
+									<div class="champ"><?
 									if(!isset($this->$champ))
 									{
 										$temp = new champ($champ,$this->classe,"");
@@ -432,19 +424,19 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 										echo $temp->champ_saisie;
 									}						
 									?>
-									</DIV>
-								</DIV>
+									</div>
+								</div>
 					  			<?
 							}
 						}
-					else
-					{
-						if (!isset($valeur[$champ]))
+						else
+						{
+							if (!isset($valeur[$champ]))
 							{
 								?>
-								<DIV class="champ_cadre">
-									<DIV class="intitule_champ"><SPAN><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</SPAN></DIV>
-									<DIV class="champ"><?
+								<div class="champ_cadre">
+									<div class="intitule_champ"><span><? if (array_key_exists($champ,$trad_SQL)) { echo $trad_SQL[$champ]; } else { echo $champ; } ?>&nbsp;:</span></div>
+									<div class="champ"><?
 									if(!isset($this->$champ))
 									{
 										$temp = new champ($champ,$this->classe,"");
@@ -456,9 +448,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 										echo $temp->champ_saisie;
 									}						
 									?>
-									</DIV>
-								</DIV>
-					  			<?
+									</div>
+								</div>
+								<?
 							}
 						}
 					}
@@ -466,35 +458,38 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 					{
 						foreach ($this->champs_caches as $champ_defaut) 
 						{
-							echo ("<INPUT type=\"HIDDEN\" name=\"".$champ_defaut."\" READONLY value=\"".$this->$champ_defaut."\" />");
+							echo ("<input type=\"hidden\" name=\"".$champ_defaut."\" readonly=\"readonly\" value=\"".$this->$champ_defaut."\" />");
 						}
 					}
-				if(isset($this->identifiant))
-				{
 					?>
-					<INPUT type="HIDDEN" name="identifiant" value="<? echo $this->identifiant; ?>" />
+					<div class="bouton_cadre">
 					<?
-				}
-				?>
-					<DIV class="bouton_cadre">
-						<INPUT type="button" value="<? echo _BOUTON_OK; ?>" OnClick="controle_<? echo $this->classe; ?>()" />
-						<INPUT type="button" value="<? echo _BOUTON_SUIVANT; ?>" OnClick="suivant_<? echo $this->classe; ?>()" />
-						<INPUT type="HIDDEN" name="suivant" value="0" />
-						<INPUT type="reset" value="<? echo _BOUTON_RESET; ?>" />
+					if(isset($this->identifiant))
+						{
+							?>
+							<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
+							<?
+						}
+						?>
+						<input type="button" value="<? echo _BOUTON_OK; ?>" onclick="controle_<? echo $this->classe; ?>()" />
+						<input type="button" value="<? echo _BOUTON_SUIVANT; ?>" onclick="suivant_<? echo $this->classe; ?>()" />
+						<input type="hidden" name="suivant" value="0" />
+						<input type="reset" value="<? echo _BOUTON_RESET; ?>" />
 						<?
 						//Bouton de suppression desactive car retour sur le formulaire et non sur la page de gestion
 						if(false && isset($this->identifiant))
 						{
 							?>
-							<INPUT type="button" value="<? echo _BOUTON_SUPPRIMER; ?>" OnClick="suppression_<? echo $this->classe; ?>()" />
-							<INPUT type="HIDDEN" name="suppression" value="0" />
+							<input type="button" value="<? echo _BOUTON_SUPPRIMER; ?>" onclick="suppression_<? echo $this->classe; ?>()" />
+							<input type="hidden" name="suppression" value="0" />
 							<?
 						}
 						?>
-						</DIV>
-					<INPUT type="HIDDEN" name="langue" value="<? echo $langue; ?>" />
-				</FORM>
-			</DIV>
+						<input type="hidden" name="ok" value="1" />
+						<input type="hidden" name="langue" value="<? echo $langue; ?>" />
+					</div>
+				</form>
+			</div>
 			<?
 		}
 	}

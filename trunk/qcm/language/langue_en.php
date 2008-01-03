@@ -3,7 +3,7 @@
  * Cree le 16 oct. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description :  Fichier contenant les definitions des constantes de langue
  * francaise pour QCM
  * 

@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe choix
  * 
  */
@@ -66,7 +66,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		// Recherche de la question si l'on donne son identifiant :
 		if (isset($idquestion)) 
 		{	
-	     	$question_choisie=requete_sql("SELECT * FROM $this->table WHERE idquestion=$idquestion");
+	     	$question_choisie=requete_sql("select * FROM $this->table WHERE idquestion=$idquestion");
 			$question_choisie=tableau_sql($question_choisie);
 	    	$this->idquestion = $idquestion;
 	    	$this->identifiant = $idquestion;
@@ -87,7 +87,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    	$type_avec_choix= array("choix_unique","choix_unique_liste","choix_multiple","choix_multiple_liste");
 	    	if (in_array($this->type,$type_avec_choix)) 
 	    	{
-	    		$liste_choix_sql=requete_sql("SELECT * FROM $table_choix WHERE idquestion_rel='$idquestion' AND visible='1'");
+	    		$liste_choix_sql=requete_sql("select * FROM $table_choix WHERE idquestion_rel='$idquestion' AND visible='1'");
 	    		while($choix=tableau_sql($liste_choix_sql)) 
 	    		{
 	    			array_push($this->liste_choix,$choix);
@@ -113,6 +113,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     } 
      
     // Definition des methodes
+	
+	//Affichage du formulaire d'une question (attention ne contient pas la balise form) :
     function formulaire_question()
     {
     	//Variable globale :
@@ -120,133 +122,133 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		?>
     	<div id="form_question">
     		<div id="fielset">
-				<fieldset><legend><? echo($this->titre); ?></legend>
-					<?
-		    		if(!isset($_POST["reponse"])) 
-		    		{
-		    			?>
-						<form name="question" action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>?num=<? echo($this->idquestion); ?>" method="post">
-							<div id="question">
-								<p><span id="question_intitule" class="question_intitule" lang="<? echo($langue); ?>"><? echo($this->intitule); ?></span></p>
-								<?
-								if ($this->type=="choix_multiple" || $this->type=="choix_unique") 
-								{
-									$i=0;
-									?>
-									<ul>
-										<?
-										foreach ($this->liste_choix as $valeur) 
-										{
-											if ($this->type=="choix_multiple") 
-											{
-												$i++;
-												?>
-												<li><input name="reponse[]" type="checkbox" value="<? echo($valeur["idchoix"]); ?>" tabindex="<? echo $i ?>" /><span class="titrechoix" lang="<? echo($langue); ?>"><? echo($valeur["titre"]) ?></span><span class="intitulechoix" lang="<? echo($langue); ?>"><? echo($valeur["intitule"]) ?></span>&nbsp;</li>
-												<?
-											}
-											if ($this->type=="choix_unique")
-											{
-												?>
-												<li><input name="reponse" type="radio" value="<? echo($valeur["idchoix"]); ?>" tabindex="1" /><? echo("<span class=\"titrechoix\" lang=\"$langue\">".$valeur["titre"]."</span><span class=\"intitulechoix\" lang=\"$this->langue\">".$valeur["intitule"]."</span>"); ?>&nbsp;</li>
-												<?
-											}
-										}
-										?>
-									</ul>
-									<?
-								}
-								if ($this->type=="choix_multiple_liste" || $this->type=="choix_unique_liste") 
-								{
-									$i=0;
-									$$type_select="";
-									if ($this->type=="choix_multiple_liste") 
-									{
-										$type_select="name=\"reponse[]\" MULTIPLE";
-									}
-									else 
-									{
-										$type_select="name=\"reponse\""; 
-									}
-									?>
-									<SELECT <? echo $type_select;?>><?
-										foreach ($this->liste_choix as $clef=>$valeur) 
-										{
-											?><OPTION value="<? echo($valeur["idchoix"]); ?>" >&nbsp;<span class="titrechoix" lang="<? echo $langue; ?>"><? echo(stripslashes($valeur["titre"])) ?></span><span class="intitulechoix" lang="<? echo $langue; ?>"><? echo(stripslashes($valeur["intitule"])) ?></span>&nbsp;</OPTION><?
-										}
-										?>
-									</SELECT>
-									<?
-								}
-								if ($this->type=="choix_mot")
-								{
-									?>
-									<input name="reponse" type="text" value="" tabindex="1" />
-									<?
-								}		
-								if ($this->type=="choix_texte")
-								{
-									?>
-									<TEXTAREA rows ="5" cols="100" id="reponse_texte" name="reponse">&nbsp;</TEXTAREA>
-									<?
-								}		
+				<?
+				if(!isset($_POST["reponse"])) 
+				{
+					?><fieldset><legend><? echo($this->titre); ?></legend>
+						<div id="question">
+							<p><span class="question_intitule" lang="<? echo($langue); ?>"><? echo($this->intitule); ?></span></p>
+							<?
+							if ($this->type=="choix_multiple" || $this->type=="choix_unique") 
+							{
+								$i=0;
 								?>
-							</div>
-							<div class="bouton_cadre"><input type="submit" value="<? echo _BOUTON_OK ?>" /> <input type="reset" value="<? echo _BOUTON_RESET ?>" /></div>
-						</form><?
+								<ul>
+									<?
+									foreach ($this->liste_choix as $valeur) 
+									{
+										if ($this->type=="choix_multiple") 
+										{
+											$i++;
+											?>
+											<li><input name="reponse[]" type="checkbox" value="<? echo($valeur["idchoix"]); ?>" tabindex="<? echo $i ?>" /><span class="titrechoix" lang="<? echo($langue); ?>"><? echo($valeur["titre"]) ?></span><span class="intitulechoix" lang="<? echo($langue); ?>"><? echo($valeur["intitule"]) ?></span>&nbsp;</li>
+											<?
+										}
+										if ($this->type=="choix_unique")
+										{
+											?>
+											<li><input name="reponse" type="radio" value="<? echo($valeur["idchoix"]); ?>" tabindex="1" /><? echo("<span class=\"titrechoix\" lang=\"$langue\">".$valeur["titre"]."</span><span class=\"intitulechoix\" lang=\"$this->langue\">".$valeur["intitule"]."</span>"); ?>&nbsp;</li>
+											<?
+										}
+									}
+									?>
+								</ul>
+								<?
+							}
+							if ($this->type=="choix_multiple_liste" || $this->type=="choix_unique_liste") 
+							{
+								$i=0;
+								$$type_select="";
+								if ($this->type=="choix_multiple_liste") 
+								{
+									$type_select="name=\"reponse[]\" MULTIPLE";
+								}
+								else 
+								{
+									$type_select="name=\"reponse\""; 
+								}
+								?>
+								<select <? echo $type_select;?>><?
+									foreach ($this->liste_choix as $clef=>$valeur) 
+									{
+										?><option value="<? echo($valeur["idchoix"]); ?>" >&nbsp;<span class="titrechoix" lang="<? echo $langue; ?>"><? echo(stripslashes($valeur["titre"])) ?></span><span class="intitulechoix" lang="<? echo $langue; ?>"><? echo(stripslashes($valeur["intitule"])) ?></span>&nbsp;</option><?
+									}
+									?>
+								</select>
+								<?
+							}
+							if ($this->type=="choix_mot")
+							{
+								?>
+								<input name="reponse" type="text" value="" tabindex="1" />
+								<?
+							}		
+							if ($this->type=="choix_texte")
+							{
+								?>
+								<textarea rows ="5" cols="100" id="reponse_texte" name="reponse">&nbsp;</textarea>
+								<?
+							}		
+							?>
+						</div>
+						<div class="bouton_cadre"><input type="submit" value="<? echo _BOUTON_OK ?>" /> <input type="reset" value="<? echo _BOUTON_RESET ?>" /></div>
+						<?
 					}
 					if(isset($_POST["reponse"]))
 					{
-						if (!is_array($_POST["reponse"]) && ($this->type=="choix_unique" || $this->type=="choix_unique_liste")) 
+						$idreponse_choisie=$_POST["reponse"];
+						$reponse_choisie=new choix($idreponse_choisie);
+						$question_en_cours=new question($reponse_choisie->idquestion_rel);
+						?><fieldset><legend><? echo($question_en_cours->titre); ?></legend><?
+						if (!is_array($_POST["reponse"]) && ($question_en_cours->type=="choix_unique" || $question_en_cours->type=="choix_unique_liste")) 
 						{
-							$idreponse_choisie=$_POST["reponse"];
-							$reponse_choisie=new choix($idreponse_choisie);
-							echo("<DIV class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1><p>". $reponse_choisie->intitule."</p></DIV>");
+							echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1><p>". $reponse_choisie->intitule."</p></div>");
 							if ($reponse_choisie->vraifaux=="1") {
-								echo("<DIV class=\"bonne_reponse\"><p>"._BONNE_REPONSE."</p></DIV>"); 
+								echo("<div class=\"bonne_reponse\"><p>"._BONNE_REPONSE."</p></div>"); 
 							}
-							else echo("<DIV class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></DIV>");
+							else echo("<div class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></div>");
 							
-							$ch_reponse=new reponse($_POST["reponse"],"","",$this->identifiant);
+							$ch_reponse=new reponse($_POST["reponse"],"","",$reponse_choisie->idquestion_rel);
 							$ch_reponse->enregistrer();
-							echo("<DIV class=\"solution\"><H1>"._SOLUTION."</H1><p>".$this->solution."</p></DIV>");
+							echo("<div class=\"solution\"><H1>"._SOLUTION."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
-						elseif ($this->type=="choix_multiple" || $this->type=="choix_multiple_liste")
+						elseif ($question_en_cours->type=="choix_multiple" || $question_en_cours->type=="choix_multiple_liste")
 						{
 							for ($i=0;$i<count($_POST["reponse"]);$i++) 
 							{
 								$idreponse_choisie=$_POST["reponse"][$i];
 								$reponse_choisie=new choix($idreponse_choisie);
-								echo("<DIV class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $reponse_choisie->intitule ."</DIV>");
+								echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $reponse_choisie->intitule ."</div>");
 								if ($reponse_choisie->vraifaux=="1") 
 								{
-									echo("<DIV class=\"bonne_reponse\"><p>"._BONNE_REPONSE."</p></DIV>"); 
+									echo("<div class=\"bonne_reponse\"><p>"._BONNE_REPONSE."</p></div>"); 
 								}
-								else echo("<DIV class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></DIV>");
+								else echo("<div class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></div>");
 								
-								$ch_reponse=new reponse($_POST["reponse"][$i],"","",$this->identifiant);
+								$ch_reponse=new reponse($_POST["reponse"][$i],"","",$reponse_choisie->idquestion_rel);
 								$ch_reponse->enregistrer();
 							}
-							echo("<DIV class=\"solution\"><H1>"._SOLUTION."</H1><p>".$this->solution."</p></DIV>");
+							echo("<div class=\"solution\"><H1>"._SOLUTION."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
-						elseif ($this->type=="choix_mot")
+						elseif ($question_en_cours->type=="choix_mot")
 						{
 							for ($i=0;$i<count($_POST["reponse"]);$i++) 
 							{
-								echo("<DIV class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". nl2br(htmlentities($_POST["reponse"],ENT_QUOTES)) ."</DIV>");
-								$ch_reponse=new reponse(0,nl2br(htmlentities($_POST["reponse"],ENT_QUOTES)),"",$this->identifiant);
+								echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
+								$ch_reponse=new reponse(0,$_POST["reponse"],"",$reponse_choisie->idquestion_rel);
 								$ch_reponse->enregistrer();
 							}
-							echo("<DIV class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$this->solution."</p></DIV>");
+							echo("<div class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
-						elseif ($this->type=="choix_texte")
+						elseif ($question_en_cours->type=="choix_texte")
 						{
 							for ($i=0;$i<count($_POST["reponse"]);$i++) 
 							{
-								echo("<DIV class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</DIV>");
-								$ch_reponse=new reponse(0,"",$_POST["reponse"],$this->identifiant);
+								echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
+								$ch_reponse=new reponse(0,"",$_POST["reponse"],$reponse_choisie->idquestion_rel);
 								$ch_reponse->enregistrer();
 							}
-							echo("<DIV class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$this->solution."</p></DIV>");
+							echo("<div class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
 					}
 					?>
@@ -273,7 +275,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	else return false;
     }
     
-    // Formulaire de validation ou devalidation d'une question
+    // formulaire de validation ou devalidation d'une question
     function formulaire_validation()
     {
     	// Declaration des variables :
@@ -284,47 +286,47 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			if (isset($this->validation))
 			{
 				?>
-				<script type="text/javascript" language="javascript">
+				<script type="text/javascript">
 					function fvalidation()
 					{
-						document.formulaire_validation.validation.value = "1";
-						document.formulaire_validation.submit();
+						document.getElementById('formulaire_validation').validation.value = "1";
+						document.getElementById('formulaire_validation').submit();
 					}
 					function devalidation()
 					{
-						document.formulaire_validation.validation.value = "0";
-						document.formulaire_validation.submit();
+						document.getElementById('formulaire_validation').validation.value = "0";
+						document.getElementById('formulaire_validation').submit();
 					}
 				</script>
 				<?
 			}
 			?>
-			<FORM action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="POST" name="formulaire_validation">
-				<INPUT type="HIDDEN" name="identifiant" value="<? echo $this->identifiant; ?>" />
-				<DIV class="intitule_champ"><SPAN><? echo _TEXTE_VALIDATION; ?> :</SPAN></DIV>
-				<DIV class="champ">
-					<SPAN>					
-					<TEXTAREA rows ="5" cols="100" id="validation_texte" name="texte_validation"><?
+			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
+				<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
+				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
+				<div class="champ">
+					<span>					
+					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation"><?
 					echo $this->textevalidation;
-					?></TEXTAREA>
-					</SPAN>
-				</DIV>
-				<DIV class="intitule_champ"><SPAN><? echo _VALIDATION; ?> :</SPAN></DIV>
-				<DIV class="champ"><INPUT TYPE="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
-				</DIV>
-				<DIV class="bouton_cadre">
+					?></textarea>
+					</span>
+				</div>
+				<div class="intitule_champ"><span><? echo _VALIDATION; ?> :</span></div>
+				<div class="champ"><input type="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
+				</div>
+				<div class="bouton_cadre">
 				<?
 				if (isset($this->validation))
 				{
 					?>
-					<INPUT type="button" value="<? echo _BOUTON_VALIDER; ?>" OnClick="fvalidation()" />
-					<INPUT type="HIDDEN" name="validation" value="0" />
-					<INPUT type="button" value="<? echo _BOUTON_DEVALIDER; ?>" OnClick="devalidation()" />
+					<input type="button" value="<? echo _BOUTON_VALIDER; ?>" onclick="fvalidation()" />
+					<input type="hidden" name="validation" value="0" />
+					<input type="button" value="<? echo _BOUTON_DEVALIDER; ?>" onclick="devalidation()" />
 					<?
 				}
 				?>
-				</DIV>
-			</FORM>
+				</div>
+			</form>
 			<?
 		}
     }
@@ -346,21 +348,21 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			if (is_array($temp->liste_choix) && count($temp->liste_choix)>0)
 			{
 				echo _LISTE_CHOIX;
-				echo "\n<DIV id=\"tableau\"><TABLE>";
-				echo "<TR>" .
-						"<TH>"._MODIFICATION."</TH>" .
-						"<TH>"._SUPPRESSION."</TH>" .
-						"<TH>"._TITRE."</TH>" .
-						"<TH>"._INTITULE."</TH>" .
-						"<TH>"._VALEUR."</TH>" .
-					"</TR>\n";
+				echo "\n<div id=\"tableau\"><table>";
+				echo "<tr>" .
+						"<th>"._MODIFICATION."</th>" .
+						"<th>"._SUPPRESSION."</th>" .
+						"<th>"._TITRE."</th>" .
+						"<th>"._INTITULE."</th>" .
+						"<th>"._VALEUR."</th>" .
+					"</tr>\n";
 				foreach($temp->liste_choix as $valeur)
 				{
-					echo "<TR>" .
-							"<TD><a href=\"".$page_choix."?ic=".$valeur['idchoix']."\" >"._MODIFIER."</a>&nbsp;</TD>" .
-							"<TD><a href=\"".$page_choix."?ic=".$valeur['idchoix']."&suppression=1\" >"._SUPPRIMER."</a>&nbsp;</TD>";
+					echo "<tr>" .
+							"<td><a href=\"".$page_choix."?ic=".$valeur['idchoix']."\" >"._MODIFIER."</a>&nbsp;</td>" .
+							"<td><a href=\"".$page_choix."?ic=".$valeur['idchoix']."&amp;suppression=1\" >"._SUPPRIMER."</a>&nbsp;</td>";
 					//debut cellule
-					echo "<TD>";
+					echo "<td>";
 					if (strlen($valeur['titre'])>0)
 					{
 						echo $valeur['titre'];
@@ -369,10 +371,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					echo "&nbsp;";
 					}
 					//fin cellule
-					echo "</TD>";
+					echo "</td>";
 					
 					//debut cellule
-					echo"<TD>";
+					echo"<td>";
 					if (strlen($valeur['intitule'])>0)
 					{
 						echo $valeur['intitule'];
@@ -380,10 +382,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
+					echo "</td>";
 					//fin cellule
 					//debut cellule
-					echo"<TD>";
+					echo"<td>";
 					if (strlen($valeur['valeur'])>0)
 					{
 						echo $valeur['valeur'];
@@ -391,13 +393,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					else {
 					echo "&nbsp;";
 					}
-					echo "</TD>";
+					echo "</td>";
 					//fin cellule
 					//fin ligne
-					echo "</TR>\n";
+					echo "</tr>\n";
 				}
 				//fin tableau
-				echo "</TABLE></DIV>\n";
+				echo "</table></div>\n";
 			}
 		}
     }

@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe choix
  * 
  */
@@ -49,7 +49,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		
  		// Recherche du choix si l'on donne son identifiant :
 		if (isset($idchoix_selectionne)) {	
-     	$reponse_choisie=requete_sql("SELECT * FROM $this->table WHERE idchoix=$idchoix_selectionne");
+     	$reponse_choisie=requete_sql("select * FROM $this->table WHERE idchoix=$idchoix_selectionne");
 		$reponse_choisie=tableau_sql($reponse_choisie);
     	$this->idchoix = $idchoix_selectionne;
     	$this->identifiant = $idchoix_selectionne;
