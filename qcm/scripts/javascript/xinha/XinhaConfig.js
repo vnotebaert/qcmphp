@@ -10,8 +10,9 @@ function xinha_init()
   // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  :)
   if(!Xinha.loadPlugins(xinha_plugins, xinha_init)) return;
   var xinha_config = new Xinha.Config();
-  xinha_config.showLoading= false;
+  xinha_config.showLoading= true;
   xinha_config.statusBar = false;
+  xinha_config.pageStyleSheets = ["default_xinha.css"];
   xinha_config.toolbar =
 	 [
 	   ["popupeditor"],
@@ -25,15 +26,16 @@ function xinha_init()
 	   ["separator","inserthorizontalrule","createlink","insertimage","inserttable"],
 	   ["separator","htmlmode","showhelp","about"]
 	 ];
-//  var vliste_textarea = new Array('intitule_texte','solution_texte','validation_texte');
-  var vliste_textarea=document.getElementsByTagName("TEXTAREA");
+
+  //generation des editeurs wysiwyg a la place des cellules textarea
+  var vliste_textarea=document.getElementsByTagName("textarea");
   var i=0;
   for (a in vliste_textarea)
   {
 	  vtextarea=vliste_textarea[i];
 	  if(vtextarea!=null && vtextarea!=undefined)
 	  {
-		  vtextarea_id=vtextarea.getAttribute("Id");
+		  vtextarea_id=vtextarea.getAttribute("id");
 		  if(vtextarea_id!=null && vtextarea_id!=undefined && document.getElementById(vtextarea_id)!=null)
 		  {
 			  xinha_editors.push(vtextarea_id);

@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe regle qui permet le parametrage du comportement de QCM_PHP
  * 
  */
@@ -45,7 +45,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		// Recherche de la regle en fonction de son identifiant :
 		if (isset($idregle) && $idregle!=0) 
 		{	
-	     	$regle_choisie=requete_sql("SELECT * FROM $this->table WHERE $this->champ_identifiant='$idregle'");
+	     	$regle_choisie=requete_sql("select * FROM $this->table WHERE $this->champ_identifiant='$idregle'");
 			$regle_choisie=tableau_sql($regle_choisie);
 			$this->idregle=$regle_choisie["idregle"];
 			$this->identifiant=$regle_choisie["idregle"];
@@ -58,7 +58,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    // Initialisation de la question si l'on ne donne pas d'indentifiant :
  		elseif (isset($nomregle)) 
  		{
-	     	$regle_choisie=requete_sql("SELECT * FROM $this->table WHERE nom='$nomregle'");
+	     	$regle_choisie=requete_sql("select * FROM $this->table WHERE nom='$nomregle'");
 			$regle_choisie=tableau_sql($regle_choisie);
 			$this->idregle=$regle_choisie["idregle"];
 			$this->nom=$regle_choisie["nom"];

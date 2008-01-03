@@ -15,11 +15,10 @@ html {
 	padding: 0px;
 	}
 body { 
-	font: 8pt/16pt georgia; 
-	color: #555753; 
-	background: #fff url(blossoms.jpg) no-repeat bottom right; 
+	font: 8pt/16pt georgia;
+	background: url(blossoms.jpg) no-repeat bottom right;  
 	margin: 0px;
-	text-align:left; 
+	text-align:left;
 	}
 p { 
 	font: 8pt/16pt georgia; 
@@ -31,6 +30,12 @@ h3 {
 	letter-spacing: 1px; 
 	margin-bottom: 0px; 
 	color: #7D775C;
+	}
+h4 { 
+	font: italic normal 10pt georgia; 
+	letter-spacing: 1px; 
+	margin-bottom: 0px; 
+	color: #7D775F;
 	}
 a:link { 
 	font-weight: bold; 
@@ -48,19 +53,28 @@ a:hover, a:active {
 	}
 acronym {
 	speak:spell-out;
+	border-style : dotted;
+	border-width : 0px 0px 1px 0px;
+	cursor:help;
+	}
+.accesskey {
+	text-decoration: underline;
 	}
 
 /* specific divs */
 #container { 
 	background: url(zen-bg.jpg) no-repeat top left; 
-	padding: 0px 175px 0px 110px;  
-	margin: 0px;
+	padding: 0px 0px 0px 0px;  
+	margin: 0px 0px 0px 0px;
+	width: 100%;
+	height: 99%;
 	position: absolute;
 	top: 0px;
-	left: 0px; 
+	left: 0px;
 	}
 
 #intro {  
+	margin: 0px 210px 0px 110px;  
 	min-width: 150px;
 	}
 
@@ -68,8 +82,7 @@ acronym {
 	margin-top: 10px;
 	margin-bottom: 20px;
 	}
-	#entete h1 {
-		background: transparent no-repeat top left; 
+	#entete h1 { 
 		margin-top: 10px; 
 		width: 150px; 
 		height: 80px; 
@@ -84,8 +97,8 @@ acronym {
 		}
 
 #resume {
-	clear: both; 
-	margin: 20px 20px 20px 10px; 
+	clear: left;
+	margin: 20px 120px 20px 10px; 
 	width: 160px; 
 	float: left;
 	}
@@ -101,13 +114,16 @@ acronym {
 	}
 
 #espaceprincipal {
-	clear: right;
-	padding-left: 10px; 
-	margin-bottom: 20px;
+	margin: 0px 210px 0px 110px;
+	clear: both;
+	padding-left: 10px;
+	padding-right: 10px;
 	}
 
-#pieddepage { 
-	text-align: center; 
+#pieddepage {
+	text-align:center;
+	vertical-align:bottom;
+	width:100%;
 	}
 	#pieddepage a:link, #pieddepage a:visited { 
 		margin-right: 20px; 
@@ -121,10 +137,16 @@ acronym {
 		}
 
 #listefonction {
-	margin-left: 10px; 
+	margin-left: 10px;
+	margin-right: 10px;	
+	padding: 2px;
 	position: absolute; 
-	top: 0px; 
+	top: 150px; 
 	right: 0px;
+	font: 7pt verdana, sans-serif;
+	width: 200px;
+	max-height: 290px;
+	overflow: auto;
 	}
 	#listefonction h3 { 
 		margin: 5px 0px 5px 0px; 
@@ -139,16 +161,51 @@ acronym {
 		display: block; 
 		padding-top: 5px; 
 		margin-bottom: 5px;
+		background-color: white;
 		}
-
-#listefonction2 { 
-	font: 10px verdana, sans-serif; 
-	padding: 10px; 
-	margin-top: 150px; 
-	width: 150px; 
+		
+#listefonction2 {
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 2px;
+	position: absolute;
+	top: 450px;
+	right: 0px;
+	font: 7pt verdana, sans-serif;
+	width: 200px;
+	max-height: 290px;
+	overflow: auto;
 	}
-
-#extraDiv1 {
+	#listefonction2 h3 { 
+		margin: 5px 0px 5px 0px; 
+		}
+	#listefonction2 ul {
+		margin: 0px;
+		padding: 0px;
+		}
+	#listefonction2 li {
+		line-height: 2.5ex; 
+		list-style-type: none;
+		display: block; 
+		padding-top: 5px; 
+		margin-bottom: 5px;
+		background-color: white;
+		}
+	
+div.dragableBox {
+	border: 1px solid #000;
+	width: 90%;
+	margin: 2px;
+	max-height: 150px;
+	overflow: auto;
+	}	
+div.dropBox {
+	border-width: 5px ; 
+	border-style: outset; 
+	border-color: grey;
+	}	
+	
+#extradiv1 {
 	background: transparent url(cr2.gif) top left no-repeat; 
 	position: absolute; 
 	top: 40px; 
@@ -156,84 +213,150 @@ acronym {
 	width: 148px; 
 	height: 110px;
 	}
-.accesskey {
-	text-decoration: underline;
-	}
 
+/* formulaires */
 
-/* Formulaires */
 div.champ_cadre {
-	width : 100%;
-	height : 100%;
 	vertical-align: bottom;
 	clear: both;
+	margin: 2px;
 	}
+	
 div.champ {
 	vertical-align: bottom;
 	margin-left: 200px;
 	margin-bottom: 5px;
 	}
+	
 div.champ textarea {
-	width: 100%;
+	width: 90%;
 	height: 100px;
 	}
+	
 div.champ input {
 	width: 200px;
 	}
+
 div.intitule_champ {
 	width: 200px;
 	float: left;
-	clear: left;
 	margin-bottom: 5px;
-	}	
-div.bouton_cadre {
-	clear: both;
 	}
+	
+div.bouton_cadre {
+	clear: left;
+	text-align: right;
+	}
+	
 div.bouton_cadre input:hover {
 	background-color: white;
 	}
 
 /* Tableaux */
+
 #tableau {
 	margin-bottom: 5px;
 	}
-#tableau TABLE {
+	
+#tableau table {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #7D777C;
 	text-align: center;
 	clear: both;
-	border: solid;
 	width: 100%;
 	}
 
-#tableau TD, TH {
+#tableau td, th {
 	border-style: dotted;
 	border-width: 1px;
 	border-color: #7D773C;
 	}
 	
-#tableau TD {
+#tableau td {
 	text-align: left;
 	}
 	
-#tableau TH {
+#tableau th {
 	text-align: center;
 	}
-
-#tableau TD.groupe {
-	border-style: none;
-	border-width: 0;
-	background-color: #DDDDDD;
-	}
-#tableau TD.espacegroupe {
+	
+#tableau td.groupe {
 	border-style: none;
 	border-width: 0;
 	background-color: #DDDDDD;
 	}
 	
-#tableau TR.groupe {
+#tableau td.espacegroupe {
+	border-style: none;
+	border-width: 0;
+	background-color: #DDDDDD;
+	}
+	
+#tableau tr.groupe {
 	border-style: none;
 	border-width: 1px;
 	background-color: #DDDDDD;
+	}
+	
+/* modules */
+
+#module {
+	margin-top: 10px; 
+	padding: 0px 10px 0px 10px;
+	clear: both;
+	}
+
+/* div specifiques a des fonctions ou classes */
+
+.lien_ajax {
+	border-style : dashed;
+	border-width : 0px 0px 1px 0px;
+	cursor:pointer;	
+	}
+.nb_arbo {
+	color: grey;
+	font-weight: bold;
+	font-style: italic;
+	cursor:help;
+	}
+.nb_direct {
+	color: grey;
+	font-weight: bold;
+	font-style: italic;
+	cursor:help;
+	}
+.ajouter {
+	font-weight: bold;
+	cursor:pointer;
+	}
+.retirer {
+	font-weight: bold;
+	cursor:pointer;
+	}
+#theme_desc {
+	margin: 5px 5px 5px 5px;
+	}
+
+#theme_liste_cadre li {
+	line-height: 2.5ex; 
+	list-style-type: none;
+	display: inline; 
+	padding-top: 5px; 
+	margin-bottom: 5px;
+	}
+
+#theme_liste_element {
+	max-height: 450px;
+	overflow: auto;
+	}
+#theme_list_element_introduction li{
+	line-height: 2.5ex; 
+	list-style-type: disc;
+	display: list-item; 
+	padding-top: 5px; 
+	margin-bottom: 5px;
+	}
+#question li {
+	list-style-type: none;
 	}

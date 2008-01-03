@@ -21,6 +21,8 @@ global $langue;
 global $utilisateur_connecte;
 
 /*Declaration des pages globales */
+global $page_a_propos;
+$page_a_propos="a_propos.php";
 global $page_questionnaire;
 $page_questionnaire="gestion_questionnaires.php";
 global $page_question;
@@ -31,6 +33,8 @@ global $page_theme;
 $page_theme="gestion_themes.php";
 global $page_administration;
 $page_administration="administration.php";
+global $page_affichage_questionnaire;
+$page_affichage_questionnaire="affichage_questionnaire.php";
 
 /*Gestion de la deconnection de session*/
 if (isset($_GET['deco']) && $_GET['deco']==1)
@@ -45,7 +49,7 @@ if (isset($_GET['deco']) && $_GET['deco']==1)
 	// Redirection
 	header("Location: http://".$_SERVER['HTTP_HOST']
 	.dirname($_SERVER['PHP_SELF'])
-	."/index.php");
+	."index.php");
 }
 
 /*Gestion de la langue*/
@@ -58,7 +62,7 @@ if(!isset($langue))
 	if($langue=="null" || $langue=="") $langue=$langue_par_defaut;
 	header("Location: http://".$_SERVER['HTTP_HOST']
 	.dirname($_SERVER['PHP_SELF'])
-	."/index.php?langue="
+	."index.php?langue="
 	.$langue);
 	$_SESSION['langue']=$langue;
 }

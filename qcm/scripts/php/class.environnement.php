@@ -3,7 +3,7 @@
  * Cree le 19 nov. 2005
  *
  * Auteur : David MASSE alias eternel ou Baal Hazgard
- * Email : eternel7@caramail.com
+ * Email : eternel7@gmail.com
  * Description : Definition de la classe environnement definissant les methodes non reliees a un objet
  * mais plus directement aux donnees
  * 
@@ -39,7 +39,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			$vtemp= new theme($idpere);
 			$id=$vtemp->identifiant();
 		}
-    	$requete="SELECT T1.idtheme AS idtheme, T1.titre AS titre, T1.intitule AS intitule, SUM(1)-1 as NB
+    	$requete="select T1.idtheme AS idtheme, T1.titre AS titre, T1.intitule AS intitule, SUM(1)-1 as NB
 		FROM $vtemp->table AS T1, $vtemp->table AS T2 
 		WHERE T1.visible='1' AND T1.idtheme_rel='$id' AND T2.visible='1' AND T1.langue='$langue' AND T2.langue='$langue' AND (T1.idtheme=T2.idtheme_rel OR T1.idtheme=T2.idtheme) 
 		GROUP BY T1.idtheme ORDER BY T1.titre;";
@@ -47,12 +47,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		$qte=compte_sql($liste_themes);
 		if ($qte!=0)
 		{
-			echo "\n<DIV id=\"tableau\"><TABLE>";
-			echo "<TR><TH colspan=2>"._DETAIL."</TH><TH>"._MODIFICATION."</TH><TH>"._SUPPRESSION."</TH><TH>"._TITRE."</TH><TH>"._INTITULE."</TH></TR>\n";
+			echo "\n<div id=\"tableau\"><table>";
+			echo "<tr><th colspan=\"2\">"._DETAIL."</th><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			//Affichage du pere s'il existe :
 			if ($id!=0)
 			{
-				echo "<TR class=\"groupe\"><TD colspan=2 >";
+				echo "<tr class=\"groupe\"><td colspan=\"2\" >";
 				if ($vtemp->idtheme_rel!=0) 
 				{
 					echo "<a href=\"".$page_theme."?p=".$vtemp->idtheme_rel."\">"._REMONTER."</a>";
@@ -61,9 +61,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 				{
 					echo "&nbsp;";
 				}
-				echo "</TD><TD><a href=\"".$page_theme."?i=".$vtemp->idtheme."\">"._MODIFIER."</a></TD><TD>&nbsp;</TD>";
+				echo "</td><td><a href=\"".$page_theme."?i=".$vtemp->idtheme."\">"._MODIFIER."</a></td><td>&nbsp;</td>";
 				//Affichage titre et intitule :
-				echo "<TD>";
+				echo "<td>";
 				if (strlen($vtemp->titre)>0)
 				{
 					echo $vtemp->titre;
@@ -71,8 +71,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 				else {
 					echo "&nbsp;";
 				}
-				echo "</TD>";
-				echo"<TD>";
+				echo "</td>";
+				echo"<td>";
 				if (strlen($vtemp->intitule)>0)
 				{
 					echo $vtemp->intitule;
@@ -81,13 +81,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 				{
 					echo "&nbsp;";
 				}
-				echo "</TD></TR>\n";
+				echo "</td></tr>\n";
 			}
 			while($theme=tableau_sql($liste_themes)) 
 			{
 				if(is_array($theme) && count($theme)>0)
 				{
-					echo "<TR><TD class=\"groupe\">&nbsp;</TD><TD>";
+					echo "<tr><td class=\"groupe\">&nbsp;</td><td>";
 					if ($theme['NB']>0) 
 					{
 						echo "<a href=\"".$page_theme."?p=".$theme['idtheme']."\">"._DETAILLER."</a>";
@@ -96,9 +96,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 					{
 						echo "&nbsp;";
 					}
-					echo "</TD><TD><a href=\"".$page_theme."?i=".$theme['idtheme']."\">"._MODIFIER."</a></TD><TD><a href=\"".$page_theme."?i=".$theme['idtheme']."&amp;suppression=1 \">"._SUPPRIMER."</a></TD>";
+					echo "</td><td><a href=\"".$page_theme."?i=".$theme['idtheme']."\">"._MODIFIER."</a></td><td><a href=\"".$page_theme."?i=".$theme['idtheme']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
 					//Affichage titre et intitule :
-					echo "<TD>";
+					echo "<td>";
 					if (strlen($theme['titre'])>0)
 					{
 						echo $theme['titre'];
@@ -107,8 +107,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 					{
 						echo "&nbsp;";
 					}
-					echo "</TD>";
-					echo"<TD>";
+					echo "</td>";
+					echo"<td>";
 					if (strlen($theme['intitule'])>0)
 					{
 						echo $theme['intitule'];
@@ -117,10 +117,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 					{
 						echo "&nbsp;";
 					}
-					echo "</TD></TR>\n";
+					echo "</td></tr>\n";
 				}
 			}
-			echo "</TABLE></DIV>\n";
+			echo "</table></div>\n";
 		}
     }
     
@@ -142,7 +142,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		$vtheme = new theme();
 		$vreponse= new reponse();
     	
-    	$select_sql="SELECT T1.$vtemp->champ_identifiant 
+    	$select_sql="select T1.$vtemp->champ_identifiant 
 		FROM $vtemp->table AS T1, $vtheme->table AS T2, $vquestionnaire->table AS T3 
 		LEFT JOIN $vreponse->table AS T4 ON (T1.idquestion=T4.idquestion_rel AND T4.idutilisateur_rel='$idutilisateur')
 		WHERE T4.idreponse IS NULL AND T1.visible='1' AND T2.visible='1' AND T3.visible='1' AND T1.idquestionnaire_rel=T3.idquestionnaire 
@@ -176,7 +176,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		$update_niveaumin="UPDATE ".$vtemp->table." SET niveau=1 WHERE idtheme_rel=0 AND langue='$langue'";
 		$update_niveaumin=requete_sql($update_niveaumin);
 		$dernierniveau=1;
-		$select_niveau="SELECT T1.* FROM ".$vtemp->table." AS T1, ".$vtemp->table." AS T2 WHERE T2.niveau=$dernierniveau AND T1.idtheme_rel=T2.idtheme AND T1.langue='$langue' AND T2.langue='$langue';";
+		$select_niveau="select T1.* FROM ".$vtemp->table." AS T1, ".$vtemp->table." AS T2 WHERE T2.niveau=$dernierniveau AND T1.idtheme_rel=T2.idtheme AND T1.langue='$langue' AND T2.langue='$langue';";
 		$select_niveau=requete_sql($select_niveau);
 		while(compte_sql($select_niveau)>0)
 		{
@@ -190,19 +190,19 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 	    	$update_niveau=substr($update_niveau,0,-1).")";
 			$update_niveau=requete_sql($update_niveau);
 			$dernierniveau=$dernierniveau+1;
-			$select_niveau="SELECT T1.* FROM ".$vtemp->table." AS T1, ".$vtemp->table." AS T2 WHERE T2.niveau=$dernierniveau AND T1.idtheme_rel=T2.idtheme AND T1.langue='$langue' AND T2.langue='$langue';";
+			$select_niveau="select T1.* FROM ".$vtemp->table." AS T1, ".$vtemp->table." AS T2 WHERE T2.niveau=$dernierniveau AND T1.idtheme_rel=T2.idtheme AND T1.langue='$langue' AND T2.langue='$langue';";
 			$select_niveau=requete_sql($select_niveau);	
 		}
 		
 		//2 boucles sur les niveaux pour mettre a jour la taille et la borne gauche:
-		$select_niveaumax="SELECT MAX(niveau) FROM ".$vtemp->table." WHERE visible='1' AND langue='$langue';";
+		$select_niveaumax="select MAX(niveau) FROM ".$vtemp->table." WHERE visible='1' AND langue='$langue';";
 		$select_niveaumax=requete_sql($select_niveaumax);
 		$niveaumax=tableau_sql($select_niveaumax);
 		$niveaumax=$niveaumax[0];
 		//mise a jour de la taille des themes
 		for($i=$niveaumax;$i>0;$i--) 
 		{
-			$select_suivante="SELECT T2.".$vtemp->champ_identifiant.", SUM(T1.taille+1)+1 AS vtaille 
+			$select_suivante="select T2.".$vtemp->champ_identifiant.", SUM(T1.taille+1)+1 AS vtaille 
 			FROM ".$vtemp->table." AS T1 
 			RIGHT JOIN ".$vtemp->table." AS T2 ON (T1.".$vtemp->champ_identifiant."_rel=T2.".$vtemp->champ_identifiant." AND T1.visible=1 AND T1.langue='$langue') 
 			WHERE T2.niveau=$i AND T2.visible=1 AND T2.langue='$langue' 
@@ -223,7 +223,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			//mise a jour des racines de l'arborescence
 			if ($i==0)
 			{
-				$select_borne="SELECT T1.".$vtemp->champ_identifiant.", T1.taille, T2.bornegauche AS vborne, T2.idtheme AS vidtheme_pere FROM ".$vtemp->table." AS T1 
+				$select_borne="select T1.".$vtemp->champ_identifiant.", T1.taille, T2.bornegauche AS vborne, T2.idtheme AS vidtheme_pere FROM ".$vtemp->table." AS T1 
 				LEFT JOIN ".$vtemp->table." AS T2 ON (T1.".$vtemp->champ_identifiant."_rel=T2.".$vtemp->champ_identifiant." AND T1.visible=1 AND T1.langue='$langue')
 				WHERE T2.niveau IS NULL AND T1.idtheme IS NOT NULL AND T2.langue='$langue'
 				ORDER BY T1.idtheme_rel ASC, T1.$ordre_tri->valeur ASC";
@@ -231,7 +231,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			//mise a jour des autres elements de l'arborescence
 			else
 			{
-				$select_borne="SELECT T1.".$vtemp->champ_identifiant.", T1.taille, T2.bornegauche AS vborne, T2.idtheme AS vidtheme_pere
+				$select_borne="select T1.".$vtemp->champ_identifiant.", T1.taille, T2.bornegauche AS vborne, T2.idtheme AS vidtheme_pere
 				FROM ".$vtemp->table." AS T1 
 				RIGHT JOIN ".$vtemp->table." AS T2 ON (T1.".$vtemp->champ_identifiant."_rel=T2.".$vtemp->champ_identifiant." AND T1.visible=1 AND T1.langue='$langue')
 				WHERE T2.niveau=$i AND T1.idtheme IS NOT NULL AND T2.visible=1 AND T2.langue='$langue'
@@ -263,5 +263,110 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			}
 		}
 	}
+	 
+	 
+	function liste_utilisateurs($vfiltre="1", $vordre="compte") 
+    {
+    	//initialisation des variables globales:
+		global $langue;
+		global $page_theme;
+		
+		//Creation d'une variable temporaire de classe theme :
+    	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.utilisateur.php');
+		
+		if ($idpere==0 || !isset($idpere)) 
+		{
+			$vtemp= new theme();
+			$id=0;
+		}
+		else 
+		{
+			$vtemp= new theme($idpere);
+			$id=$vtemp->identifiant();
+		}
+    	$requete="select T1.idtheme AS idtheme, T1.titre AS titre, T1.intitule AS intitule, SUM(1)-1 as NB
+		FROM $vtemp->table AS T1, $vtemp->table AS T2 
+		WHERE T1.visible='1' AND T1.idtheme_rel='$id' AND T2.visible='1' AND T1.langue='$langue' AND T2.langue='$langue' AND (T1.idtheme=T2.idtheme_rel OR T1.idtheme=T2.idtheme) 
+		GROUP BY T1.idtheme ORDER BY T1.titre;";
+    	$liste_themes=requete_sql($requete);
+		$qte=compte_sql($liste_themes);
+		if ($qte!=0)
+		{
+			echo "\n<div id=\"tableau\"><table>";
+			echo "<tr><th colspan=\"2\">"._DETAIL."</th><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
+			//Affichage du pere s'il existe :
+			if ($id!=0)
+			{
+				echo "<tr class=\"groupe\"><td colspan=\"2\" >";
+				if ($vtemp->idtheme_rel!=0) 
+				{
+					echo "<a href=\"".$page_theme."?p=".$vtemp->idtheme_rel."\">"._REMONTER."</a>";
+				}
+				else
+				{
+					echo "&nbsp;";
+				}
+				echo "</td><td><a href=\"".$page_theme."?i=".$vtemp->idtheme."\">"._MODIFIER."</a></td><td>&nbsp;</td>";
+				//Affichage titre et intitule :
+				echo "<td>";
+				if (strlen($vtemp->titre)>0)
+				{
+					echo $vtemp->titre;
+				}
+				else {
+					echo "&nbsp;";
+				}
+				echo "</td>";
+				echo"<td>";
+				if (strlen($vtemp->intitule)>0)
+				{
+					echo $vtemp->intitule;
+				}
+				else 
+				{
+					echo "&nbsp;";
+				}
+				echo "</td></tr>\n";
+			}
+			while($theme=tableau_sql($liste_themes)) 
+			{
+				if(is_array($theme) && count($theme)>0)
+				{
+					echo "<tr><td class=\"groupe\">&nbsp;</td><td>";
+					if ($theme['NB']>0) 
+					{
+						echo "<a href=\"".$page_theme."?p=".$theme['idtheme']."\">"._DETAILLER."</a>";
+					}
+					else 
+					{
+						echo "&nbsp;";
+					}
+					echo "</td><td><a href=\"".$page_theme."?i=".$theme['idtheme']."\">"._MODIFIER."</a></td><td><a href=\"".$page_theme."?i=".$theme['idtheme']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
+					//Affichage titre et intitule :
+					echo "<td>";
+					if (strlen($theme['titre'])>0)
+					{
+						echo $theme['titre'];
+					}
+					else 
+					{
+						echo "&nbsp;";
+					}
+					echo "</td>";
+					echo"<td>";
+					if (strlen($theme['intitule'])>0)
+					{
+						echo $theme['intitule'];
+					}
+					else 
+					{
+						echo "&nbsp;";
+					}
+					echo "</td></tr>\n";
+				}
+			}
+			echo "</table></div>\n";
+		}
+    }
 }
 ?>
