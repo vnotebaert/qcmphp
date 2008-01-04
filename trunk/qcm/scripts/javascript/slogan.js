@@ -13,7 +13,7 @@ function slogan(lang)
 {
 var text;
 slogan_text = new Array();
-if (lang=="francais"){
+if (lang=="fr"){
 slogan_text[0]="Seules les l&eacute;gendes ne meurent jamais.";
 slogan_text[1]="Il faut savoir mourir pour entrer dans la l&eacute;gende.";
 slogan_text[2]="Les plus long voyages sont ceux dont on ne revient jamais.";
@@ -33,7 +33,7 @@ slogan_text[15]="Je ne serais pas le h&eacute;ros d'un monde sans toi!";
 slogan_text[16]="Devenez le fils du diable ou mourrez.";
 slogan_text[17]="Ne croyez en rien surtout vous-même.";
 }
-else if (lang=="english"){
+else if (lang=="en"){
 slogan_text[0]="Only legends never died.";
 slogan_text[1]="You can trust noone even yourself.";
 slogan_text[2]="Become devil's son or you will died.";
