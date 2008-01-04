@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 die("this script is disabled for security");
 
 /**
@@ -182,7 +182,7 @@ foreach($langData as $plugin=>$strings) {
     $data .= "// Author: Translator-Name, <email@example.com>\n";
     $data .= "//\n";   
     $data .= "// Last revision: 06 september 2007\n";
-    $data .= "// Please don�t remove this information\n";
+    $data .= "// Please don´t remove this information\n";
     $data .= "// If you modify any source, please insert a comment with your name and e-mail\n";
     $data .= "//\n";
     $data .= "// Distributed under the same terms as HTMLArea itself.\n";
