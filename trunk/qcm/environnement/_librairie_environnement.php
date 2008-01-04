@@ -37,7 +37,7 @@ global $page_affichage_questionnaire;
 $page_affichage_questionnaire="affichage_questionnaire.php";
 
 /*Gestion de la deconnection de session*/
-if (isset($_GET['deco']) && $_GET['deco']==1)
+if ((isset($_GET['deco']) && $_GET['deco']==1) || (isset($_POST['deco']) && $_POST['deco']==1))
 {
 	// Initialisation de la session.
 	session_start();
