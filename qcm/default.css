@@ -145,8 +145,6 @@ acronym {
 	right: 0px;
 	font: 7pt verdana, sans-serif;
 	width: 200px;
-	max-height: 290px;
-	overflow: auto;
 	}
 	#listefonction h3 { 
 		margin: 5px 0px 5px 0px; 
@@ -173,8 +171,6 @@ acronym {
 	right: 0px;
 	font: 7pt verdana, sans-serif;
 	width: 200px;
-	max-height: 290px;
-	overflow: auto;
 	}
 	#listefonction2 h3 { 
 		margin: 5px 0px 5px 0px; 
@@ -193,11 +189,8 @@ acronym {
 		}
 	
 div.dragableBox {
-	border: 1px solid #000;
 	width: 90%;
 	margin: 2px;
-	max-height: 150px;
-	overflow: auto;
 	}	
 div.dropBox {
 	border-width: 5px ; 
