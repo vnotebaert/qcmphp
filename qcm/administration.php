@@ -34,7 +34,7 @@ include("include.HTML.html_definition.php");
 					$interdit=array("CVS","SVN",".svn","svn");
 					$filtre=array("db","bac","tmp","zip","project","index");
 					$zipTest = new zipfile();
-					$zipTest -> link_repertoire("qcm","",$interdit,$filtre,1);
+					$zipTest -> link_repertoire("qcm_".date("Ymd"),"",$interdit,$filtre,1);
 				}
 				?>Welcome in administration<?
 			}
