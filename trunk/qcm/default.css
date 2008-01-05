@@ -217,7 +217,7 @@ div.champ_cadre {
 	
 div.champ {
 	vertical-align: bottom;
-	margin-left: 200px;
+	margin-left: 210px;
 	margin-bottom: 5px;
 	}
 	
@@ -230,6 +230,11 @@ div.champ input {
 	width: 200px;
 	}
 
+div.champ li {
+	display: inline;
+	width: 50px;
+	}
+	
 div.intitule_champ {
 	width: 200px;
 	float: left;
@@ -261,20 +266,20 @@ div.bouton_cadre input:hover {
 	width: 100%;
 	}
 
-.tableau td, th {
+.tableau td {
 	border-style: dotted;
 	border-width: 1px;
 	border-color: #7D773C;
-	}
-	
-.tableau td {
 	text-align: left;
 	}
 	
 .tableau th {
+	border-style: groove;
+	border-width: 1px;
+	border-color: #7D773C;
 	text-align: center;
 	}
-	
+
 .tableau td.groupe {
 	border-style: none;
 	border-width: 0;
@@ -293,12 +298,17 @@ div.bouton_cadre input:hover {
 	background-color: #DDDDDD;
 	}
 	
-/* tableau 'triable' */
+/* tableau 'triable' et 'redimensionnable' */
 .tableau .sortcol {
+	border-style: outset;
+	border-width: 2px;
+	border-color: grey;
 	cursor: pointer;
 	padding-right: 20px;
 	background-repeat: no-repeat;
+	background-color: #EEEEEE;
 	background-position: right center;
+	text-align: center;
 }
 .tableau .sortasc {
 	background-color: #DDFFAC;
@@ -311,9 +321,20 @@ div.bouton_cadre input:hover {
 .tableau .nosort {
 	cursor: default;
 }
+.tableau th.resize-handle-active {
+	cursor: e-resize;
+}
+
+div.resize-handle {
+	cursor: e-resize;
+	width: 2px;
+	border-right: 1px dashed #1E90FF;
+	position:absolute;
+	top:0;
+	left:0;
+}
 	
 /* modules */
-
 #module {
 	margin-top: 10px; 
 	padding: 0px 10px 0px 10px;

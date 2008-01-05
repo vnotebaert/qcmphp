@@ -50,7 +50,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		$this->table_question=$prefixe."_question";
  		$this->table_questionnaire=$prefixe."_questionnaire";
  		$this->table_auteur=$prefixe."_auteur";
-
+		
  		// Initialisation de(s) argument(s) :
  		$arguments = func_get_args();
  		$numargs = func_num_args();
@@ -402,6 +402,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	// Definition des variables globales :
     	global $prefixe;
     	global $page_questionnaire;
+		global $trad_SQL;
     	
 		// Definition des tables :
 		$table_questionnaire=$prefixe."_questionnaire";
@@ -460,7 +461,16 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					echo "<td>";
 					if (strlen($auteur['niveau'])>0)
 					{
-						echo $auteur['niveau'];
+						if (array_key_exists($auteur['niveau'],$trad_SQL))
+						{
+							$valeur_label=$trad_SQL[$auteur['niveau']];
+						}
+						else
+						{
+							
+							$valeur_label=$auteur['niveau'];
+						}
+						echo $valeur_label;
 					}
 					else 
 					{

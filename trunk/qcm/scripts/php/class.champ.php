@@ -114,8 +114,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    	{
 	    		$this->champ_saisie="<input type=\"text\" name=\"$this->nom_champ\" size=\"".substr($type[1],0,-1)."\" maxlength=\"".substr($type[1],0,-1)."\" value=\"".$valeur_champ."\" />";
 	    	}
-	    	//Nombre entre -128 et 128
-	    	elseif ($type[0]=="tinyint")
+	    	//Nombre entre - Note_max et Note_max  :
+			elseif ($type[0]=="tinyint")
 	    	{
 				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
 	    		$valeur_max_tinyint= new regle("0","Note_max");
@@ -140,6 +140,35 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    		$this->champ_saisie="" .
 				"\n<textarea rows =\"5\" cols=\"100\" id=\"".$this->nom_champ."_texte\" name=\"".$this->nom_champ."\">".$valeur_champ."</textarea>";
 			}
+			//Champ de type enum avec plus de 3 possibilitees :
+			elseif(($type[0]=="enum" && count(explode("','",substr($type[1],0,-1)))>3))
+			{
+				$i=0;
+	    		$temp=explode("','",substr($type[1],0,-1));
+				$this->champ_saisie="<select name=\"$this->nom_champ\">";
+	    		foreach($temp as $valeur)
+	    		{
+	    			//Calcul du champ de saisie
+	    			$i++;
+	    			$this->champ_saisie.="\n<option ";
+	    			if ((!isset($valeur_champ) && $i==1) || (isset($valeur_champ) && $valeur_champ==str_replace("'","",$valeur)))
+					{
+						$this->champ_saisie.="selected=\"selected\" ";
+					}
+					if (array_key_exists(str_replace("'","",$valeur),$trad_SQL))
+					{
+						$valeur_label=$trad_SQL[str_replace("'","",$valeur)];
+					}
+					else
+					{
+						
+						$valeur_label=str_replace("'","",$valeur);
+					}
+					$this->champ_saisie.="value=\"".str_replace("'","",$valeur)."\">".$valeur_label."&nbsp;";
+					$this->champ_saisie.="</option>";
+	    		}
+	    		$this->champ_saisie.="\n</select>";
+			}
 			//Bouton radio
 	    	elseif ($type[0]=="enum")
 	    	{
@@ -148,9 +177,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    		$this->champ_saisie.="<ul>";
 	    		foreach($temp as $valeur)
 	    		{
-	    			//Calcul de la valeur a afficher
-	    			
-	    			//calcul du champ de saisie
+	    			//Calcul du champ de saisie
 	    			$i++;
 	    			$this->champ_saisie.="\n<li><input type=\"radio\" name=\"$this->nom_champ\" value=\"".str_replace("'","",$valeur)."\" id=\"".$this->nom_champ.$i."\" ";
 	    			if ((!isset($valeur_champ) && $i==1) || (isset($valeur_champ) && $valeur_champ==str_replace("'","",$valeur)))
