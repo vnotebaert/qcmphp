@@ -41,7 +41,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		
  		// Initialisation :
  		// Champs obligatoires :
- 		$this->champs_obligatoires=array("intitule","idquestion_rel");
+ 		$this->champs_obligatoires=array("idquestion_rel");
  		// Champs du formulaire de creation :
  		$this->champs_formulaire=array("titre","intitule","vraifaux","valeur");
  		// Champs caches du formulaire:

@@ -56,7 +56,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  		// Champs obligatoires :
  		$this->champs_obligatoires=array("titre","idutilisateur_auteur_rel");
  		// Champs du formulaire de creation :
- 		$this->champs_formulaire=array("titre","intitule","tempsminimum","tempsmaximum","idtheme_rel");
+ 		$this->champs_formulaire=array("titre","intitule","niveau","tempsminimum","tempsmaximum","idtheme_rel");
  		// Lien de suppression :
 		$this->lien_suppression=$page_questionnaire;
      		
@@ -166,17 +166,17 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			//-->
 			</script>
 			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
-				<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
 				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
 				<div class="champ">
-					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation" value=""><?
+					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation"><?
 					echo $this->textevalidation;
 					?></textarea>
 				</div>
 				<div class="intitule_champ"><span><? echo _VALIDATION; ?> :</span></div>
-				<div class="champ"><input type="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
+				<div class="champ"><input type="text" readonly="readonly" disabled="disabled" size="1" value="<? echo $this->validation; ?>" />
 				</div>
 				<div class="bouton_cadre">
+					<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
 					<input type="button" value="<? echo _BOUTON_VALIDER; ?>" onclick="fvalidation()" />
 					<input type="hidden" name="validation" value="0" />
 					<input type="button" value="<? echo _BOUTON_DEVALIDER; ?>" onclick="devalidation()" />
@@ -203,11 +203,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			if (is_array($temp->liste_questions) && count($temp->liste_questions)>0)
 			{
 				echo _LISTE_QUESTIONS;
-				echo "\n<div id=\"tableau\"><table>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/prototype.js\"  charset=\"utf-8\"></script>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/tablekit.js\" charset=\"utf-8\"></script>";
+				echo "\n<div class=\"tableau\"><table id=\"liste_question\" class=\"sortable resizable\">";
 				echo "<tr>" .
 						"<th>"._MODIFICATION."</th>" .
 						"<th>"._SUPPRESSION."</th>" .
 						"<th>"._VALIDATION."</th>" .
+						"<th>"._VALIDATION_DATE."</th>" .
 						"<th>"._ORDRE."</th>" .
 						"<th>"._TITRE."</th>" .
 						"<th>"._INTITULE."</th>" .
@@ -223,8 +226,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					
 					$format_date=new regle("0","format_date");
 					
-					if ($valeur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$valeur['validation']."</td>";
-					else echo "<td>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation']).". <a href=\"#\" title=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></td>";
+					if ($valeur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$valeur['validation']."</td><td>&nbsp;</td>";
+					else echo "<td><a href=\"#\" title=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></td><td>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation'])."</td>";
 					
 					//debut cellule
 					echo"<td>";
@@ -369,7 +372,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				//-->
 			</script>
 			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_qcm">
-	    		<div id="fielset">
+	    		<div class="fielset">
 					<fieldset><legend><? echo($this->titre); ?></legend>
 						<div id="intitule_questionnaire">
 							<? echo $this->intitule ;?>

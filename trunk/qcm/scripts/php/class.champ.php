@@ -137,20 +137,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    	//Zone de texte
 	    	elseif ($type[0]=="text" || $type[0]=="tinytext" || $type[0]=="mediumtext" || $type[0]=="longtext")
 	    	{
-	    		$taille=5;
-	    		switch ($type[0])
-	    		{ 
-	    			case "tinytext" :
-	    			$taille=4;
-	    			case "text" :
-	    			$taille=6;
-	    			case "mediumtext" :
-	    			$taille=8;
-	    			case "longtext" :
-	    			$taille=12;
-	    		}
 	    		$this->champ_saisie="" .
-				"\n<textarea rows =\"".$taille."\" cols=\"100\" id=\"".$this->nom_champ."_texte\" name=\"".$this->nom_champ."\">".$valeur_champ."</textarea>";
+				"\n<textarea rows =\"5\" cols=\"100\" id=\"".$this->nom_champ."_texte\" name=\"".$this->nom_champ."\">".$valeur_champ."</textarea>";
 			}
 			//Bouton radio
 	    	elseif ($type[0]=="enum")

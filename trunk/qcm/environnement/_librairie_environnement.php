@@ -47,9 +47,18 @@ if ((isset($_GET['deco']) && $_GET['deco']==1) || (isset($_POST['deco']) && $_PO
 	// Finalement, d&eacute;truit la session
 	session_destroy();
 	// Redirection
-	header("Location: http://".$_SERVER['HTTP_HOST']
-	.dirname($_SERVER['PHP_SELF'])
-	."index.php");
+	if (dirname($_SERVER['PHP_SELF'])!="")
+	{
+		header("Location: http://".$_SERVER['HTTP_HOST']
+		.dirname($_SERVER['PHP_SELF'])
+		."/index.php");
+	}
+	else
+	{
+		header("Location: http://".$_SERVER['HTTP_HOST']
+		.dirname($_SERVER['PHP_SELF'])
+		."index.php");	
+	}
 }
 
 /*Gestion de la langue*/
@@ -59,11 +68,24 @@ session_start();
 if(!isset($langue)) 
 {
 	$langue=$_COOKIE['langue'];
-	if($langue=="null" || $langue=="") $langue=$langue_par_defaut;
-	header("Location: http://".$_SERVER['HTTP_HOST']
-	.dirname($_SERVER['PHP_SELF'])
-	."index.php?langue="
-	.$langue);
+	if($langue=="null" || $langue=="") 
+	{
+		$langue=$langue_par_defaut;
+	}
+	if (dirname($_SERVER['PHP_SELF'])!="")
+	{
+		header("Location: http://".$_SERVER['HTTP_HOST']
+		.dirname($_SERVER['PHP_SELF'])
+		."/index.php?langue="
+		.$langue);
+	}
+	else
+	{
+		header("Location: http://".$_SERVER['HTTP_HOST']
+		.dirname($_SERVER['PHP_SELF'])
+		."index.php?langue="
+		.$langue);
+	}
 	$_SESSION['langue']=$langue;
 }
 //Modification de la langue si post

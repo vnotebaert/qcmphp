@@ -146,7 +146,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		$qte=compte_sql($liste_questionnaires);
 		if ($qte!=0)
 		{
-			echo "\n<div id=\"tableau\"><table>";
+			echo "\n<div class=\"tableau\"><table>";
 			echo "<tr><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			while($questionnaire=tableau_sql($liste_questionnaires)) 
 			{

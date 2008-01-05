@@ -121,7 +121,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		global $langue;
 		?>
     	<div id="form_question">
-    		<div id="fielset">
+    		<div class="fielset">
 				<?
 				if(!isset($_POST["reponse"])) 
 				{
@@ -191,24 +191,28 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 							}		
 							?>
 						</div>
-						<div class="bouton_cadre"><input type="submit" value="<? echo _BOUTON_OK ?>" /> <input type="reset" value="<? echo _BOUTON_RESET ?>" /></div>
+						<div class="bouton_cadre">
+							<input type="submit" value="<? echo _BOUTON_OK ?>" />
+							<input type="hidden" name="identifiant" value="<? echo $this->identifiant ?>" />
+							<input type="reset" value="<? echo _BOUTON_RESET ?>" />
+						</div>
 						<?
 					}
 					if(isset($_POST["reponse"]))
 					{
-						$idreponse_choisie=$_POST["reponse"];
-						$reponse_choisie=new choix($idreponse_choisie);
-						$question_en_cours=new question($reponse_choisie->idquestion_rel);
+						$question_en_cours=new question($_POST["identifiant"]);
 						?><fieldset><legend><? echo($question_en_cours->titre); ?></legend><?
 						if (!is_array($_POST["reponse"]) && ($question_en_cours->type=="choix_unique" || $question_en_cours->type=="choix_unique_liste")) 
 						{
+							$idreponse_choisie=$_POST["reponse"];
+							$reponse_choisie=new choix($idreponse_choisie);
 							echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1><p>". $reponse_choisie->intitule."</p></div>");
 							if ($reponse_choisie->vraifaux=="1") {
 								echo("<div class=\"bonne_reponse\"><p>"._BONNE_REPONSE."</p></div>"); 
 							}
 							else echo("<div class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></div>");
 							
-							$ch_reponse=new reponse($_POST["reponse"],"","",$reponse_choisie->idquestion_rel);
+							$ch_reponse=new reponse($_POST["reponse"],"","",$question_en_cours->idquestion);
 							$ch_reponse->enregistrer();
 							echo("<div class=\"solution\"><H1>"._SOLUTION."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
@@ -225,29 +229,25 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 								}
 								else echo("<div class=\"mauvaise_reponse\"><p>"._MAUVAISE_REPONSE."</p></div>");
 								
-								$ch_reponse=new reponse($_POST["reponse"][$i],"","",$reponse_choisie->idquestion_rel);
+								$ch_reponse=new reponse($_POST["reponse"][$i],"","",$question_en_cours->idquestion);
 								$ch_reponse->enregistrer();
 							}
 							echo("<div class=\"solution\"><H1>"._SOLUTION."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
 						elseif ($question_en_cours->type=="choix_mot")
 						{
-							for ($i=0;$i<count($_POST["reponse"]);$i++) 
-							{
-								echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
-								$ch_reponse=new reponse(0,$_POST["reponse"],"",$reponse_choisie->idquestion_rel);
-								$ch_reponse->enregistrer();
-							}
+							echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
+							$ch_reponse=new reponse(0,$_POST["reponse"],"",$question_en_cours->idquestion);
+							$ch_reponse->enregistrer();
+							
 							echo("<div class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
 						elseif ($question_en_cours->type=="choix_texte")
 						{
-							for ($i=0;$i<count($_POST["reponse"]);$i++) 
-							{
-								echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
-								$ch_reponse=new reponse(0,"",$_POST["reponse"],$reponse_choisie->idquestion_rel);
-								$ch_reponse->enregistrer();
-							}
+							echo("<div class=\"reponse\"><H1>"._VOUS_AVEZ_REPONDU ."</H1>". $_POST["reponse"] ."</div>");
+							$ch_reponse=new reponse(0,"",$_POST["reponse"],$question_en_cours->idquestion);
+							$ch_reponse->enregistrer();
+							
 							echo("<div class=\"solution\"><H1>"._SOLUTION_TEXTE."</H1><p>".$question_en_cours->solution."</p></div>");
 						}
 					}
@@ -302,7 +302,6 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			}
 			?>
 			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
-				<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
 				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
 				<div class="champ">
 					<span>					
@@ -312,19 +311,20 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					</span>
 				</div>
 				<div class="intitule_champ"><span><? echo _VALIDATION; ?> :</span></div>
-				<div class="champ"><input type="text" READONLY DISABLED SIZE="1" VALUE="<? echo $this->validation; ?>" />
+				<div class="champ"><input type="text" readonly="readonly" disabled="disabled" size="1" value="<? echo $this->validation; ?>" />
 				</div>
 				<div class="bouton_cadre">
-				<?
-				if (isset($this->validation))
-				{
-					?>
-					<input type="button" value="<? echo _BOUTON_VALIDER; ?>" onclick="fvalidation()" />
-					<input type="hidden" name="validation" value="0" />
-					<input type="button" value="<? echo _BOUTON_DEVALIDER; ?>" onclick="devalidation()" />
+					<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
 					<?
-				}
-				?>
+					if (isset($this->validation))
+					{
+						?>
+						<input type="button" value="<? echo _BOUTON_VALIDER; ?>" onclick="fvalidation()" />
+						<input type="hidden" name="validation" value="0" />
+						<input type="button" value="<? echo _BOUTON_DEVALIDER; ?>" onclick="devalidation()" />
+						<?
+					}
+					?>
 				</div>
 			</form>
 			<?
@@ -348,13 +348,16 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			if (is_array($temp->liste_choix) && count($temp->liste_choix)>0)
 			{
 				echo _LISTE_CHOIX;
-				echo "\n<div id=\"tableau\"><table>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/prototype.js\"  charset=\"utf-8\"></script>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/tablekit.js\" charset=\"utf-8\"></script>";
+				echo "\n<div class=\"tableau\"><table id=\"liste_question\" class=\"sortable resizable\">";
 				echo "<tr>" .
 						"<th>"._MODIFICATION."</th>" .
 						"<th>"._SUPPRESSION."</th>" .
 						"<th>"._TITRE."</th>" .
 						"<th>"._INTITULE."</th>" .
 						"<th>"._VALEUR."</th>" .
+						"<th>"._VRAI_FAUX."</th>" .
 					"</tr>\n";
 				foreach($temp->liste_choix as $valeur)
 				{
@@ -389,6 +392,17 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					if (strlen($valeur['valeur'])>0)
 					{
 						echo $valeur['valeur'];
+					}
+					else {
+					echo "&nbsp;";
+					}
+					echo "</td>";
+					//fin cellule
+					//debut cellule
+					echo"<td>";
+					if (strlen($valeur['vraifaux'])>0)
+					{
+						echo $valeur['vraifaux'];
 					}
 					else {
 					echo "&nbsp;";

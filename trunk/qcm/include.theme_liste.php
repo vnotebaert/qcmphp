@@ -169,7 +169,7 @@ if ($activation_AJAX->valeur=="1")
 				}
 				?>
 				<!--  on groupe les input hidden dans un cadre div pour passer la certification x-HTML -->
-				<div><input type="hidden" value="<? echo $_GET["t"]; ?>" name="t" />
+				<div style="display:none">><input type="hidden" value="<? echo $_GET["t"]; ?>" name="t" />
 				<input type="hidden" value="0" name="tt" />
 				<input type="hidden" value="0" name="ajout" /></div>
 			</form>

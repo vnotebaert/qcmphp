@@ -229,8 +229,8 @@ div.champ {
 	}
 	
 div.champ textarea {
-	width: 90%;
-	height: 100px;
+	width: 95%;
+	height: 150px;
 	}
 	
 div.champ input {
@@ -254,11 +254,12 @@ div.bouton_cadre input:hover {
 
 /* Tableaux */
 
-#tableau {
+.tableau {
 	margin-bottom: 5px;
+	margin-top: 5px;
 	}
 	
-#tableau table {
+.tableau table {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #7D777C;
@@ -267,37 +268,56 @@ div.bouton_cadre input:hover {
 	width: 100%;
 	}
 
-#tableau td, th {
+.tableau td, th {
 	border-style: dotted;
 	border-width: 1px;
 	border-color: #7D773C;
 	}
 	
-#tableau td {
+.tableau td {
 	text-align: left;
 	}
 	
-#tableau th {
+.tableau th {
 	text-align: center;
 	}
 	
-#tableau td.groupe {
+.tableau td.groupe {
 	border-style: none;
 	border-width: 0;
 	background-color: #DDDDDD;
 	}
 	
-#tableau td.espacegroupe {
+.tableau td.espacegroupe {
 	border-style: none;
 	border-width: 0;
 	background-color: #DDDDDD;
 	}
 	
-#tableau tr.groupe {
+.tableau tr.groupe {
 	border-style: none;
-	border-width: 1px;
+	border-width: 2px;
 	background-color: #DDDDDD;
 	}
+	
+/* tableau 'triable' */
+.tableau .sortcol {
+	cursor: pointer;
+	padding-right: 20px;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+.tableau .sortasc {
+	background-color: #DDFFAC;
+	background-image: url(./scripts/javascript/up.gif);
+}
+.tableau .sortdesc {
+	background-color: #B9DDFF;
+	background-image: url(./scripts/javascript/down.gif);
+}
+.tableau .nosort {
+	cursor: default;
+}
 	
 /* modules */
 
