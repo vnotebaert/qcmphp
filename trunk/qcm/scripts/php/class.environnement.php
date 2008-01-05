@@ -47,7 +47,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		$qte=compte_sql($liste_themes);
 		if ($qte!=0)
 		{
-			echo "\n<div id=\"tableau\"><table>";
+			echo "\n<div class=\"tableau\"><table id=\"liste_theme\" >";
 			echo "<tr><th colspan=\"2\">"._DETAIL."</th><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			//Affichage du pere s'il existe :
 			if ($id!=0)
