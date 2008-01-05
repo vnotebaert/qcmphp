@@ -97,7 +97,10 @@ include("include.HTML.html_definition.php");
 						}
 						elseif (!isset($_GET['crea']))
 						{
-							if ($page_question!="" && !isset($_GET['iq'])) { ?><li><a href="<? echo $page_question; ?>?crea=1" title="<? echo _CREATION_DE_QUESTION_TITLE; ?>" accesskey="q"><? echo _CREATION_DE_QUESTION_LINK; ?></a>&nbsp;</li><? } 
+							if ($page_questionnaire!="" && !isset($_GET['iq']))
+							{ 
+								?><li><a href="<? echo $page_questionnaire; ?>?crea=1" title="<? echo _CREATION_DE_QUESTIONNAIRE_TITLE; ?>" accesskey="q"><? echo _CREATION_DE_QUESTIONNAIRE_LINK; ?></a>&nbsp;</li><? 
+							}   
 							elseif ($page_question!="" && $page_questionnaire!="" && isset($_GET['iq'])) 
 							{
 								?><li><a href="<? echo $page_question; ?>?iq=<? echo $_GET['iq']; ?>" title="<? echo _CREATION_DE_QUESTION_TITLE; ?>" accesskey="q"><? echo _CREATION_DE_QUESTION_LINK; ?></a>&nbsp;</li><?

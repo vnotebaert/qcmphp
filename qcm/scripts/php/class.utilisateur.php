@@ -344,9 +344,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			$sqlauteur="SELECT * FROM $table_question WHERE visible=1 ORDER BY idquestionnaire_rel ASC, ordre ASC;";
 		}
 		$resauteur=requete_sql($sqlauteur);
+		
+		echo "<h3 class=\"listing_question_utilisateur\"><span>"._LISTING_QUESTION_UTILISATEUR."</span></h3>";
+		
 		if (compte_sql($resauteur)>0)
 		{
-			echo "\n<div id=\"tableau\"><table>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/prototype.js\"  charset=\"utf-8\"></script>";
+				echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/tablekit.js\" charset=\"utf-8\"></script>";
+				echo "\n<div class=\"tableau\"><table id=\"liste_question\" class=\"resizable sortable\">";
 			echo "<tr><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._VALIDATION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
 			while($auteur=tableau_sql($resauteur)) 
 			{
@@ -385,6 +390,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			}
 			echo "</table></div>\n";
 		}
+		else
+		{
+			echo "<p>"._AUCUNE_QUESTION_POUR_L_UTILISATEUR."</p>";
+		}
 	}
 	
 	//Recherche des questionnaires dont l'utilisateur est auteur :
@@ -410,8 +419,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		
 		if (compte_sql($resauteur)>0)
 		{
-			echo "\n<div id=\"tableau\"><table>";
-			echo "<tr><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._VALIDATION."</th><th>"._TITRE."</th><th>"._INTITULE."</th></tr>\n";
+			echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/prototype.js\"  charset=\"utf-8\"></script>";
+			echo "\n<script type=\"text/javascript\" src=\"./scripts/javascript/tablekit.js\" charset=\"utf-8\"></script>";
+			echo "\n<div class=\"tableau\"><table id=\"liste_questionnaire\" class=\"sortable resizable\">";
+			echo "<tr><th>"._MODIFICATION."</th><th>"._SUPPRESSION."</th><th>"._VALIDATION."</th><th>"._VALIDATION_DATE."</th><th>"._TITRE."</th><th>"._INTITULE."</th><th>"._NIVEAU."</th></tr>\n";
 			while($auteur=tableau_sql($resauteur)) 
 			{
 				if(is_array($auteur))
@@ -422,8 +433,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
 					$format_date=new regle("0","format_date");
 					
-					if ($auteur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$auteur['validation']."</td>";
-					else echo "<td>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation']).". <a href=\"#\" title=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></td>";
+					if ($auteur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$auteur['validation']."</td><td>&nbsp;</td>";
+					else echo "<td><a href=\"#\" title=\"".stripslashes($auteur['textevalidation'])."\">"._RESULTAT.$auteur['validation']."</a></td><td>"._TRAITEE_LE.date($format_date->valeur,$auteur['datevalidation'])."</td>";
 					
 					//Affichage titre et intitule :
 					echo "<td>";
@@ -431,8 +442,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					{
 						echo $auteur['titre'];
 					}
-					else {
-					echo "&nbsp;";
+					else 
+					{
+						echo "&nbsp;";
 					}
 					echo "</td>";
 					echo"<td>";
@@ -440,8 +452,19 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					{
 						echo $auteur['intitule'];
 					}
-					else {
-					echo "&nbsp;";
+					else 
+					{
+						echo "&nbsp;";
+					}
+					//Affichage niveau :
+					echo "<td>";
+					if (strlen($auteur['niveau'])>0)
+					{
+						echo $auteur['niveau'];
+					}
+					else 
+					{
+						echo "&nbsp;";
 					}
 					echo "</td></tr>\n";
 				}

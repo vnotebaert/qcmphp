@@ -102,8 +102,8 @@ define (_IL_MANQUE_UN_CHAMP_OBLIGATOIRE,"Il manque au moins un champ obligatoire
 define (_LES_CHAMPS_OBLIGATOIRES_MANQUANT_SONT_LES_SUIVANTS,"Le(s) champ(s) obligatoire(s) manquant de cet objet sont les suivants :");
 define (_TABLE,"Table (");
 define (_INEXISTANTE_POUR_LA_CLASSE,") inexistante pour la classe : ");
-define (_CREATION_DE,"Cr&eacute;ation d'un objet de la classe : ");
-define (_MODIFICATION_DE,"Modification d'un objet de la classe : ");
+define (_CREATION_DE,"Cr&eacute;ation d'un objet : ");
+define (_MODIFICATION_DE,"Modification d'un objet : ");
 define (_LE_CHAMP,"Le champ ");
 define (_NE_PEUT_ETRE_VIDE," ne peut &ecirc;tre vide.");
 define (_BOUTON_SUPPRIMER,"Supprimer");
@@ -129,7 +129,7 @@ define (_LA_CREATION_DU_COMPTE_C_EST_BIEN_DEROULEE,"La cr&eacute;ation du compte
 define (_UN_MAIL_DE_CONFIRMATION_VOUS_A_ETE_ENVOYE," Un mail de confirmation vous a &eacute;t&eacute; envoy&eacute;.");
 define (_L_ACTIVATION_S_EFFECTUE_GRACE_AU_MAIL_DE_CONFIRMATION," L'activation s'effectue gr&acirc;ce au mail de confirmation.");
 define (_SUJET_MAIL_CREATION_COMPTE,"Creation de compte sur QCM_PHP");
-define (_MESSAGE_MAIL_CREATION_COMPTE,"Ceci est un mail de confirmation de cr&eacute;ation de compte sur QCM. Bienvenu");
+define (_MESSAGE_MAIL_CREATION_COMPTE,"Ceci est un mail de confirmation de cr&eacute;ation de compte sur QCM_PHP. Bienvenu &agrave; vous.\n");
 define (_LIEN_ACTIVATION_COMPTE_UTILISATEUR,"Cliquez ici pour activer votre compte utilisateur.");
 define (_LA_MODIFICATION_DU_COMPTE_C_EST_BIEN_DEROULEE,"La modification du compte c'est bien d&eacute;roul&eacute;e.");
 define (_LE_COMPTE_UTILISATEUR,"Le compte utilisateur ");
@@ -149,12 +149,14 @@ define (_TRAITEE_LE,"Trait&eacute;e le ");
 define (_RESULTAT,"R&eacute;sultat : ");
 define (_TEXTE_VALIDATION,"Texte de validation ou non-validation");
 define (_VALIDATION,"Validation");
+define (_VALIDATION_DATE,"Date de validation");
 define (_BOUTON_VALIDER,"Valider");
 define (_BOUTON_DEVALIDER,"Devalider");
 define (_LISTE_CHOIX,"Liste des choix de la question :");
 define (_LISTE_QUESTIONS,"Liste des questions du questionnaire :");
 define (_ORDRE,"Ordre");
 define (_VALEUR,"Valeur");
+define (_NIVEAU,"Niveau de difficult&eacute;");
 define (_SCORE_GRAPH_VRAI,"Vrai / Faux");
 define (_SCORE_GRAPH_SCORE,"Score");
 define (_REPONSES_VRAI,"Nb. vrai : ");
@@ -179,8 +181,9 @@ define (_RETOUR_AU_QUESTIONNAIRE_LINK,"<span class=\"accesskey\">R</span>etour a
 define (_RETOUR_AU_QUESTIONNAIRE_TITLE,"Retour au questionnaire correspondant &agrave; la question affich&eacute;e AccesKey: r");
 define (_RETOUR_A_LA_QUESTION_LINK,"<span class=\"accesskey\">R</span>etour &agrave; la question");
 define (_RETOUR_A_LA_QUESTION_TITLE,"Retour &agrave; la question correspondante au choix affich&eacute; AccesKey: r");
-define (_AUCUN_QUESTIONNAIRE_POUR_L_UTILISATEUR,"Vous n'avez aucun questionnaire &agrave; votre actif. Vous pouvez creer un questionnaire par le lien dans le cadre \"Fonctionnalit&eacute;s\".");
 define (_LISTING_QUESTIONNAIRE_UTILISATEUR,"Liste de vos questionnaires");
+define (_AUCUNE_QUESTION_POUR_L_UTILISATEUR,"Vous n'avez aucune question &agrave; votre actif. Vous pouvez creer un questionnaire par le lien dans le cadre \"Fonctionnalit&eacute;s\".");
+define (_LISTING_QUESTION_UTILISATEUR,"Liste de vos questions");
 
 // classe theme //
 define (_NO_RELATION,"Pas de p&egrave;re.");
@@ -244,6 +247,7 @@ $trad_SQL["choix_multiple_liste"]="Liste &agrave; choix multiple";
 $trad_SQL["choix_mot"]="Cha&icirc;ne de caract&egrave;res";
 $trad_SQL["choix_texte"]="Zone de texte";
 $trad_SQL["idtheme_rel"]="Th&egrave;me associ&eacute;";
+$trad_SQL["niveau"]="Niveau de difficult&eacute;";
 $trad_SQL["solution"]="Texte de la solution";
 $trad_SQL["valeur"]="Nombre de point correspondant &agrave; cette r&eacute;ponse";
 $trad_SQL["vraifaux"]="R&eacute;ponse vrai (1) ou fausse (0)";

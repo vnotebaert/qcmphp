@@ -10,6 +10,7 @@ function xinha_init()
   // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  :)
   if(!Xinha.loadPlugins(xinha_plugins, xinha_init)) return;
   var xinha_config = new Xinha.Config();
+  xinha_config.height = '150px';
   xinha_config.showLoading= true;
   xinha_config.statusBar = false;
   xinha_config.pageStyleSheets = ["default_xinha.css"];
@@ -20,9 +21,9 @@ function xinha_init()
 	   ["separator","undo","redo"],
 	   ["separator","bold","italic","underline"],
 	   ["separator","forecolor","hilitecolor"],
-	   ["separator","subscript","superscript"],
+	   ["linebreak","separator","subscript","superscript"],
 	   ["separator","justifyleft","justifycenter","justifyright","justifyfull"],
-	   ["separator","insertorderedlist","insertunorderedlist"],
+	   ["linebreak","separator","insertorderedlist","insertunorderedlist"],
 	   ["separator","inserthorizontalrule","createlink","insertimage","inserttable"],
 	   ["separator","htmlmode","showhelp","about"]
 	 ];
