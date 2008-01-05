@@ -209,25 +209,17 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				echo "<tr>" .
 						"<th>"._MODIFICATION."</th>" .
 						"<th>"._SUPPRESSION."</th>" .
-						"<th>"._VALIDATION."</th>" .
-						"<th>"._VALIDATION_DATE."</th>" .
 						"<th>"._ORDRE."</th>" .
 						"<th>"._TITRE."</th>" .
 						"<th>"._INTITULE."</th>" .
+						"<th>"._VALIDATION."</th>" .
+						"<th>"._VALIDATION_DATE."</th>" .
 					"</tr>\n";
 				foreach($temp->liste_questions as $valeur)
 				{
 					echo "<tr>" .
 							"<td><a href=\"".$page_question."?i=".$valeur['idquestion']."\" >"._MODIFIER."</a>&nbsp;</td>" .
 							"<td><a href=\"".$page_question."?i=".$valeur['idquestion']."&amp;suppression=1\" >"._SUPPRIMER."</a>&nbsp;</td>";
-					//Gestion de l'affichage de la validation :
-					//chargement des regles pour le format des dates :
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
-					
-					$format_date=new regle("0","format_date");
-					
-					if ($valeur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$valeur['validation']."</td><td>&nbsp;</td>";
-					else echo "<td><a href=\"#\" title=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></td><td>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation'])."</td>";
 					
 					//debut cellule
 					echo"<td>";
@@ -264,6 +256,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					}
 					echo "</td>";
 					//fin cellule
+					//Gestion de l'affichage de la validation :
+					//chargement des regles pour le format des dates :
+					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+					
+					$format_date=new regle("0","format_date");
+					
+					if ($valeur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$valeur['validation']."</td><td>&nbsp;</td>";
+					else echo "<td><a href=\"#\" title=\"".stripslashes($valeur['textevalidation'])."\">"._RESULTAT.$valeur['validation']."</a></td><td>"._TRAITEE_LE.date($format_date->valeur,$valeur['datevalidation'])."</td>";
 					//fin ligne
 					echo "</tr>\n";
 				}
