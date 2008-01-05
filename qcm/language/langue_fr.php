@@ -156,7 +156,7 @@ define (_LISTE_CHOIX,"Liste des choix de la question :");
 define (_LISTE_QUESTIONS,"Liste des questions du questionnaire :");
 define (_ORDRE,"Ordre");
 define (_VALEUR,"Valeur");
-define (_NIVEAU,"Niveau de difficult&eacute;");
+define (_NIVEAU,"Niveau");
 define (_SCORE_GRAPH_VRAI,"Vrai / Faux");
 define (_SCORE_GRAPH_SCORE,"Score");
 define (_REPONSES_VRAI,"Nb. vrai : ");
@@ -253,4 +253,11 @@ $trad_SQL["valeur"]="Nombre de point correspondant &agrave; cette r&eacute;ponse
 $trad_SQL["vraifaux"]="R&eacute;ponse vrai (1) ou fausse (0)";
 $trad_SQL["tempsminimum"]="Temps minimum pour r&eacute;pondre avant de diminuer la note maximum";
 $trad_SQL["tempsmaximum"]="Temps maximum pour r&eacute;pondre avant d'obtenir la note minimum";
+$trad_SQL["impossible"]="6 - Impossible";
+$trad_SQL["tresdifficile"]="5 - Tr&egrave;s difficile";
+$trad_SQL["difficile"]="4 - Difficile";
+$trad_SQL["moyen"]="3 - Moyen";
+$trad_SQL["facile"]="2 - Facile";
+$trad_SQL["tresfacile"]="1 - Tr&egrave;s facile";
+$trad_SQL["enfantin"]="0 - Enfantin";
 ?>
