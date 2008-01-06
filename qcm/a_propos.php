@@ -53,12 +53,10 @@ include("include.HTML.html_definition.php");
 				</ul>
 			</div>
 			<? include("include.authentification.php"); ?>
-	<? include("include.listefonction.fin.php"); ?>
-	<? include("include.listefonction2.debut.php"); ?>
 			<? include("include.langue_selection.php"); ?>
 			<? include("include.theme_favori_selection.php"); ?>
 			<? include("include.statistiques.php"); ?>
-	<? include("include.listefonction2.fin.php"); ?>
+	<? include("include.listefonction.fin.php"); ?>
 </div>
 <?
 include("extra_div.php");

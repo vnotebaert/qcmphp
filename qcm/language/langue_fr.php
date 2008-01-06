@@ -26,6 +26,7 @@ define (_LANGUE_SELECTION,"S&eacute;lection d'une langue : ");
 define (_ABREVIATION_LANGUE,"fr");
 define (_CHOISIR_LANGUE,"Choisir la langue : <br />");
 define (_RETOUR,"Retour &agrave; la page pr&eacute;c&eacute;dente.");
+define (_NO_IMAGE_DESCRIPTION,"Pas de description de l'image\nou image introuvable...");
 
 // page index //
 define (_TITRE_PRINCIPAL,"<acronym title=\"Question &agrave; Choix Multiples\">QCM</acronym>");
@@ -77,6 +78,7 @@ define (_MOT_DE_PASSE_COMPTE,"Mot de passe* : ");
 define (_MOT_DE_PASSE_CONFIRMATION,"Confirmation du mot de passe* : ");
 define (_EMAIL,"Email* : ");
 define (_EMAIL_CONFIRMATION,"Confirmation de l'email* : ");
+define (_URL_AVATAR,"URL de votre avatar : ");
 define (_NOM,"Nom : ");
 define (_PRENOM,"Pr&eacute;nom : ");
 define (_PSEUDONYME,"Pseudonyme : ");

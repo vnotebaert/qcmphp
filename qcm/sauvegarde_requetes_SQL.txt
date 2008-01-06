@@ -1,3 +1,18 @@
+// modification du modele pour la table utilisateur 20080106
+ALTER TABLE `qcm_utilisateur` ADD `connexionautomatique` CHAR(1) DEFAULT '0' NOT NULL AFTER `motpasse`;
+ALTER TABLE `qcm_utilisateur` ADD `avatarurl` VARCHAR(255) NOT NULL AFTER `pseudonyme`;
+
+
+
+
+
+
+
+
+
+
+
+
 // Themes avec nombre de fils arborecents et directs :
 SELECT T1.*, IF(T1.taille<>1,COUNT(*),0) AS nombrefils_arbo, SUM(T1.idtheme=T2.idtheme_rel) AS nombrefils_direct 
 FROM qcm_theme AS T1 LEFT JOIN qcm_theme AS T2 ON (T2.bornegauche>T1.bornegauche AND T2.bornegauche + T2.taille<T1.bornegauche + T1.taille) 

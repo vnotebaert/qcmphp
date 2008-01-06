@@ -72,12 +72,10 @@ include("include.HTML.html_definition.php");
 					<li><a href="<?echo $page_a_propos; ?>" title="<? echo _A_PROPOS_TITLE ?>" accesskey="d"><? echo _A_PROPOS_LINK ?></a>&nbsp;</li>				</ul>
 			</div>
 			<? include("include.authentification.php"); ?>
-	<? include("include.listefonction.fin.php"); ?>
-	<? include("include.listefonction2.debut.php"); ?>
 			<? include("include.langue_selection.php"); ?>
 			<? include("include.theme_favori_selection.php"); ?>
 			<? include("include.statistiques.php"); ?>
-	<? include("include.listefonction2.fin.php"); ?>
+	<? include("include.listefonction.fin.php"); ?>
 </div>
 <?
 include("extra_div.php");

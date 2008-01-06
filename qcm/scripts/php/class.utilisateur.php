@@ -17,9 +17,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     var $idutilisateur;
     var $compte;
     var $motpasse;
+	var $connexionautomatique;
     var $nom;
     var $prenom;
     var $pseudonyme;
+	var $avatarurl;
     var $description;
     var $idequipe_rel;
     var $admin;

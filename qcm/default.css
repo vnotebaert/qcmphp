@@ -48,11 +48,11 @@ a:visited {
 	color: #7D777C;
 	}
 a:hover, a:active { 
-	text-decoration: underline; 
+	text-decoration: underline overline; 
 	color: #9685BA;
 	}
 acronym {
-	speak:spell-out;
+	speak: spell-out;
 	border-style : dotted;
 	border-width : 0px 0px 1px 0px;
 	cursor:help;
@@ -138,13 +138,12 @@ acronym {
 
 #listefonction {
 	margin-left: 10px;
-	margin-right: 10px;	
 	padding: 2px;
 	position: absolute; 
 	top: 150px; 
 	right: 0px;
-	font: 7pt verdana, sans-serif;
 	width: 200px;
+	font: 10px georgia; 
 	}
 	#listefonction h3 { 
 		margin: 5px 0px 5px 0px; 
@@ -154,32 +153,6 @@ acronym {
 		padding: 0px;
 		}
 	#listefonction li {
-		line-height: 2.5ex; 
-		list-style-type: none;
-		display: block; 
-		padding-top: 5px; 
-		margin-bottom: 5px;
-		background-color: white;
-		}
-		
-#listefonction2 {
-	margin-left: 10px;
-	margin-right: 10px;
-	padding: 2px;
-	position: absolute;
-	top: 450px;
-	right: 0px;
-	font: 7pt verdana, sans-serif;
-	width: 200px;
-	}
-	#listefonction2 h3 { 
-		margin: 5px 0px 5px 0px; 
-		}
-	#listefonction2 ul {
-		margin: 0px;
-		padding: 0px;
-		}
-	#listefonction2 li {
 		line-height: 2.5ex; 
 		list-style-type: none;
 		display: block; 
@@ -201,7 +174,7 @@ div.dropBox {
 #extradiv1 {
 	background: transparent url(cr2.gif) top left no-repeat; 
 	position: absolute; 
-	top: 40px; 
+	top: 0px; 
 	right: 0px; 
 	width: 148px; 
 	height: 110px;
@@ -249,7 +222,33 @@ div.bouton_cadre {
 div.bouton_cadre input:hover {
 	background-color: white;
 	}
-
+div.champ input.avatarurl {
+	width: 400px;
+	}
+.avatarcompte {
+	position: absolute;
+	top: 150px;
+	right: 220px;
+	float: right;
+	text-align: center;
+	}
+.avatarcompte img {
+	border-style: groove;
+	border-width: 5px;
+	border-color: #7D777C;
+	width: 150px;
+	}	
+.avatar {
+	position: relative;
+	text-align: center;
+	}
+.avatar img {
+	border-style: groove;
+	border-width: 5px;
+	border-color: #7D777C;
+	width: 150px;
+	}
+	
 /* Tableaux */
 
 .tableau {
@@ -347,6 +346,14 @@ div.resize-handle {
 	border-style : dashed;
 	border-width : 0px 0px 1px 0px;
 	cursor:pointer;	
+	}
+#ajax_wait {
+	background: transparent url(images/pleasewait_miniroller.gif) top left no-repeat; 
+	position: absolute;
+	left: 300px;
+	float: right;
+	width: 16px ;
+	height: 16px;
 	}
 .nb_arbo {
 	color: grey;

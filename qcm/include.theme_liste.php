@@ -80,18 +80,32 @@ if ($activation_AJAX->valeur=="1")
 {
 ?>
 	<script type="text/javascript" src="./scripts/javascript/prototype.js" charset="utf-8"></script>
+	<div id="ajax_wait" style="visibility:hidden"></div>
 <?
 }
 ?>
 <script type="text/javascript">
-<!--  chargement AJAX de la liste des themes
+<!--  chargement AJAX ou POST de la liste des themes
 	function maj_module(vt)
 	{
 		<?
 		if ($activation_AJAX->valeur=="1")
 		{
 			?>
-			new Ajax.Updater('module', 'include.theme_liste.php?t='+vt, { method: 'get', contentType : 'text/html',	encoding: 'UTF-8', evalScripts: true });
+			new Ajax.Updater('module', 'include.theme_liste.php?t='+vt, 
+			{ 
+				method: 'get',
+				contentType : 'text/html',
+				encoding: 'UTF-8', 
+				onLoading: function() {
+					//things to do at the start
+					document.getElementById('ajax_wait').style.visibility = "visible";
+				},
+				onSuccess: function(transport) {
+					//things to do when everything goes well
+					document.getElementById('ajax_wait').style.visibility = "hidden";
+				}
+			});
 			<?
 		}
 		else

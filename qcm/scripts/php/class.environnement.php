@@ -273,5 +273,26 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 		//Creation d'une variable temporaire de classe theme :
     	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.utilisateur.php');
 	}
+	
+	// image
+	//Fonction incérant une balise image en HTML
+	function image($src,$alt=_NO_IMAGE_DESCRIPTION,$class_style="aucun") 
+	{
+		$alt = ($alt=="")? _NO_IMAGE_DESCRIPTION: htmlspecialchars($alt);
+		if (is_file($src)) 
+		{
+		    $size = getimagesize($src);
+		    $size[3]=str_replace("\"", "", $size[3]);;
+		    if ($size!="") 
+			{
+			   echo "<div class=\"$class_style\"><img src=\"$src\" $size[3] alt=\"".$alt."\" /></div>";
+		    }
+		}
+		else
+		{
+			echo "<div class=\"$class_style\"><img src=\"$src\" alt=\"".$alt."\" /></div>";
+		}
+	}
+	// image
 }
 ?>
