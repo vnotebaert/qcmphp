@@ -208,7 +208,7 @@ include("include.HTML.html_definition.php");
 					//gestion du numero d'index :
 					$vtabindex=1;
 					?>
-					<div class="champ"><input type="text" name="compte" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					<div class="champ"><input type="text" name="compte" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->compte\" readonly=\"readonly\" ";
@@ -220,25 +220,25 @@ include("include.HTML.html_definition.php");
 				{?> 
 					<div id="ancien_motpasse_cadre">
 						<div class="intitule_champ"><span><? echo _ANCIEN_MOT_PASSE; ?></span></div>
-						<div class="champ"><input type="password" name="ancienmotpasse" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" /></div>
+						<div class="champ"><input type="password" name="ancienmotpasse" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" /></div>
 					</div><?
 				}
 				?> 
 				<div id="motpasse_cadre">
 					<div class="intitule_champ"><span><? echo _MOT_DE_PASSE_COMPTE; ?></span></div>
-					<div class="champ"><input type="password" name="motpasse" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>"/></div>
+					<div class="champ"><input type="password" name="motpasse" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>"/></div>
 					<?
 					if ($confirmation_mot_de_passe->valeur==1 || isset($utilisateur_connecte->identifiant))
 					{
 						?>
 						<div class="intitule_champ"><span><? echo _MOT_DE_PASSE_CONFIRMATION; ?></span></div>
-						<div class="champ"><input type="password" name="motdepasseconfirmation" size="10" tabindex="<? echo $vtabindex; $vtabindexi++;?>"/></div><?
+						<div class="champ"><input type="password" name="motdepasseconfirmation" size="20" tabindex="<? echo $vtabindex; $vtabindexi++;?>"/></div><?
 					}
 					?> 
 				</div>
 				<div id="email_cadre">
 					<div class="intitule_champ"><span><? echo _EMAIL; ?></span></div>
-					<div class="champ"><input type="text" name="email" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					<div class="champ"><input type="text" name="email" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->email\" ";
@@ -248,7 +248,7 @@ include("include.HTML.html_definition.php");
 					{
 						?> 
 						<div class="intitule_champ"><span><? echo _EMAIL_CONFIRMATION; ?></span></div>
-						<div class="champ"><input type="text" name="emailconfirmation" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+						<div class="champ"><input type="text" name="emailconfirmation" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 						if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 						{
 							echo "value=\"$utilisateur_connecte->email\" ";
@@ -257,9 +257,28 @@ include("include.HTML.html_definition.php");
 					}
 					?> 
 				</div>
+				<div id="avatarurl_cadre">
+					<div class="intitule_champ"><span><? echo _URL_AVATAR; ?></span></div>
+					<div class="champ"><input type="text" name="avatarurl" class="avatarurl" size="40" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
+					{
+						echo "value=\"$utilisateur_connecte->avatarurl\" ";
+					}
+					?>/></div>
+					<?
+					if (in_array($utilisateur_connecte->_testauthentification,array(2,1)) && $utilisateur_connecte->avatarurl!="") 
+					{
+						//chargement de l'environnement pour la fonction de balise image :
+						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.environnement.php');
+						$toto = new environnement();
+						$toto->image($utilisateur_connecte->avatarurl,"","avatarcompte");
+						echo "\n";
+					}
+					?>
+				</div>
 				<div id="nom_cadre">
 					<div class="intitule_champ"><span><? echo _NOM; ?></span></div>
-					<div class="champ"><input type="text" name="nom" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					<div class="champ"><input type="text" name="nom" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->nom\" ";
@@ -268,7 +287,7 @@ include("include.HTML.html_definition.php");
 				</div>
 				<div id="prenom_cadre">
 					<div class="intitule_champ"><span><? echo _PRENOM; ?></span></div>
-					<div class="champ"><input type="text" name="prenom" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					<div class="champ"><input type="text" name="prenom" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->prenom\" ";
@@ -277,7 +296,7 @@ include("include.HTML.html_definition.php");
 				</div>
 				<div id="pseudonyme_cadre">
 					<div class="intitule_champ"><span><? echo _PSEUDONYME; ?></span></div>
-					<div class="champ"><input type="text" name="pseudonyme" size="10" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
+					<div class="champ"><input type="text" name="pseudonyme" size="20" tabindex="<? echo $vtabindex; $vtabindex++;?>" <?
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1))) 
 					{
 						echo "value=\"$utilisateur_connecte->pseudonyme\" ";

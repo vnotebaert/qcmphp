@@ -48,6 +48,13 @@
 			</div>
 		</li>
 		<?
+		if (in_array($utilisateur_connecte->_testauthentification,array(2,1)) && $utilisateur_connecte->avatarurl!="") 
+		{
+			//chargement de l'environnement pour la fonction de balise image :
+			require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.environnement.php');
+			$toto = new environnement();
+			$toto->image($utilisateur_connecte->avatarurl,"","avatar");
+		}
 		if ($utilisateur_connecte!="") 
 		{
 			?>

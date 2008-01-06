@@ -87,10 +87,8 @@ include("include.HTML.html_definition.php");
 				}
 			?>
 			</div>
-	<? include("include.listefonction.fin.php"); ?>
-	<? include("include.listefonction2.debut.php"); ?>
 		<? include("include.langue_selection_et_deconnexion.php"); ?>
-	<? include("include.listefonction2.fin.php"); ?>
+	<? include("include.listefonction.fin.php"); ?>
 </div>
 <?
 include("extra_div.php");

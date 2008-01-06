@@ -54,14 +54,9 @@ include("include.HTML.html_definition.php");
 						<li><a href="index.php" title="<? echo _RETOUR_ACCUEIL_TITLE; ?>" accesskey="a"><? echo _RETOUR_ACCUEIL_LINK;?></a>&nbsp;</li>
 					</ul>
 				</div>
-				<? include("include.authentification.php"); ?>
-		<?
-		include("include.listefonction.fin.php"); 
-		include("include.listefonction2.debut.php"); 
-		?>
-				<? include("include.langue_selection.php"); ?>
+				<? include("include.authentification.php"); ?><? include("include.langue_selection.php"); ?>
 				<? include("include.statistiques.php"); ?>
-		<? include("include.listefonction2.fin.php"); ?>
+	<? include("include.listefonction.fin.php"); ?>
 </div>
 <?
 include("extra_div.php");
