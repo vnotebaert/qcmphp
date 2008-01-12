@@ -15,4 +15,13 @@
 		<li><a href="http://bobby.watchfire.com/bobby/bobbyServlet?URL=http%3A%2F%2F<? echo str_replace("/", "%2F", $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']); ?>&amp;output=Submit&amp;gl=sec508&amp;test=" title="Check the accessibility of this site according to U.S. Section 508">508</a> &nbsp;</li>
 		<li><a href="http://bobby.watchfire.com/bobby/bobbyServlet?URL=http%3A%2F%2F<? echo str_replace("/", "%2F", $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']); ?>&amp;output=Submit&amp;gl=wcag1-aaa&amp;test=" title="Check the accessibility of this site according to WAI Content Accessibility Guidelines 1">aaa</a> &nbsp;</li>
 	</ul>
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-3391184-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
 </div>
