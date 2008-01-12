@@ -9,7 +9,7 @@
  */
  
 //chargement de la librairie commune :
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
@@ -194,7 +194,7 @@ require_once($adresserepertoiresite.'/scripts/php/class.question.php');
     function liste_questions()
     {
     	//chargement de la librairie commune :
-		require_once('/conf.site.inc.php');
+		require_once('conf.site.inc.php');
 		global $adresserepertoiresite;
 		global $adressehttpsite;
 		require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');

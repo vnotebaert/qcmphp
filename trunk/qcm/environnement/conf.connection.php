@@ -7,7 +7,7 @@
  */
 
 //chargement de la configuration
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 require_once($adresserepertoiresite."/environnement/conf.inc.php");

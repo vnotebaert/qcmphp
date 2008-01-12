@@ -3,7 +3,7 @@
 function connection_sql($host,$login,$password) {
 
 //configuration de la connection
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 require($adresserepertoiresite.'/environnement/conf.inc.php');
@@ -17,7 +17,7 @@ return $connect;
 function db_selection_sql($base) {
 
 //configuration de la connection
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 require($adresserepertoiresite.'/environnement/conf.inc.php');
@@ -30,7 +30,7 @@ return mysql_select_db($base);;
 function requete_sql($sql) {
 
 	//configuration de la connection
-	require_once('/conf.site.inc.php');
+	require_once('conf.site.inc.php');
 	global $adresserepertoiresite;
 	global $adressehttpsite;
 	require($adresserepertoiresite.'/environnement/conf.inc.php');
