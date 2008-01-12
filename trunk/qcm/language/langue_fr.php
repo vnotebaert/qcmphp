@@ -39,7 +39,6 @@ define (_ADMINISTRATION_TITLE,"Administration des utilisateurs et des r&egrave;g
 define (_ADMINISTRATION_LINK,"Administration");
 define (_CONNEXION_AUTOMATIQUE,"Connexion automatique : ");
 
-
 // page a_propos //
 define (_TITRE_PREAMBULE,"Pr&eacute;ambule");
 define (_TEXTE_PREAMBULE,"Questionnaire &agrave; choix multiples ou examen en ligne, tout est possible avec <acronym title=\"Question &agrave; Choix Multiples et Hypertext Preprocessor.\">QCM_PHP</acronym>.");
