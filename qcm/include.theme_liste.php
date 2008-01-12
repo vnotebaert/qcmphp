@@ -7,7 +7,7 @@
  * Description :  include d'un theme avec listing des themes fils, le nombre de questionnaires par theme et listing des questionnaires pour le theme selectionne
  *
  */
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 if(!headers_sent())

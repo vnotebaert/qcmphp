@@ -7,7 +7,7 @@
  * Description : image png de l'arborescence des themes
  * 
  */
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 if(!headers_sent())

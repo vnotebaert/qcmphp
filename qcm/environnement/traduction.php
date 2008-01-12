@@ -9,7 +9,7 @@
 /*fichier_langue()*/
 /*Fonction qui inclue dans le code php le fichier definissant les correspondances multi-langue*/
 function fichier_langue() {
-	require_once('/conf.site.inc.php');
+	require_once('conf.site.inc.php');
 	global $adresserepertoiresite;
 	global $adressehttpsite;
 	global $langue;

@@ -9,7 +9,7 @@
  */
 
 /*Fichier de configuration*/
-require_once('/conf.site.inc.php');
+require_once('conf.site.inc.php');
 global $adresserepertoiresite;
 global $adressehttpsite;
 require($adresserepertoiresite.'/environnement/conf.inc.php');

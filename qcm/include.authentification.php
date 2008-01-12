@@ -39,7 +39,8 @@
 					{
 						if (in_array($utilisateur_connecte->_testauthentification,array(2,1)) && $utilisateur_connecte->avatarurl!="") 
 						{
-							//chargement de l'environnement pour la fonction de balise image :require_once('/conf.site.inc.php');
+							//chargement de l'environnement pour la fonction de balise image :
+							require_once('conf.site.inc.php');
 							global $adresserepertoiresite;
 							global $adressehttpsite;
 							require_once($adresserepertoiresite.'/scripts/php/class.environnement.php');

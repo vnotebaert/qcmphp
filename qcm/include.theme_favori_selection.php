@@ -12,7 +12,7 @@ if ($utilisateur_connecte->_testauthentification==2)
 	if(!headers_sent())
 	{
 		//chargement de la librairie commune :
-		require_once('/conf.site.inc.php');
+		require_once('conf.site.inc.php');
 		global $adresserepertoiresite;
 		global $adressehttpsite;
 		require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
