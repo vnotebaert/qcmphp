@@ -8,8 +8,12 @@
  * 
  */
   
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
  
   class utilisateur extends objet
 {
@@ -46,6 +50,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
     	// Definition des variables globales :
     	global $prefixe;
+		global $adresserepertoiresite;
 		
     	// Definition de(s) table(s) :
  		$this->table=$prefixe."_utilisateur";
@@ -64,9 +69,15 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
  			$id=$arguments[3];
  			$this->identifiant=$arguments[3];
  		}
+		if ($numargs > 4 ) $motdepasse_crypte_arg=$arguments[4];
  		if ($compte_arg=="0") unset($compte_arg);
  		if ($motdepasse_arg=="0") unset($motdepasse_arg);
  		if (!is_array($this->tableau_arguments)) unset($this->tableau_arguments);
+ 		if ($id=="0" || $id=="") 
+		{
+			unset($id);
+			unset($this->identifiant);
+		}
  		
  		// Heritage :
  		parent::objet();
@@ -81,7 +92,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		// Test d'authentification si un compte et un mot de passe sont donnes :
 		if (isset($compte_arg) && isset($motdepasse_arg))
 		{
-	 		// Mot de passe crypte :
+			// Mot de passe crypte :
 	 		$motdepasse_crypte=substr(MD5($motdepasse_arg),0,20);
 	 
 			// Recherche du compte :
@@ -89,6 +100,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			$utilisateur_res=requete_sql($sql);
 			$qte=compte_sql($utilisateur_res);
 			if ($qte==0) {
+				// Compte inexistant
 				$this->compte = $compte_arg; 
 		        $this->motpasse = $motdepasse_crypte;
 		        $this->validation = "0";
@@ -97,11 +109,16 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			}
 			else 
 			{
+				//Le compte existe
+				//Initialisation de l'utilisateur
 				$utilisateur_trouve=tableau_sql($utilisateur_res);
 				foreach($utilisateur_trouve as $key => $value) {
 					if (!is_numeric($key)) $this->$key=$value;
 				}
+				//Test du mot de passe
 		        if ($this->motpasse==$motdepasse_crypte && $this->activation==1) {		        	
+					//L'utilisateur est reconnu et correcte
+					//Mise a jour de sa derniere date de connexion
 					$this->datederniereconnection=time();
 		        	$sql1="UPDATE $this->table SET datederniereconnection=$this->datederniereconnection WHERE $this->champ_identifiant=".$this->identifiant().";";
 					$res1=requete_sql($sql1);
@@ -113,7 +130,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					while ($auteur=tableau_sql($resauteur))
 					{
 						//Creation d'une variable temporaire de classe theme :
-						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+						require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
 						$vtemptheme=new theme($auteur['idtheme_rel']);
 						$this->idtheme_auteur[]=$auteur['idtheme_rel'];
 						foreach($vtemptheme->liste_fils_arbo as $idthemefils)
@@ -147,7 +164,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					}
 					
 					//Recherche des themes favoris de l'utilisateur :
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme_favori.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.theme_favori.php');
 					$vtemptheme_fav=new theme_favori();
 					$sqlidtheme_favori_utilisateur="SELECT idtheme_rel FROM $vtemptheme_fav->table WHERE idutilisateur_rel=".$this->identifiant()." AND visible='1';";
 					$residtheme_favori_utilisateur=requete_sql($sqlidtheme_favori_utilisateur);
@@ -158,11 +175,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				}
 				
 		        elseif ($this->motpasse!=$motdepasse_crypte) {
-			        $this->admin = "0";
+			        //Mot de passe errone
+					$this->admin = "0";
 					$this->_testauthentification = 0;
 		        }
 		        elseif ($this->activation!=1) {
-			        $this->admin = "0";
+			        //Mot de passe juste mais compte non active
+					$this->admin = "0";
 					$this->_testauthentification = 1;
 		        }
 			}
@@ -173,7 +192,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 		{
 			// Mot de passe crypte :
 	 		$this->setmotpasse($this->motpasse);
-
+			
 			if ((!isset($this->_testauthentification) || $this->_testauthentification=="")) 
 	 		{
 	 			$this->_testauthentification = 1;
@@ -182,10 +201,8 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	 		{
 	 			$this->datecreation=time();
 	 		}
-	 		
-			
 		}
-
+		
 	    // Recherche de l'utilisateur par son identifiant (quatrieme argument uniquement) :
 		if (!isset($compte_arg) && !isset($motdepasse_arg) && !isset($this->tableau_arguments) && isset($id))
 		{
@@ -206,7 +223,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					$this->idtheme_auteur[]=$auteur['idtheme_rel'];
 				}
-
+				
 				//Recherche des themes dont l'utilisateur est correcteur :
 				$sqlcorrecteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1' AND correcteur='1';";
 				$rescorrecteur=requete_sql($sqlcorrecteur);
@@ -214,8 +231,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					$this->idtheme_correcteur[]=$correcteur['idtheme_rel'];
 				}
-	
-
+				
 				//Recherche des questions dont l'utilisateur est auteur :
 				$sqlquestauteur="SELECT idquestion FROM $this->table_question WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1 ORDER BY idquestionnaire_rel ASC, ordre ASC;";
 				$resquestauteur=requete_sql($sqlquestauteur);
@@ -223,7 +239,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					$this->idquestion_auteur[]=$questauteur['idquestion'];
 				}
-
+				
 				//Recherche des questionnaires dont l'utilisateur est auteur :
 				$sqlquestionnaireauteur="SELECT idquestionnaire FROM $this->table_questionnaire WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1;";
 				$resquestionnaireauteur=requete_sql($sqlquestionnaireauteur);
@@ -231,25 +247,135 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				{
 					$this->idquestionnaire_auteur[]=$questionnaireauteur['idquestionnaire'];
 				}
+				
+				//Recherche des themes favoris de l'utilisateur :
+				require_once($adresserepertoiresite.'/scripts/php/class.theme_favori.php');
+				$vtemptheme_fav=new theme_favori();
+				$sqlidtheme_favori_utilisateur="SELECT idtheme_rel FROM $vtemptheme_fav->table WHERE idutilisateur_rel=".$this->identifiant()." AND visible='1';";
+				$residtheme_favori_utilisateur=requete_sql($sqlidtheme_favori_utilisateur);
+				while($idtheme_favori_utilisateur=tableau_sql($residtheme_favori_utilisateur))
+				{
+					$this->idtheme_favori_utilisateur[]=$idtheme_favori_utilisateur['idtheme_rel'];
+				}
 			}
 		}
 		
+		// Recherche de l'utilisateur par son identifiant (quatrieme argument uniquement) :
+		if (isset($compte_arg) && !isset($motdepasse_arg) && !isset($this->tableau_arguments) && !isset($id) && isset($motdepasse_crypte_arg))
+		{
+	 		// Mot de passe crypte :
+	 		$motdepasse_crypte=$motdepasse_crypte_arg;
+			
+			// Recherche du compte :
+			$sql="SELECT * FROM $this->table WHERE compte='$compte_arg' AND visible='1'";
+			$utilisateur_res=requete_sql($sql);
+			$qte=compte_sql($utilisateur_res);
+			if ($qte==0) {
+				// Compte inexistant
+				$this->compte = $compte_arg; 
+		        $this->motpasse = $motdepasse_crypte;
+		        $this->validation = "0";
+		        $this->admin = "0";
+		        $this->_testauthentification = -1; 
+			}
+			else 
+			{
+				//Le compte existe
+				//Initialisation de l'utilisateur
+				$utilisateur_trouve=tableau_sql($utilisateur_res);
+				foreach($utilisateur_trouve as $key => $value) {
+					if (!is_numeric($key)) $this->$key=$value;
+				}
+				//Test du mot de passe
+		        if ($this->motpasse==$motdepasse_crypte && $this->activation==1) {		        	
+					//L'utilisateur est reconnu et correcte
+					//Mise a jour de sa derniere date de connexion
+					$this->datederniereconnection=time();
+		        	$sql1="UPDATE $this->table SET datederniereconnection=$this->datederniereconnection WHERE $this->champ_identifiant=".$this->identifiant().";";
+					$res1=requete_sql($sql1);
+					$this->_testauthentification = 2;
+					
+					//Recherche des themes dont l'utilisateur est auteur :
+					$sqlauteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1';";
+					$resauteur=requete_sql($sqlauteur);
+					while ($auteur=tableau_sql($resauteur))
+					{
+						//Creation d'une variable temporaire de classe theme :
+						require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
+						$vtemptheme=new theme($auteur['idtheme_rel']);
+						$this->idtheme_auteur[]=$auteur['idtheme_rel'];
+						foreach($vtemptheme->liste_fils_arbo as $idthemefils)
+						{
+							$this->idtheme_auteur[]=$idthemefils['idtheme'];
+						}
+					}
+					
+					//Recherche des themes dont l'utilisateur est correcteur :
+					$sqlcorrecteur="SELECT idtheme_rel FROM $this->table_auteur WHERE idutilisateur_rel=".$this->identifiant()." AND visible=1 AND validation='1' AND correcteur='1';";
+					$rescorrecteur=requete_sql($sqlcorrecteur);
+					while ($correcteur=tableau_sql($rescorrecteur))
+					{
+						$this->idtheme_correcteur[]=$correcteur['idtheme_rel'];
+					}
+					
+					//Recherche des questions dont l'utilisateur est auteur :
+					$sqlquestauteur="SELECT idquestion FROM $this->table_question WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1 ORDER BY idquestionnaire_rel ASC, ordre ASC;";
+					$resquestauteur=requete_sql($sqlquestauteur);
+					while($questauteur=tableau_sql($resquestauteur))
+					{
+						$this->idquestion_auteur[]=$questauteur['idquestion'];
+					}
+					
+					//Recherche des questionnaires dont l'utilisateur est auteur :
+					$sqlquestionnaireauteur="SELECT idquestionnaire FROM $this->table_questionnaire WHERE idutilisateur_auteur_rel=".$this->identifiant()." AND visible=1;";
+					$resquestionnaireauteur=requete_sql($sqlquestionnaireauteur);
+					while($questionnaireauteur=tableau_sql($resquestionnaireauteur))
+					{
+						$this->idquestionnaire_auteur[]=$questionnaireauteur['idquestionnaire'];
+					}
+					
+					//Recherche des themes favoris de l'utilisateur :
+					require_once($adresserepertoiresite.'/scripts/php/class.theme_favori.php');
+					$vtemptheme_fav=new theme_favori();
+					$sqlidtheme_favori_utilisateur="SELECT idtheme_rel FROM $vtemptheme_fav->table WHERE idutilisateur_rel=".$this->identifiant()." AND visible='1';";
+					$residtheme_favori_utilisateur=requete_sql($sqlidtheme_favori_utilisateur);
+					while($idtheme_favori_utilisateur=tableau_sql($residtheme_favori_utilisateur))
+					{
+						$this->idtheme_favori_utilisateur[]=$idtheme_favori_utilisateur['idtheme_rel'];
+					}
+				}
+		        elseif ($this->motpasse!=$motdepasse_crypte) {
+			        //Mot de passe errone
+					$this->admin = "0";
+					$this->_testauthentification = 0;
+		        }
+		        elseif ($this->activation!=1) {
+			        //Mot de passe juste mais compte non active
+					$this->admin = "0";
+					$this->_testauthentification = 1;
+		        }
+			}
+		}
     }
     
     // Definition des methodes
      
     // Fonction de calcul du mot de passe crypte a partir de mot de passe en clair 
     function setmotpasse($motdepasse) { 
-        $this->motpasse = substr(MD5($motdepasse),0,20); 
+        $this->motpasse = substr(MD5($motdepasse),0,20);
     } 
 
 	// Fonction qui renvoie le message d'authentification
-    // returns: -1 	le compte n existe pas 
-    //          0 	le compte existe mais le mot de passe est incorrect
-    //			1 	le compte existe mais n est pas active
-    //          2 	compte et mot de passe sont correctes 
+    // 	returns:
+	//	-1	le compte n existe pas 
+    //       0	le compte existe mais le mot de passe est incorrect
+    //	1	le compte existe mais n est pas active
+    //	2	compte et mot de passe sont correctes 
     function authentification() { 
-        if ($this->_testauthentification==-1)
+        //Declaration des variables :
+		global $page_index;
+		
+		if ($this->_testauthentification==-1)
         {
         	$this->message_connexion=_COMPTE_INEXISTANT;
         }
@@ -264,12 +390,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
         if ($this->_testauthentification==2)
         {
 	        $this->message_connexion=_AUTHENTIFICATION_OK_SOUS_1
-	        .$this->prenom." ".$this->nom
+	        .$this->pseudonyme. " (".$this->prenom." ".$this->nom.")"
 	        ._AUTHENTIFICATION_OK_SOUS_2
-	        ."<a href=\"http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."?deco=1\" title=\""._AUTHENTIFICATION_OK_TITLE_DECO."\" accesskey=\"i\" onclick=\"deleteCookie('compte','','');\">"
+	        ."<a href=\"".$page_index."?deco=1\" title=\""._AUTHENTIFICATION_OK_TITLE_DECO."\" accesskey=\"i\" onclick=\"deleteCookie('compte','','');\">"
 			._AUTHENTIFICATION_OK_SOUS_3."</a>"
 			._AUTHENTIFICATION_OK_SOUS_4
-			.$this->nom
+			.$this->pseudonyme
 			._AUTHENTIFICATION_OK_SOUS_5;
         }
         return $this->message_connexion;
@@ -278,8 +404,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     //complement sur la methode objet::enregistrer
     function enregistrer() 
     {
+		//Declaration des variables :
+		global $adresserepertoiresite;
+		global $adressehttpsite;
+		
     	//chargement des regles pour la creation de compte :
- 		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+ 		require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
  		
 		$activation_par_mail=new regle(0,"Activation_par_mail");
     	
@@ -295,11 +425,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     		if ($activation_par_mail->valeur==1) 
     		{
     			$destinataire=$this->email;
-    			$sujet=_SUJET_MAIL_CREATION_COMPTE;
-    			$message=_MESSAGE_MAIL_CREATION_COMPTE;
-    			$message.=" <a href=\"http://".$_SERVER['HTTP_HOST']
-				.dirname($_SERVER['PHP_SELF'])."compte.php?I=".$id."&act=".MD5($this->datecreation)."\">"._LIEN_ACTIVATION_COMPTE_UTILISATEUR."</a>";
-    			 mail($destinataire,$sujet, $message,"From: QCM@$SERVER_NAME\nX-Mailer: PHP/" . phpversion());
+    			$sujet = _SUJET_MAIL_CREATION_COMPTE;
+				$from = "From: QCM@$SERVER_NAME\n";
+				$from .= "X-Mailer: PHP/" . phpversion();
+				$from .= "MIME-version: 1.0\n";
+				$from .= "Content-type: text/html; charset= utf-8\n";
+    			$message = _MESSAGE_MAIL_CREATION_COMPTE;
+    			$message .= " <a href=\"".$adressehttpsite."compte.php?I=".$id."&act=".MD5($this->datecreation)."\">"._LIEN_ACTIVATION_COMPTE_UTILISATEUR."</a>";
+    			 mail($destinataire,$sujet, $message,$from);
        			$this->message.=_UN_MAIL_DE_CONFIRMATION_VOUS_A_ETE_ENVOYE;
        			$this->message.=_L_ACTIVATION_S_EFFECTUE_GRACE_AU_MAIL_DE_CONFIRMATION;
     		}
@@ -333,6 +466,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	// Definition des variables globales :
     	global $prefixe;
     	global $page_question;
+    	global $adresserepertoiresite;
     	
 		// Definition des tables :
 		$table_question=$prefixe."_question";
@@ -362,7 +496,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					echo "<tr><td><a href=\"".$page_question."?i=".$auteur['idquestion']."\">"._MODIFIER."</a></td><td><a href=\"".$page_question."?i=".$auteur['idquestion']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 					
 					$format_date=new regle("0","format_date");
 					
@@ -405,6 +539,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	global $prefixe;
     	global $page_questionnaire;
 		global $trad_SQL;
+		global $adresserepertoiresite;
     	
 		// Definition des tables :
 		$table_questionnaire=$prefixe."_questionnaire";
@@ -433,7 +568,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					echo "<tr><td><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."\">"._MODIFIER."</a></td><td><a href=\"".$page_questionnaire."?i=".$auteur['idquestionnaire']."&amp;suppression=1 \">"._SUPPRIMER."</a></td>";
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 					$format_date=new regle("0","format_date");
 					
 					if ($auteur['datevalidation']=="0") echo "<td>"._NON_TRAITEE.$auteur['validation']."</td><td>&nbsp;</td>";

@@ -7,16 +7,18 @@
  * Description :  include d'un theme avec listing des themes fils, le nombre de questionnaires par theme et listing des questionnaires pour le theme selectionne
  *
  */
-//
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
 if(!headers_sent())
 {
 	//chargement de la librairie commune :
-	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+	require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 }
 
 //chargement des definitions des classes utilisees
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
+require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 
 //intialisation des variables :
 $vlien_theme_pere="";
@@ -92,7 +94,7 @@ if ($activation_AJAX->valeur=="1")
 		if ($activation_AJAX->valeur=="1")
 		{
 			?>
-			new Ajax.Updater('module', 'include.theme_liste.php?t='+vt, 
+			new Ajax.Updater('module', 'include.theme_liste.php?t='+vt+'&tt='+vt, 
 			{ 
 				method: 'get',
 				contentType : 'text/html',
@@ -112,6 +114,7 @@ if ($activation_AJAX->valeur=="1")
 		{
 			?>
 			document.getElementById('theme_list_form').t.value=vt;
+			document.getElementById('theme_list_form').tt.value=vt;
 			document.getElementById('theme_list_form').submit();
 			<?
 		}

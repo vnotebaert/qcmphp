@@ -24,6 +24,9 @@
 						<div id="motdepasse_cadre">
 							<span><? echo _MOT_DE_PASSE; ?></span><input type="password" name="motdepasse" id="motdepasse" size="10" />
 						</div>
+						<div id="connexionautomatique_cadre">
+							<span><? echo _CONNEXION_AUTOMATIQUE; ?></span><input type="checkbox" name="connexionautomatique" id="connexionautomatique" size="10" />
+						</div>
 						<div class="bouton_cadre">
 							<input type="submit" value="<? echo _BOUTON_OK; ?>" />
 						</div>
@@ -36,8 +39,10 @@
 					{
 						if (in_array($utilisateur_connecte->_testauthentification,array(2,1)) && $utilisateur_connecte->avatarurl!="") 
 						{
-							//chargement de l'environnement pour la fonction de balise image :
-							require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.environnement.php');
+							//chargement de l'environnement pour la fonction de balise image :require_once('/conf.site.inc.php');
+							global $adresserepertoiresite;
+							global $adressehttpsite;
+							require_once($adresserepertoiresite.'/scripts/php/class.environnement.php');
 							$toto = new environnement();
 							$toto->image($utilisateur_connecte->avatarurl,"","avatar");
 						}?>

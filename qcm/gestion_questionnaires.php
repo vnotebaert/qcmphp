@@ -11,7 +11,10 @@
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
 //chargement de la definition du type de document HTML
 include("include.HTML.html_definition.php");
@@ -32,9 +35,9 @@ include("include.HTML.html_definition.php");
 	</div>
 	<div id="espaceprincipal">
 		<div id="module"><!-- Debut module --><?
-			require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.questionnaire.php');
-			require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-			require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.champ.php');
+			require_once($adresserepertoiresite.'/scripts/php/class.questionnaire.php');
+			require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+			require_once($adresserepertoiresite.'/scripts/php/class.champ.php');
 			
 			if (isset($_POST['identifiant']) && isset($_POST["validation"])) 
 			{

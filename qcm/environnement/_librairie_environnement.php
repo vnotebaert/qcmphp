@@ -9,12 +9,16 @@
  */
 
 /*Fichier de configuration*/
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.inc.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.connection.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_fonctions_sql.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/traduction.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require($adresserepertoiresite.'/environnement/conf.inc.php');
+require_once($adresserepertoiresite.'/environnement/conf.connection.php');
+require_once($adresserepertoiresite.'/environnement/_fonctions_sql.php');
+require_once($adresserepertoiresite.'/environnement/traduction.php');
+
 //Chargement de la classe utilisateur:
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF'])."/scripts/php/class.utilisateur.php");
+require_once($adresserepertoiresite."/scripts/php/class.utilisateur.php");
 
 /*Declaration des variables globales */
 global $langue;
@@ -23,6 +27,8 @@ global $utilisateur_connecte;
 /*Declaration des pages globales */
 global $page_a_propos;
 $page_a_propos="a_propos.php";
+global $page_index;
+$page_index="index.php";
 global $page_questionnaire;
 $page_questionnaire="gestion_questionnaires.php";
 global $page_question;
@@ -44,48 +50,36 @@ if ((isset($_GET['deco']) && $_GET['deco']==1) || (isset($_POST['deco']) && $_PO
 	// Detruit toutes les variables de session
 	session_unset();
 	$_SESSION=array();
-	// Finalement, d&eacute;truit la session
+	// Finalement, detruit la session
 	session_destroy();
+	//on detruit tout les cookies possibles :
+	setcookie("PHPSESSID","",time()-360000);
+	setcookie("compte_qcm","",time()-360000);
+	setcookie("motdepasse_qcm","",time()-360000);
+	$_COOKIE["PHPSESSID"]=="";
+	unset($_COOKIE["PHPSESSID"]);
+	$_COOKIE["compte_qcm"]=="";
+	unset($_COOKIE["compte_qcm"]);
+	$_COOKIE["motdepasse_qcm"]=="";
+	unset($_COOKIE["motdepasse_qcm"]);
+	
 	// Redirection
-	if (dirname($_SERVER['PHP_SELF'])!="")
-	{
-		header("Location: http://".$_SERVER['HTTP_HOST']
-		.dirname($_SERVER['PHP_SELF'])
-		."/index.php");
-	}
-	else
-	{
-		header("Location: http://".$_SERVER['HTTP_HOST']
-		.dirname($_SERVER['PHP_SELF'])
-		."index.php");	
-	}
+	header("Location: ".$adressehttpsite
+	."index.php");
 }
 
 /*Gestion de la langue*/
 session_start();
 
 //Redirection si aucune langue :
-if(!isset($langue)) 
+if(!isset($langue))
 {
 	$langue=$_COOKIE['langue'];
 	if($langue=="null" || $langue=="") 
 	{
 		$langue=$langue_par_defaut;
 	}
-	if (dirname($_SERVER['PHP_SELF'])!="")
-	{
-		header("Location: http://".$_SERVER['HTTP_HOST']
-		.dirname($_SERVER['PHP_SELF'])
-		."/index.php?langue="
-		.$langue);
-	}
-	else
-	{
-		header("Location: http://".$_SERVER['HTTP_HOST']
-		.dirname($_SERVER['PHP_SELF'])
-		."index.php?langue="
-		.$langue);
-	}
+
 	$_SESSION['langue']=$langue;
 }
 //Modification de la langue si post
@@ -101,16 +95,46 @@ fichier_langue();
 /*Gestion de l'utilisateur*/
 $utilisateur_connecte="";
 
-if ((isset($_POST["compte"]) && isset($_POST["motdepasse"])) || isset($_SESSION['utilisateur'])) {
+if ((isset($_POST["compte"]) && isset($_POST["motdepasse"])) || 
+isset($_SESSION['utilisateur']) || 
+(isset($_COOKIE["motdepasse_qcm"]) && isset($_COOKIE["compte_qcm"]))) 
+{
 	if (isset($_POST["compte"]) && isset($_POST["motdepasse"]))
 	{
 		$utilisateur_connecte= new utilisateur($_POST["compte"],$_POST["motdepasse"]);
 		//Si l'utilisateur est authentifie on le stocke dans la session :
-		if ($utilisateur_connecte->_testauthentification==2) $_SESSION['utilisateur']=serialize($utilisateur_connecte);
+		if ($utilisateur_connecte->_testauthentification==2) 
+		{
+			$_SESSION['utilisateur']=serialize($utilisateur_connecte);
+			if (isset($_POST["connexionautomatique"]))
+			{
+				$utilisateur_connecte->connexionautomatique="1";
+				setcookie("compte_qcm",$_POST["compte"],time()+360000);
+				setcookie("motdepasse_qcm",substr(MD5($_POST["motdepasse"]),0,20),time()+360000);
+			}
+			else
+			{
+				$utilisateur_connecte->connexionautomatique="0";
+			}
+			$utilisateur_connecte->enregistrer();
+		}
 	}
-	else 
+	elseif (isset($_SESSION['utilisateur']))
 	{
 		$utilisateur_connecte=unserialize($_SESSION['utilisateur']);
+	}
+	elseif (isset($_COOKIE["motdepasse_qcm"]) && isset($_COOKIE["compte_qcm"]))
+	{
+		$utilisateur_connecte= new utilisateur($_COOKIE["compte_qcm"],0,"","",$_COOKIE["motdepasse_qcm"]);
+		//Si l'utilisateur est authentifie on le stocke dans la session :
+		if ($utilisateur_connecte->_testauthentification==2) 
+		{
+			$_SESSION['utilisateur']=serialize($utilisateur_connecte);
+		}
+	}
+	else
+	{
+		//rien a faire...
 	}
 }
 global $idutilisateur;

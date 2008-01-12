@@ -7,10 +7,13 @@
  * Description : image png de l'arborescence des themes
  * 
  */
- if(!headers_sent())
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+if(!headers_sent())
 {
 	//chargement de la librairie commune :
-	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+	require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 }
 global $langue;
 
@@ -50,7 +53,7 @@ $vpolice=2;
 imagefill($im,0,0,$couleur_fond);
 
 //calcul du score sur le questionnaire
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.questionnaire.php');
+require_once($adresserepertoiresite.'/scripts/php/class.questionnaire.php');
 $questionnaire = new questionnaire($_GET["i"]);
 $score=$questionnaire->score_qcm();
 

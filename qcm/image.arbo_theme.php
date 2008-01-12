@@ -8,11 +8,14 @@
  * 
  */
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 global $langue;
 
 //creation d'une variable temporaire de classe theme :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
 
 $vtemp=new theme();
 

@@ -37,6 +37,7 @@ define (_A_PROPOS_TITLE,"&Agrave; propos AccessKey: a");
 define (_A_PROPOS_LINK,"<span class=\"accesskey\">&Agrave;</span> propos");
 define (_ADMINISTRATION_TITLE,"Administration des utilisateurs et des r&egrave;gles");
 define (_ADMINISTRATION_LINK,"Administration");
+define (_CONNEXION_AUTOMATIQUE,"Connexion automatique : ");
 
 
 // page a_propos //

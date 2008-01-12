@@ -9,7 +9,11 @@
  * 
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
  class environnement
 {
@@ -25,9 +29,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
     	//initialisation des variables globales:
 		global $langue;
 		global $page_theme;
+		global $adresserepertoiresite;
+		global $adressehttpsite;
 		
 		//Creation d'une variable temporaire de classe theme :
-    	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+    	require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
 		
 		if ($idpere==0 || !isset($idpere)) 
 		{
@@ -130,12 +136,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 	    //initialisation des variables globales:
 		global $langue;
 		global $idutilisateur;
+		global $adresserepertoiresite;
     	
 		//Creation de variables temporaires:
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.questionnaire.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.questionnaire.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
 		
     	$vtemp= new question();
 		$vquestionnaire= new questionnaire();
@@ -158,13 +165,14 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 	{
 	    //initialisation des variables globales :
 		global $langue;
+		global $adresserepertoiresite;
 		
 		//initialisation des variables :
 		$pere_prec=0;
 		$taille_prec=0;
     	
 		//Creation d'une variable temporaire de classe theme :
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
 		
 		$vtemp=new theme();
 		
@@ -215,7 +223,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			}
 		}
 		//mise a jour de la bornegauche des themes 
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 		
 		$ordre_tri= new regle("0","tri_theme");
 		for($i=0;$i<$niveaumax+1;$i++) 
@@ -269,9 +277,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
     {
     	//initialisation des variables globales:
 		global $langue;
+		global $adresserepertoiresite;
 		
 		//Creation d'une variable temporaire de classe theme :
-    	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.utilisateur.php');
+    	require_once($adresserepertoiresite.'/scripts/php/class.utilisateur.php');
 	}
 	
 	// image

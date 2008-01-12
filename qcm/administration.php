@@ -11,7 +11,12 @@
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+
+//chargement de la definition du type de document HTML
 include("include.HTML.html_definition.php");
 ?>
 <head>
@@ -30,7 +35,7 @@ include("include.HTML.html_definition.php");
 			{
 				if ($_GET["zip"]=="1" || $_POST["zip"]=="1")
 				{
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.zip.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.zip.php');
 					$interdit=array("CVS","SVN",".svn","svn");
 					$filtre=array("db","bac","tmp","zip","project","index");
 					$zipTest = new zipfile();
@@ -54,7 +59,8 @@ include("include.HTML.html_definition.php");
 						<li><a href="index.php" title="<? echo _RETOUR_ACCUEIL_TITLE; ?>" accesskey="a"><? echo _RETOUR_ACCUEIL_LINK;?></a>&nbsp;</li>
 					</ul>
 				</div>
-				<? include("include.authentification.php"); ?><? include("include.langue_selection.php"); ?>
+				<? include("include.authentification.php"); ?>
+				<? include("include.langue_selection.php"); ?>
 				<? include("include.statistiques.php"); ?>
 	<? include("include.listefonction.fin.php"); ?>
 </div>

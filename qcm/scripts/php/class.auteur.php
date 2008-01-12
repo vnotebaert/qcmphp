@@ -8,8 +8,12 @@
  * 
  */
  
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
 
   class auteur extends objet
 {
@@ -134,12 +138,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				<?
 			}
 			?>
-			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
-				<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
+			<form action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
 				<div class="intitule_champ"><span><? echo _VALIDATION; ?> :</span></div>
 				<div class="champ"><input type="text" readonly="READONLY" disabled="DISABLED" size="1" value="<? echo $this->validation; ?>" />
 				</div>
 				<div class="bouton_cadre">
+					<input type="hidden" name="identifiant" value="<? echo $this->identifiant; ?>" />
 				<?
 				if (isset($this->validation))
 				{

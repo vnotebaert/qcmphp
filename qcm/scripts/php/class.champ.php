@@ -8,8 +8,12 @@
  * 
  */
  
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
 
  class champ extends objet
 {
@@ -23,7 +27,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     var $valeur_par_defaut;
     var $extra;
     var $champ_saisie;
-     
+	     
     // Constructeur 
     function champ($nom_champ,$classe,$valeur_champ)
     {
@@ -32,7 +36,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     	global $utilisateur_connecte;
 		global $langue;
 		global $trad_SQL;
-    	
+    	global $adresserepertoiresite;
+		global $adressehttpsite;
+		
 		// Definition de(s) table(s) :
  		$this->table=$prefixe."_".$classe;
  		
@@ -69,7 +75,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    			$chaine=explode("_", $this->nom_champ);
 	    			$chaine=substr($chaine[0],2);
 	    			$this->table_relation=$prefixe."_".$chaine;
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 					
 					$champ_liste_choix= new regle("0","liste_".substr($this->table_relation,4));
 	    			$this->relation_champ=explode("|",$champ_liste_choix->valeur);
@@ -117,7 +123,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    	//Nombre entre - Note_max et Note_max  :
 			elseif ($type[0]=="tinyint")
 	    	{
-				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+				require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 	    		$valeur_max_tinyint= new regle("0","Note_max");
 				$this->champ_saisie="<select name=\"$this->nom_champ\">";
 	    		for ($compteur = -$valeur_max_tinyint->valeur; $compteur <= $valeur_max_tinyint->valeur; $compteur++) 
@@ -210,7 +216,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	    		//Calcul de la requete a effectuer sur la table en relation :
 	    		$requete="select * FROM $this->table_relation WHERE visible='1'";
 	    		//Gestion des droits pour certains champs connus :
-				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+				require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 				
 				$ordre_tri= new regle("0","tri_theme");
 				$caractere_separateur= new regle("0","premier_caractere_arbo_theme");

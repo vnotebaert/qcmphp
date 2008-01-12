@@ -7,18 +7,22 @@
  * Description :  include d'un theme avec listing des themes fils, le nombre de questionnaires par theme et listing des questionnaires pour le theme selectionne
  *
  */
-//
+
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
 if(!headers_sent())
 {
 	//chargement de la librairie commune :
-	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+
+	require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 }
 
 if (isset($utilisateur_connecte->identifiant))
 {
 	//chargement des definitions des classes utilisees
-	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme_favori.php');
-	require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+	require_once($adresserepertoiresite.'/scripts/php/class.theme_favori.php');
+	require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 	$vthemefavori= new theme_favori();
 
 	//ajout du theme selectionne dans la liste des favoris :
@@ -34,27 +38,30 @@ if (isset($utilisateur_connecte->identifiant))
 		$sqlrequeteretirerthemfav_result=requete_sql($sqlrequeteretirerthemfav);
 	}
 	
-	//recherche du theme dans la liste des favoris :
-	$sqlrecherchethemfav="SELECT * FROM $vthemefavori->table WHERE visible='1' AND idtheme_rel='".$_GET["tt"]."' and idutilisateur_rel='".$idutilisateur."';";
-	$sqlrecherchethemfav_result=requete_sql($sqlrecherchethemfav);
-	$presencetheme=0;
-	if (compte_sql($sqlrecherchethemfav_result)>0)
+	if (isset($_GET["t"]))
 	{
-		$presencetheme=1;
-	}
-	?>
-	<div id="ajouter_theme_favori">
-		<?
-		if ($presencetheme==0)
+		//recherche du theme dans la liste des favoris :
+		$sqlrecherchethemfav="SELECT * FROM $vthemefavori->table WHERE visible='1' AND idtheme_rel='".$_GET["t"]."' and idutilisateur_rel='".$idutilisateur."';";
+		$sqlrecherchethemfav_result=requete_sql($sqlrecherchethemfav);
+		$presencetheme=0;
+		if (compte_sql($sqlrecherchethemfav_result)>0)
 		{
-			echo "<span class=\"ajouter\"  title=\""._AJOUTER_THEME_AUX_FAVORIS."\" onclick=\"ajout_theme_favori(".$_GET["t"].")\">[+]</span>\n";
-		}
-		else
-		{
-			echo "<span class=\"retirer\"  title=\""._RETIRER_THEME_DES_FAVORIS."\" onclick=\"retirer_theme_favori(".$_GET["t"].")\">[-]</span>\n";
+			$presencetheme=1;
 		}
 		?>
-	</div>
-	<?
+		<div id="ajouter_theme_favori">
+			<?
+			if ($presencetheme==0)
+			{
+				echo "<span class=\"ajouter\"  title=\""._AJOUTER_THEME_AUX_FAVORIS."\" onclick=\"ajout_theme_favori(".$_GET["t"].")\">[+]</span>\n";
+			}
+			else
+			{
+				echo "<span class=\"retirer\"  title=\""._RETIRER_THEME_DES_FAVORIS."\" onclick=\"retirer_theme_favori(".$_GET["t"].")\">[-]</span>\n";
+			}
+			?>
+		</div>
+		<?
+	}
 }
 ?>

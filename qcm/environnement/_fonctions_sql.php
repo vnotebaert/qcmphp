@@ -3,7 +3,10 @@
 function connection_sql($host,$login,$password) {
 
 //configuration de la connection
-require($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.inc.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require($adresserepertoiresite.'/environnement/conf.inc.php');
 
 $connect=mysql_connect($host,$login,$password);
 return $connect;
@@ -14,7 +17,10 @@ return $connect;
 function db_selection_sql($base) {
 
 //configuration de la connection
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.inc.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require($adresserepertoiresite.'/environnement/conf.inc.php');
 
 return mysql_select_db($base);;
 } 
@@ -24,8 +30,11 @@ return mysql_select_db($base);;
 function requete_sql($sql) {
 
 	//configuration de la connection
-	require($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.inc.php');
-	require($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/conf.connection.php');
+	require_once('/conf.site.inc.php');
+	global $adresserepertoiresite;
+	global $adressehttpsite;
+	require($adresserepertoiresite.'/environnement/conf.inc.php');
+	require($adresserepertoiresite.'/environnement/conf.connection.php');
 	global $connect;
 	
 	if (! $res=mysql_query($sql,$connect)) {

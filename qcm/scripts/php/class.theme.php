@@ -8,8 +8,12 @@
  * 
  */
  
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
 
 
  class theme extends objet
@@ -114,7 +118,10 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 	//nombre de questionnaire d'une theme
     function nb_questionnaire()
     {
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.questionnaire.php');
+		//Declaration des variables :
+		global $adresserepertoiresite;
+		
+		require_once($adresserepertoiresite.'/scripts/php/class.questionnaire.php');
 		$vtempquestionnaire = new questionnaire();
 		$vnb_questionnaire="";
 		$count_questionnaire_sql=requete_sql("SELECT SUM(T3.titre IS NOT NULL) AS nombrefils_arbo, SUM(T1.idtheme=T3.idtheme_rel) AS nombrefils_direct
@@ -134,8 +141,9 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
 		//declaration des variables :
 		global $page_affichage_questionnaire;
+		global $adresserepertoiresite;
 		
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.questionnaire.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.questionnaire.php');
 		$vtempquestionnaire = new questionnaire();
 		
 		$requete_sql="SELECT *

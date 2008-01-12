@@ -11,7 +11,10 @@
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
 //chargement de la definition du type de document HTML
 include("include.HTML.html_definition.php");
@@ -34,9 +37,9 @@ include("include.HTML.html_definition.php");
 		<div id="module"><!-- Debut module --><?
 			if ($utilisateur_connecte->admin=="1")
 			{
-				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.theme.php');
-				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.champ.php');
-				require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.environnement.php');
+				require_once($adresserepertoiresite.'/scripts/php/class.theme.php');
+				require_once($adresserepertoiresite.'/scripts/php/class.champ.php');
+				require_once($adresserepertoiresite.'/scripts/php/class.environnement.php');
 				
 				if (isset($_POST['identifiant'])) 
 				{
