@@ -11,7 +11,10 @@
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
 //chargement de la definition du type de document HTML
 include("include.HTML.html_definition.php");
@@ -54,7 +57,6 @@ include("include.HTML.html_definition.php");
 			</div>
 			<? include("include.authentification.php"); ?>
 			<? include("include.langue_selection.php"); ?>
-			<? include("include.theme_favori_selection.php"); ?>
 			<? include("include.statistiques.php"); ?>
 	<? include("include.listefonction.fin.php"); ?>
 </div>

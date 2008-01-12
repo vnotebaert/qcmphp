@@ -8,7 +8,11 @@
  * 
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
   class objet 
 {
@@ -377,7 +381,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environne
 			}
 			?></span></h3>
 				<div id="creation_<? echo $this->classe; ?>_cadre">
-					<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_<? echo $this->classe; ?>">
+					<form action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_<? echo $this->classe; ?>">
 					<?
 					foreach($this->champs_formulaire as $champ)
 					{

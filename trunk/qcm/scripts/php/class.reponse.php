@@ -8,7 +8,11 @@
  * 
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
 
 
  class reponse extends objet 

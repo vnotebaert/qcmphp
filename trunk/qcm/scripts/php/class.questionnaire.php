@@ -8,9 +8,13 @@
  * 
  */
  
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
+require_once($adresserepertoiresite.'/scripts/php/class.question.php');
  
 
  class questionnaire extends objet
@@ -165,7 +169,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 			?>
 			//-->
 			</script>
-			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
+			<form action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
 				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
 				<div class="champ">
 					<textarea rows ="5" cols="100" id="validation_texte" name="texte_validation"><?
@@ -190,8 +194,11 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     function liste_questions()
     {
     	//chargement de la librairie commune :
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-
+		require_once('/conf.site.inc.php');
+		global $adresserepertoiresite;
+		global $adressehttpsite;
+		require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+		
     	// Declaration des variables :
     	global $utilisateur_connecte;
     	global $page_question;
@@ -258,7 +265,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 					//fin cellule
 					//Gestion de l'affichage de la validation :
 					//chargement des regles pour le format des dates :
-					require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+					require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 					
 					$format_date=new regle("0","format_date");
 					
@@ -278,11 +285,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
     	// Declaration des variables:
     	global $idutilisateur;
+		global $adresserepertoiresite;
 
     	// Recherche de la nieme question pour laquelle l'utilisateur n'a pas encore repondu:
 		//Creation de variables temporaires:
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
 		
     	$vtemp= new question();
 		$vquestionnaire= $this;
@@ -302,11 +310,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
     	// Declaration des variables:
     	global $idutilisateur;
+		global $adresserepertoiresite;
 		
 		// Recherche de la nieme question pour laquelle l'utilisateur n'a pas encore repondu:
 		//Creation de variables temporaires:
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
 		
     	$vtemp= new question();
 		$vquestionnaire= $this;
@@ -327,6 +336,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
     	// Declaration des variables:
     	global $idutilisateur;
+		global $adresserepertoiresite;
 		
 		//En tete du QCM :
 		?>
@@ -371,15 +381,15 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				?>
 				//-->
 			</script>
-			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_qcm">
+			<form action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_qcm">
 	    		<div class="fielset">
 					<fieldset><legend><? echo($this->titre); ?></legend>
 						<div id="intitule_questionnaire">
 							<? echo $this->intitule ;?>
 						</div><?
 						//Creation de variables temporaires:
-						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
+						require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+						require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
 						
 				    	$vtemp= new question();
 						$vreponse= new reponse();
@@ -490,11 +500,12 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     {
     	// Declaration des variables:
     	global $idutilisateur;
+		global $adresserepertoiresite;
 
 		//Creation de variables temporaires:
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.question.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.choix.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.question.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
+		require_once($adresserepertoiresite.'/scripts/php/class.choix.php');
 		
     	$vquestion= new question();
 		$vreponse= new reponse();

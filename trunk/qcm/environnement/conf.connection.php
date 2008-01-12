@@ -7,8 +7,11 @@
  */
 
 //chargement de la configuration
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF'])."/environnement/conf.inc.php");
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF'])."/environnement/_fonctions_sql.php");
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite."/environnement/conf.inc.php");
+require_once($adresserepertoiresite."/environnement/_fonctions_sql.php");
 
 // connection a la base
 global $connect;

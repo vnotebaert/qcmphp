@@ -8,10 +8,14 @@
  * 
  */
  
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.objet.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.choix.php');
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.reponse.php');
+//chargement de la librairie commune :
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
+require_once($adresserepertoiresite.'/scripts/php/class.objet.php');
+require_once($adresserepertoiresite.'/scripts/php/class.choix.php');
+require_once($adresserepertoiresite.'/scripts/php/class.reponse.php');
 
   class question extends objet
 {
@@ -301,7 +305,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
 				<?
 			}
 			?>
-			<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
+			<form action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" id="formulaire_validation">
 				<div class="intitule_champ"><span><? echo _TEXTE_VALIDATION; ?> :</span></div>
 				<div class="champ">
 					<span>					
@@ -334,12 +338,13 @@ require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/p
     // Mise en forme des choix relatifs a la question
     function liste_choix()
     {
-    	//chargement de la librairie commune :
-		require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
-
     	// Declaration des variables :
     	global $utilisateur_connecte;
     	global $page_choix;
+		global $adresserepertoiresite;
+		
+		//Chargement de la librairie commune :
+		require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 		
 		if (isset($this->identifiant))
 		{

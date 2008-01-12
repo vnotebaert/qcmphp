@@ -30,6 +30,7 @@ define (_TITRE_PARTICIPATION,"Participation");
 define (_TEXTE_PARTICIPATION,"<acronym title=\"Question &agrave; Choix Multiples et Hypertext Preprocessor.\">QCM_PHP</acronym> est librement adaptable. Il est d&eacute;velopp&eacute; sous licence logiciel libre. Il est accessible sour Sourceforge.com dans le r&eacute;pertoire <acronym title=\"Question &agrave; Choix Multiples\">QCM</acronym> du projet WorldRPG.");
 define (_FONCTION_SELECTION,"Fonctionnalit&eacute;s");
 define (_STATISTIQUE_SELECTION,"Statistiques");
+define (_CONNEXION_AUTOMATIQUE,"Remember Me?");
 
 // cadre question //
 define (_BONNE_REPONSE,"Right answer.</br>");

@@ -145,7 +145,7 @@ acronym {
 	width: 200px;
 	font: 10px georgia; 
 	}
-	#listefonction h3 { 
+	#listefonction h3 {
 		margin: 5px 0px 5px 0px; 
 		}
 	#listefonction ul {
@@ -236,7 +236,7 @@ div.champ input.avatarurl {
 	border-style: groove;
 	border-width: 5px;
 	border-color: #7D777C;
-	width: 150px;
+	max-width: 150px;
 	}	
 .avatar {
 	position: relative;
@@ -246,7 +246,7 @@ div.champ input.avatarurl {
 	border-style: groove;
 	border-width: 5px;
 	border-color: #7D777C;
-	width: 150px;
+	max-width: 150px;
 	}
 	
 /* Tableaux */
@@ -323,7 +323,6 @@ div.champ input.avatarurl {
 .tableau th.resize-handle-active {
 	cursor: e-resize;
 }
-
 div.resize-handle {
 	cursor: e-resize;
 	width: 2px;
@@ -348,12 +347,13 @@ div.resize-handle {
 	cursor:pointer;	
 	}
 #ajax_wait {
-	background: transparent url(images/pleasewait_miniroller.gif) top left no-repeat; 
+	background: transparent url(images/pleasewait_roller.gif) top left no-repeat; 
 	position: absolute;
-	left: 300px;
+	left: 50%;
+	top: 50%;
 	float: right;
-	width: 16px ;
-	height: 16px;
+	width: 32px ;
+	height: 32px;
 	}
 .nb_arbo {
 	color: grey;

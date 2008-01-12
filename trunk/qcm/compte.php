@@ -11,10 +11,13 @@
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 //chargement de la librairie commune :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/environnement/_librairie_environnement.php');
+require_once('/conf.site.inc.php');
+global $adresserepertoiresite;
+global $adressehttpsite;
+require_once($adresserepertoiresite.'/environnement/_librairie_environnement.php');
 
 //chargement des regles pour la creation de compte :
-require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.regle.php');
+require_once($adresserepertoiresite.'/scripts/php/class.regle.php');
 
 $confirmation_mot_de_passe=new regle("0","Confirmation_mot_de_passe");
 $confirmation_email=new regle("0","Confirmation_email");
@@ -269,7 +272,7 @@ include("include.HTML.html_definition.php");
 					if (in_array($utilisateur_connecte->_testauthentification,array(2,1)) && $utilisateur_connecte->avatarurl!="") 
 					{
 						//chargement de l'environnement pour la fonction de balise image :
-						require_once($_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']).'/scripts/php/class.environnement.php');
+						require_once($adresserepertoiresite.'/scripts/php/class.environnement.php');
 						$toto = new environnement();
 						$toto->image($utilisateur_connecte->avatarurl,"","avatarcompte");
 						echo "\n";
