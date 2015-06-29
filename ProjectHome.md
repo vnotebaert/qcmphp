@@ -1,0 +1,2 @@
+QCM\_PHP est un outil pour créer des questionnaires disponibles sur le net, pour tester ses connaissances ou réaliser des examens en ligne.
+Questionnaire à choix multiples ou examen en ligne, tout est possible avec QCM\_PHP.
